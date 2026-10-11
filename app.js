@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.initVortexBackgrounds) {
     window.initVortexBackgrounds();
   }
+  if (window.initParticleDrift) {
+    window.initParticleDrift();
+  }
 });
 
 /* --------------------------------------------------------------------------
@@ -193,6 +196,9 @@ function renderCurrentRoute() {
   if (window.initVortexBackgrounds) {
     window.initVortexBackgrounds();
   }
+  if (window.initParticleDrift) {
+    window.initParticleDrift();
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -339,10 +345,10 @@ function renderHomeView(container) {
       </div>
     </section>
 
-    <!-- SIGNATURE CAREER JOURNEY STEPPER -->
-    <section id="journey" class="section section-spider-dark">
+    <!-- SIGNATURE CAREER JOURNEY STEPPER — ORIGINKIT PARTICLE DRIFT 3 WEBGL -->
+    <section id="journey" class="section section-particle-drift">
       <div class="container">
-        <div style="text-align: center; max-width: 680px; margin: 0 auto 3rem;">
+        <div style="text-align: center; max-width: 680px; margin: 0 auto 3.5rem;">
           <span class="badge-tag">End-to-End Progression</span>
           <h2 class="heading-1" style="margin-top: 0.75rem;">Your Australian Career Pathway</h2>
           <p class="lead-text">A structured 7-stage framework guiding candidates from education to long-term career growth.</p>
@@ -354,49 +360,52 @@ function renderHomeView(container) {
             <div id="journeyLineFill" style="height: 100%; background: var(--color-accent-blue); width: 0%; border-radius: 2px; transition: width 0.35s ease; box-shadow: 0 0 10px rgba(2, 132, 199, 0.7);"></div>
           </div>
 
-          <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 1rem; position: relative; z-index: 3;">
-            <div class="journey-node-card active" style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(2, 132, 199, 0.6); border-radius: var(--radius-md); padding: 1.25rem; text-align: center; cursor: pointer; transition: all 0.3s ease;">
-              <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--color-accent-blue); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; margin: 0 auto 0.75rem;">1</div>
-              <div style="font-weight: 700; font-size: 0.95rem; color: #fff;">DISCOVER</div>
-              <div style="font-size: 0.8rem; color: var(--color-slate-400); margin-top: 0.25rem;">Skills Audit</div>
+          <div class="journey-cards-grid">
+            <div class="journey-node-card active" data-step="1">
+              <div class="journey-node-circle">1</div>
+              <div class="journey-node-title">DISCOVER</div>
+              <div class="journey-node-desc">Skills Audit</div>
             </div>
 
-            <div class="journey-node-card" style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: var(--radius-md); padding: 1.25rem; text-align: center; cursor: pointer; transition: all 0.3s ease;">
-              <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255, 255, 255, 0.15); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; margin: 0 auto 0.75rem;">2</div>
-              <div style="font-weight: 700; font-size: 0.95rem; color: #fff;">STUDY</div>
-              <div style="font-size: 0.8rem; color: var(--color-slate-400); margin-top: 0.25rem;">University Degree</div>
+            <div class="journey-node-card" data-step="2">
+              <div class="journey-node-circle">2</div>
+              <div class="journey-node-title">STUDY</div>
+              <div class="journey-node-desc">University Degree</div>
             </div>
 
-            <div class="journey-node-card" style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: var(--radius-md); padding: 1.25rem; text-align: center; cursor: pointer; transition: all 0.3s ease;">
-              <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255, 255, 255, 0.15); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; margin: 0 auto 0.75rem;">3</div>
-              <div style="font-weight: 700; font-size: 0.95rem; color: #fff;">PREPARE</div>
-              <div style="font-size: 0.8rem; color: var(--color-slate-400); margin-top: 0.25rem;">Resume & Coaching</div>
+            <div class="journey-node-card" data-step="3">
+              <div class="journey-node-circle">3</div>
+              <div class="journey-node-title">PREPARE</div>
+              <div class="journey-node-desc">Resume & Coaching</div>
             </div>
 
-            <div class="journey-node-card" style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: var(--radius-md); padding: 1.25rem; text-align: center; cursor: pointer; transition: all 0.3s ease;">
-              <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255, 255, 255, 0.15); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; margin: 0 auto 0.75rem;">4</div>
-              <div style="font-weight: 700; font-size: 0.95rem; color: #fff;">EXPERIENCE</div>
-              <div style="font-size: 0.8rem; color: var(--color-slate-400); margin-top: 0.25rem;">12-Wk Internship</div>
+            <div class="journey-node-card" data-step="4">
+              <div class="journey-node-circle">4</div>
+              <div class="journey-node-title">EXPERIENCE</div>
+              <div class="journey-node-desc">12-Wk Internship</div>
             </div>
 
-            <div class="journey-node-card" style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: var(--radius-md); padding: 1.25rem; text-align: center; cursor: pointer; transition: all 0.3s ease;">
-              <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255, 255, 255, 0.15); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; margin: 0 auto 0.75rem;">5</div>
-              <div style="font-weight: 700; font-size: 0.95rem; color: #fff;">CONNECT</div>
-              <div style="font-size: 0.8rem; color: var(--color-slate-400); margin-top: 0.25rem;">3,000+ Employers</div>
+            <div class="journey-node-card" data-step="5">
+              <div class="journey-node-circle">5</div>
+              <div class="journey-node-title">CONNECT</div>
+              <div class="journey-node-desc">3,000+ Employers</div>
             </div>
 
-            <div class="journey-node-card" style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: var(--radius-md); padding: 1.25rem; text-align: center; cursor: pointer; transition: all 0.3s ease;">
-              <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255, 255, 255, 0.15); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; margin: 0 auto 0.75rem;">6</div>
-              <div style="font-weight: 700; font-size: 0.95rem; color: #fff;">GET HIRED</div>
-              <div style="font-size: 0.8rem; color: var(--color-slate-400); margin-top: 0.25rem;">Paid Job Offer</div>
+            <div class="journey-node-card" data-step="6">
+              <div class="journey-node-circle">6</div>
+              <div class="journey-node-title">GET HIRED</div>
+              <div class="journey-node-desc">Paid Job Offer</div>
             </div>
 
-            <div class="journey-node-card" style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: var(--radius-md); padding: 1.25rem; text-align: center; cursor: pointer; transition: all 0.3s ease;">
-              <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255, 255, 255, 0.15); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; margin: 0 auto 0.75rem;">7</div>
-              <div style="font-weight: 700; font-size: 0.95rem; color: #fff;">GROW</div>
-              <div style="font-size: 0.8rem; color: var(--color-slate-400); margin-top: 0.25rem;">Visa & Leadership</div>
+            <div class="journey-node-card" data-step="7">
+              <div class="journey-node-circle">7</div>
+              <div class="journey-node-title">GROW</div>
+              <div class="journey-node-desc">Visa & Leadership</div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
         </div>
       </div>
     </section>
@@ -2349,7 +2358,7 @@ function initCityTabs() {
 }
 
 /* --------------------------------------------------------------------------
-   8. SIGNATURE CAREER JOURNEY STEPPER
+   8. SIGNATURE CAREER JOURNEY STEPPER — 3D PARALLAX & PROGRESS SYSTEM
    -------------------------------------------------------------------------- */
 function initJourneyProgressStepper() {
   const nodeCards = document.querySelectorAll('.journey-node-card');
@@ -2359,21 +2368,10 @@ function initJourneyProgressStepper() {
 
   function setActiveStage(index) {
     nodeCards.forEach((c, idx) => {
-      const circle = c.querySelector('div:first-child');
       if (idx <= index) {
         c.classList.add('active');
-        c.style.borderColor = 'var(--color-accent-blue)';
-        if (circle) {
-          circle.style.background = 'var(--color-accent-blue)';
-          circle.style.color = '#fff';
-        }
       } else {
         c.classList.remove('active');
-        c.style.borderColor = 'rgba(255, 255, 255, 0.12)';
-        if (circle) {
-          circle.style.background = 'rgba(255, 255, 255, 0.15)';
-          circle.style.color = '#fff';
-        }
       }
     });
     if (progressFill) {
@@ -2385,6 +2383,24 @@ function initJourneyProgressStepper() {
   nodeCards.forEach((card, idx) => {
     card.addEventListener('mouseenter', () => setActiveStage(idx));
     card.addEventListener('click', () => setActiveStage(idx));
+
+    // Interactive 3D Parallax Tilt
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
+      const rotX = ((y - cy) / cy) * -12;
+      const rotY = ((x - cx) / cx) * 12;
+      card.style.transform = `perspective(800px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translateY(-8px) translateZ(16px)`;
+      card.style.setProperty('--sheen-x', `${(x / rect.width) * 100}%`);
+      card.style.setProperty('--sheen-y', `${(y / rect.height) * 100}%`);
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
   });
 
   setActiveStage(0);

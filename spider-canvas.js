@@ -34,7 +34,7 @@
       }
 
       this.particles = [];
-      this.mouse = { x: null, y: null, radius: 250 };
+      this.mouse = { x: null, y: null, radius: 180 };
       this.isVisible = false;
       this.animId = null;
 
@@ -271,10 +271,10 @@
               ctx.lineTo(mouse.x, mouse.y);
               ctx.stroke();
 
-              // Clear visible magnetic pull towards cursor arrow position
+              // Gentle and smooth magnetic pull towards cursor arrow position
               const force = (mouse.radius - mdist) / mouse.radius;
-              p.x += (mdx / mdist) * force * 2.8;
-              p.y += (mdy / mdist) * force * 2.8;
+              p.x += (mdx / mdist) * force * 0.65;
+              p.y += (mdy / mdist) * force * 0.65;
             }
           }
 

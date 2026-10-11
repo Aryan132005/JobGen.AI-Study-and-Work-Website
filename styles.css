@@ -1380,60 +1380,170 @@ video {
   width: 16.66%;
 }
 
-.journey-node-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-slate-200);
-  border-radius: var(--radius-md);
-  padding: 2rem 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  transition: all var(--transition-slow);
+/* ==========================================================================
+   4. CAREER PATHWAY SECTION — ORIGINKIT PARTICLE DRIFT 3 & 3D CARDS
+   ========================================================================== */
+.section-particle-drift {
   position: relative;
-  z-index: 3;
-  cursor: pointer;
+  overflow: hidden;
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+  padding: 6rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.journey-node-card.active,
-.journey-node-card:hover {
-  border-color: var(--color-accent-blue);
-  box-shadow: var(--shadow-glow);
-  transform: translateY(-8px);
-  background: #FFFFFF;
+.section-particle-drift .heading-1,
+.section-particle-drift h2 {
+  color: #FFFFFF !important;
+}
+
+.section-particle-drift .lead-text,
+.section-particle-drift p {
+  color: var(--color-slate-300) !important;
+}
+
+.section-particle-drift .badge-tag {
+  background: rgba(56, 189, 248, 0.15) !important;
+  color: #38BDF8 !important;
+  border-color: rgba(56, 189, 248, 0.35) !important;
+}
+
+/* 3D GLASSMORPHIC CAREER JOURNEY CARDS */
+.journey-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1rem;
+  position: relative;
+  z-index: 3;
+  perspective: 1200px;
+}
+
+@media (max-width: 1024px) {
+  .journey-cards-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .journey-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.journey-node-card {
+  position: relative;
+  background: rgba(15, 23, 42, 0.75) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 20px !important;
+  padding: 1.5rem 0.85rem !important;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease !important;
+  box-shadow: 0 14px 32px -6px rgba(0, 0, 0, 0.5), inset 0 1px 1px 0 rgba(255, 255, 255, 0.2) !important;
+  transform-style: preserve-3d;
+  will-change: transform;
+  overflow: hidden;
+  animation: floatCard3D 6s ease-in-out infinite alternate;
+}
+
+/* Staggered Floating Delays so all 7 cards levitate gracefully in 3D */
+.journey-node-card:nth-child(1) { animation-delay: 0s; }
+.journey-node-card:nth-child(2) { animation-delay: 0.8s; }
+.journey-node-card:nth-child(3) { animation-delay: 1.6s; }
+.journey-node-card:nth-child(4) { animation-delay: 2.4s; }
+.journey-node-card:nth-child(5) { animation-delay: 3.2s; }
+.journey-node-card:nth-child(6) { animation-delay: 4.0s; }
+.journey-node-card:nth-child(7) { animation-delay: 4.8s; }
+
+@keyframes floatCard3D {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-7px); }
+  100% { transform: translateY(0px); }
+}
+
+/* 3D Specular Sheen Reflection Layer */
+.journey-node-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle 120px at var(--sheen-x, 50%) var(--sheen-y, 0%), rgba(255, 255, 255, 0.22), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.journey-node-card:hover::before {
+  opacity: 1;
 }
 
 .journey-node-circle {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  background: var(--color-paper);
-  border: 2px solid var(--color-slate-300);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 1.1rem;
-  color: var(--color-slate-600);
-  transition: all var(--transition-fast);
-}
-
-.journey-node-card.active .journey-node-circle {
-  background: var(--color-accent-blue);
-  border-color: var(--color-accent-blue);
-  color: var(--color-surface);
+  font-size: 0.95rem;
+  margin: 0 auto 0.75rem;
+  transition: all 0.25s ease;
+  transform: translateZ(12px);
 }
 
 .journey-node-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.925rem;
+  letter-spacing: 0.04em;
+  color: #FFFFFF;
+  transition: color 0.2s ease;
+  transform: translateZ(14px);
 }
 
 .journey-node-desc {
-  font-size: 0.875rem;
-  color: var(--color-slate-600);
-  line-height: 1.5;
+  font-size: 0.775rem;
+  color: #94A3B8;
+  margin-top: 0.35rem;
+  line-height: 1.35;
+  transition: color 0.2s ease;
+  transform: translateZ(10px);
+}
+
+/* Active 3D State: Electric Cyan/Blue Glow + Elevated Pedestal */
+.journey-node-card.active {
+  border-color: #38BDF8 !important;
+  background: rgba(14, 28, 54, 0.88) !important;
+  box-shadow: 0 0 35px -4px rgba(56, 189, 248, 0.55), 0 18px 36px -6px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.35) !important;
+}
+
+.journey-node-card.active .journey-node-circle {
+  background: linear-gradient(135deg, #0284C7 0%, #38BDF8 100%) !important;
+  border-color: #7DD3FC !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.85), 0 4px 10px rgba(0, 0, 0, 0.3) !important;
+  transform: translateZ(18px) scale(1.1) !important;
+}
+
+.journey-node-card.active .journey-node-title {
+  color: #FFFFFF;
+  text-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+}
+
+.journey-node-card.active .journey-node-desc {
+  color: #BAE6FD;
+}
+
+.journey-node-card:hover {
+  border-color: #38BDF8 !important;
+  box-shadow: 0 0 30px -6px rgba(56, 189, 248, 0.45), 0 16px 32px rgba(0, 0, 0, 0.5) !important;
 }
 
 /* 5. INTERNSHIP SECTION (CLEAN EDITORIAL SPLIT) */
