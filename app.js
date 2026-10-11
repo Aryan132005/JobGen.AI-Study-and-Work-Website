@@ -445,13 +445,14 @@ function renderHomeView(container) {
       </div>
     </section>
 
-    <!-- ALUMNI PREVIEW -->
-    <section id="alumni" class="section section-spider-light">
+    <!-- ALUMNI PREVIEW — ORIGINKIT PARTICLE DRIFT 3 & 3D CARDS (MATCHING SECTION 2) -->
+    <section id="alumni" class="section section-particle-drift">
       <div class="container">
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.75rem; flex-wrap: wrap; gap: 1.5rem;">
           <div>
             <span class="badge-tag">Audited Outcomes</span>
             <h2 class="heading-1" style="margin-top: 0.5rem;">8,000+ Alumni Placements</h2>
+            <p class="lead-text" style="margin-top: 0.5rem; font-size: 1rem; color: #94A3B8;">Verified career outcomes from candidates placed into over 3,000 Australian host businesses.</p>
           </div>
           <a href="/alumni" data-link class="btn btn-secondary">View Complete Alumni Directory &rarr;</a>
         </div>
@@ -1910,8 +1911,8 @@ function renderAlumniView(container) {
       </div>
     </section>
 
-    <!-- LIVE SEARCHABLE ALUMNI DIRECTORY -->
-    <section class="section section-spider-light">
+    <!-- LIVE SEARCHABLE ALUMNI DIRECTORY — ORIGINKIT PARTICLE DRIFT 3 & 3D CARDS -->
+    <section class="section section-particle-drift">
       <div class="container">
         <div style="text-align: center; max-width: 680px; margin: 0 auto 2.5rem;">
           <span class="badge-tag">Verified Directory</span>
@@ -1920,7 +1921,7 @@ function renderAlumniView(container) {
         </div>
 
         <div style="max-width: 600px; margin: 0 auto 2.5rem;">
-          <input type="text" id="alumniSearchInput" placeholder="Search by candidate name, university, degree, or job role..." style="width: 100%; padding: 1rem 1.5rem; border-radius: var(--radius-full); border: 1px solid var(--color-slate-200); font-size: 1rem; outline: none; box-shadow: var(--shadow-subtle);">
+          <input type="text" id="alumniSearchInput" placeholder="Search by candidate name, university, degree, or job role..." style="width: 100%; padding: 1rem 1.5rem; border-radius: var(--radius-full); font-size: 1rem; outline: none;">
         </div>
 
         <div id="alumniGridContainer" class="alumni-grid-3"></div>
@@ -2241,6 +2242,25 @@ function initAlumniSearch() {
         </div>
       `;
     }).join('');
+
+    // Attach interactive 3D parallax tilt matching Career Pathway cards
+    alumniGrid.querySelectorAll('.alumni-card-editorial').forEach((card) => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const cx = rect.width / 2;
+        const cy = rect.height / 2;
+        const rotX = ((y - cy) / cy) * -8;
+        const rotY = ((x - cx) / cx) * 8;
+        card.style.transform = `perspective(800px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translateY(-8px) translateZ(12px)`;
+        card.style.setProperty('--sheen-x', `${(x / rect.width) * 100}%`);
+        card.style.setProperty('--sheen-y', `${(y / rect.height) * 100}%`);
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
   }
 
   // Initial render
@@ -2320,12 +2340,12 @@ function initCityTabs() {
       const data = CITY_DATA[key] || CITY_DATA.sydney;
 
       cityDisplay.innerHTML = `
-        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-          <span class="badge-tag">Australian Operations</span>
+        <div style="display: flex; flex-direction: column; gap: 1.25rem; align-items: flex-start;">
+          <span class="badge-tag" style="width: fit-content; max-width: max-content; align-self: flex-start; white-space: nowrap;">Australian Operations</span>
           <h3 class="heading-2" style="color: #ffffff;">${data.title}</h3>
           <p class="lead-text" style="font-size: 1rem; color: #94A3B8;">${data.desc}</p>
           
-          <div style="background: rgba(15, 23, 42, 0.88); border: 1px solid rgba(255, 255, 255, 0.18); backdrop-filter: blur(12px); padding: 1.35rem; border-radius: var(--radius-md); box-shadow: 0 10px 30px rgba(0,0,0,0.4);">
+          <div style="width: 100%; background: rgba(15, 23, 42, 0.88); border: 1px solid rgba(255, 255, 255, 0.18); backdrop-filter: blur(12px); padding: 1.35rem; border-radius: var(--radius-md); box-shadow: 0 10px 30px rgba(0,0,0,0.4);">
             <div style="font-size: 0.875rem; color: #E2E8F0; margin-bottom: 0.65rem; display: flex; align-items: flex-start; gap: 0.4rem;">
               <strong style="color: #38BDF8;">📍 Address:</strong>
               <span>${data.address}</span>
