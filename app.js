@@ -4,11 +4,13 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   initHeaderScroll();
-  initLogoMarquee();
   initModalHandlers();
   initRouter();
   if (window.initSpiderCanvases) {
     window.initSpiderCanvases();
+  }
+  if (window.initVortexBackgrounds) {
+    window.initVortexBackgrounds();
   }
 });
 
@@ -182,12 +184,14 @@ function renderCurrentRoute() {
   }
 
   // Re-initialize dynamic widgets for rendered view
-  initLogoMarquee();
   initAlumniSearch();
   initCityTabs();
   initJourneyProgressStepper();
   if (window.initSpiderCanvases) {
     window.initSpiderCanvases();
+  }
+  if (window.initVortexBackgrounds) {
+    window.initVortexBackgrounds();
   }
 }
 
@@ -400,38 +404,34 @@ function renderHomeView(container) {
     <!-- VIDEO SPOTLIGHT SECTION (LEFT VIDEO + RIGHT TEXT - IMAGE 4 LAYOUT) -->
     <section class="section section-spider-light">
       <div class="container">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
-          <!-- LEFT SIDE VIDEO -->
-          <div>
+        <div class="media-spotlight-grid">
+          <!-- LEFT SIDE VIDEO (CLEAN PLAYER WITH SLEEK SHAPE, NO DOUBLE BOX) -->
+          <div class="media-spotlight-video">
             ${renderVideoPlayer('v1.mp4', 'Study & Work Australia Platform Overview', '2m 45s')}
           </div>
-          <!-- RIGHT SIDE TEXT -->
-          <div>
-            <span class="badge-tag" style="background: rgba(2, 132, 199, 0.2); color: var(--color-accent-blue); border-color: rgba(2, 132, 199, 0.4);">Featured Media</span>
-            <h2 class="heading-1" style="color: #fff; margin-top: 0.75rem;">Turn Your Qualifications Into Workplace Success</h2>
-            <p class="lead-text" style="color: var(--color-slate-400); margin-top: 1rem; margin-bottom: 1.5rem;">
+          <!-- RIGHT SIDE TEXT (CLEAN HIGH-CONTRAST TYPOGRAPHY & SHAPED CHECKLIST) -->
+          <div class="media-spotlight-content">
+            <span class="badge-tag" style="background: rgba(2, 132, 199, 0.1); color: var(--color-accent-blue); border: 1px solid rgba(2, 132, 199, 0.25); align-self: flex-start;">Featured Media</span>
+            <h2 class="heading-1">Turn Your Qualifications Into Workplace Success</h2>
+            <p class="lead-text">
               Watch how Study & Work Australia connects university talent with top tier corporate host companies across Australia.
             </p>
-            <ul style="list-style: none; padding: 0; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.75rem; color: var(--color-slate-300);">
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-blue); font-weight: bold;">✓</span> 12-Week Structured Internships</li>
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-blue); font-weight: bold;">✓</span> Direct Graduate Job Placements</li>
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-blue); font-weight: bold;">✓</span> 3,000+ Verified Australian Host Businesses</li>
+            <ul class="media-feature-checklist">
+              <li class="media-feature-item">
+                <span class="media-check-icon">✓</span>
+                <span>12-Week Structured Internships</span>
+              </li>
+              <li class="media-feature-item">
+                <span class="media-check-icon">✓</span>
+                <span>Direct Graduate Job Placements</span>
+              </li>
+              <li class="media-feature-item">
+                <span class="media-check-icon">✓</span>
+                <span>3,000+ Verified Australian Host Businesses</span>
+              </li>
             </ul>
-            <a href="/candidates" data-link class="btn btn-primary btn-hero-primary">Explore Candidate Pathways &rarr;</a>
+            <a href="/candidates" data-link class="btn btn-primary btn-hero-primary" style="align-self: flex-start;">Explore Candidate Pathways &rarr;</a>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PARTNER MARQUEE -->
-    <section class="section section-spider-dark">
-      <div class="container">
-        <div style="text-align: center; margin-bottom: 2rem;">
-          <span class="badge-tag">Industry Ecosystem</span>
-          <h2 class="heading-2" style="margin-top: 0.5rem;">Trusted by 3,000+ Australian Businesses</h2>
-        </div>
-        <div class="logo-marquee-wrapper">
-          <div id="logoMarqueeTrack" class="logo-marquee-track"></div>
         </div>
       </div>
     </section>
@@ -600,21 +600,21 @@ function renderCandidatesView(container) {
     <!-- VIDEO SPOTLIGHT (LEFT TEXT + RIGHT VIDEO - IMAGE 3 LAYOUT) -->
     <section class="section section-spider-dark">
       <div class="container">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+        <div class="media-spotlight-grid" style="grid-template-columns: 0.9fr 1.1fr;">
           <!-- LEFT SIDE TEXT -->
-          <div>
-            <span class="badge-tag">Candidate Experiences</span>
-            <h2 class="heading-1" style="margin-top: 0.5rem;">Hear From Real Interns & Graduates</h2>
-            <p class="lead-text" style="margin-top: 1rem; margin-bottom: 1.5rem;">
+          <div class="media-spotlight-content">
+            <span class="badge-tag" style="align-self: flex-start; margin-bottom: 0.75rem;">Candidate Experiences</span>
+            <h2 class="heading-1">Hear From Real Interns & Graduates</h2>
+            <p class="lead-text">
               Watch candidate testimonial journeys and workplace placement experiences across Australian host companies.
             </p>
-            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
               <button onclick="openModal('work')" class="btn btn-primary">Register Candidate Profile &rarr;</button>
               <button onclick="openModal('consultation')" class="btn btn-secondary">Book Consultation</button>
             </div>
           </div>
           <!-- RIGHT SIDE VIDEO -->
-          <div>
+          <div class="media-spotlight-video">
             ${renderVideoPlayer('interns1.mp4', 'Candidate & Graduate Placement Journeys', '3m 15s')}
           </div>
         </div>
@@ -694,67 +694,59 @@ function renderEmployersView(container) {
           <p class="lead-text">Choose from zero-cost intern evaluations, direct permanent hires, or flexible temporary staffing models.</p>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 2rem;">
+        <div class="employer-solutions-3col-grid">
           <!-- SERVICE 1: HOST AN INTERN -->
-          <div style="background: var(--color-surface); border: 2px solid var(--color-accent-blue); border-radius: var(--radius-lg); padding: 2.25rem; box-shadow: var(--shadow-card); position: relative;">
-            <span class="badge-tag" style="background: var(--color-accent-blue); color: #fff; margin-bottom: 1rem;">Flagship Program</span>
-            <h3 class="heading-2">Host an Intern (Try Before You Hire)</h3>
-            <p style="color: var(--color-slate-600); margin-top: 0.75rem; line-height: 1.6;">
-              Evaluate enthusiastic university graduates for 12 weeks at <strong>zero placement fee</strong>. Assess candidate performance, technical skills, and culture fit in your business before making a permanent job offer.
-            </p>
-            <ul style="margin: 1.5rem 0; padding-left: 1.25rem; color: var(--color-slate-700); font-size: 0.9375rem; display: flex; flex-direction: column; gap: 0.5rem;">
-              <li><strong>Zero Placement Fee:</strong> No upfront or ongoing cost during 12 weeks</li>
-              <li><strong>Insurance Covered:</strong> Study & Work covers personal accident & liability</li>
-              <li><strong>Fair Work Compliant:</strong> Structured vocational placement under Section 12</li>
-              <li><strong>High Retention:</strong> 85%+ of host interns receive permanent job offers</li>
-            </ul>
-            <button onclick="openModal('hire')" class="btn btn-primary" style="width: 100%; text-align: center;">Host an Intern at Zero Cost &rarr;</button>
+          <div class="employer-solution-card">
+            <div>
+              <span class="badge-tag" style="background: rgba(2, 132, 199, 0.1); color: var(--color-accent-blue); border-color: rgba(2, 132, 199, 0.25); margin-bottom: 1rem;">Flagship Program</span>
+              <h3 class="heading-2">Host an Intern (Try Before You Hire)</h3>
+              <p style="color: var(--color-slate-600); margin-top: 0.75rem; line-height: 1.6;">
+                Evaluate enthusiastic university graduates for 12 weeks at <strong>zero placement fee</strong>. Assess candidate performance, technical skills, and culture fit in your business before making a permanent job offer.
+              </p>
+              <ul style="margin: 1.5rem 0; padding-left: 1.25rem; color: var(--color-slate-700); font-size: 0.9375rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                <li><strong>Zero Placement Fee:</strong> No upfront or ongoing cost during 12 weeks</li>
+                <li><strong>Insurance Covered:</strong> Study & Work covers personal accident & liability</li>
+                <li><strong>Fair Work Compliant:</strong> Structured vocational placement under Section 12</li>
+                <li><strong>High Retention:</strong> 85%+ of host interns receive permanent job offers</li>
+              </ul>
+            </div>
+            <button onclick="openModal('hire')" class="btn btn-primary" style="width: 100%; text-align: center; margin-top: 1.5rem;">Host an Intern at Zero Cost &rarr;</button>
           </div>
 
           <!-- SERVICE 2: DIRECT RECRUITMENT -->
-          <div style="background: var(--color-surface); border: 1px solid var(--color-slate-200); border-radius: var(--radius-lg); padding: 2.25rem; box-shadow: var(--shadow-card);">
-            <span class="badge-tag" style="margin-bottom: 1rem;">Permanent Placement</span>
-            <h3 class="heading-2">Direct-Hire Permanent Recruitment</h3>
-            <p style="color: var(--color-slate-600); margin-top: 0.75rem; line-height: 1.6;">
-              Full end-to-end recruitment for junior to senior professionals across IT, Accounting, Engineering, and Business.
-            </p>
-            <div style="background: var(--color-paper); border: 1px solid var(--color-slate-200); padding: 1rem; border-radius: var(--radius-md); margin: 1.25rem 0; font-size: 0.9rem;">
-              <div style="font-weight: 700; color: var(--color-ink); margin-bottom: 0.25rem;">Transparent Pricing:</div>
-              <div>• <strong>5% Fee:</strong> Candidates with &lt;2 years experience</div>
-              <div>• <strong>10% Fee:</strong> Candidates with &ge;2 years experience</div>
-              <div>• <strong>6-Month Replacement Guarantee:</strong> Zero risk replacement</div>
+          <div class="employer-solution-card">
+            <div>
+              <span class="badge-tag" style="background: rgba(5, 150, 105, 0.1); color: var(--color-accent-emerald); border-color: rgba(5, 150, 105, 0.25); margin-bottom: 1rem;">Permanent Placement</span>
+              <h3 class="heading-2">Direct-Hire Permanent Recruitment</h3>
+              <p style="color: var(--color-slate-600); margin-top: 0.75rem; line-height: 1.6;">
+                Full end-to-end recruitment for junior to senior professionals across IT, Accounting, Engineering, and Business.
+              </p>
+              <div style="background: #F8FAFC; border: 1.5px solid #E2E8F0; padding: 1.15rem; border-radius: var(--radius-md); margin: 1.5rem 0; font-size: 0.9rem;">
+                <div style="font-weight: 700; color: var(--color-ink); margin-bottom: 0.35rem;">Transparent Pricing:</div>
+                <div style="margin-bottom: 0.25rem;">• <strong>5% Fee:</strong> Candidates with &lt;2 years experience</div>
+                <div style="margin-bottom: 0.25rem;">• <strong>10% Fee:</strong> Candidates with &ge;2 years experience</div>
+                <div>• <strong>6-Month Replacement Guarantee:</strong> Zero risk replacement</div>
+              </div>
             </div>
-            <button onclick="openModal('hire')" class="btn btn-secondary" style="width: 100%; text-align: center;">Request Direct Recruitment &rarr;</button>
+            <button onclick="openModal('hire')" class="btn btn-primary" style="width: 100%; text-align: center; margin-top: 1.5rem;">Request Direct Recruitment &rarr;</button>
           </div>
 
           <!-- SERVICE 3: CASUAL & TEMP STAFFING -->
-          <div style="background: var(--color-surface); border: 1px solid var(--color-slate-200); border-radius: var(--radius-lg); padding: 2.25rem; box-shadow: var(--shadow-card);">
-            <span class="badge-tag" style="margin-bottom: 1rem;">Flexible Workforce</span>
-            <h3 class="heading-2">On-Hire Temporary & Casual Staffing</h3>
-            <p style="color: var(--color-slate-600); margin-top: 0.75rem; line-height: 1.6;">
-              Flexible casual workforce solutions for hospitality, retail, customer service, warehousing, and admin.
-            </p>
-            <div style="background: var(--color-paper); border: 1px solid var(--color-slate-200); padding: 1rem; border-radius: var(--radius-md); margin: 1.25rem 0; font-size: 0.9rem;">
-              <div style="font-weight: 700; color: var(--color-ink); margin-bottom: 0.25rem;">65% On-Hire Markup Covers:</div>
-              <div>• Base salary payment & superannuation</div>
-              <div>• Payroll tax & Workers Compensation insurance</div>
-              <div>• Full employer administrative burden</div>
+          <div class="employer-solution-card">
+            <div>
+              <span class="badge-tag" style="background: rgba(217, 119, 6, 0.1); color: var(--color-accent-amber); border-color: rgba(217, 119, 6, 0.25); margin-bottom: 1rem;">Flexible Workforce</span>
+              <h3 class="heading-2">On-Hire Temporary & Casual Staffing</h3>
+              <p style="color: var(--color-slate-600); margin-top: 0.75rem; line-height: 1.6;">
+                Flexible casual workforce solutions for hospitality, retail, customer service, warehousing, and admin.
+              </p>
+              <div style="background: #F8FAFC; border: 1.5px solid #E2E8F0; padding: 1.15rem; border-radius: var(--radius-md); margin: 1.5rem 0; font-size: 0.9rem;">
+                <div style="font-weight: 700; color: var(--color-ink); margin-bottom: 0.35rem;">65% On-Hire Markup Covers:</div>
+                <div style="margin-bottom: 0.25rem;">• Base salary payment & superannuation</div>
+                <div style="margin-bottom: 0.25rem;">• Payroll tax & Workers Compensation insurance</div>
+                <div>• Full employer administrative burden</div>
+              </div>
             </div>
-            <a href="/staffing" data-link class="btn btn-secondary" style="width: 100%; text-align: center;">Explore Staffing Solutions &rarr;</a>
-          </div>
-
-          <!-- SERVICE 4: VISA SPONSORSHIP SOURCING -->
-          <div style="background: var(--color-surface); border: 1px solid var(--color-slate-200); border-radius: var(--radius-lg); padding: 2.25rem; box-shadow: var(--shadow-card);">
-            <span class="badge-tag" style="margin-bottom: 1rem;">Skilled Migration</span>
-            <h3 class="heading-2">Employer Visa Sponsorship Sourcing</h3>
-            <p style="color: var(--color-slate-600); margin-top: 0.75rem; line-height: 1.6;">
-              Access qualified international candidates for employer visa sponsorship under Australian Department of Home Affairs guidelines.
-            </p>
-            <div style="background: var(--color-paper); border: 1px solid var(--color-slate-200); padding: 1rem; border-radius: var(--radius-md); margin: 1.25rem 0; font-size: 0.9rem;">
-              <div>• <strong>Subclass 407 Training Visa:</strong> Structured occupational training ($60,000 + super threshold)</div>
-              <div>• <strong>Subclass 482 Skills in Demand:</strong> Skilled worker sponsorship ($80,000 + super threshold)</div>
-            </div>
-            <button onclick="openModal('consultation')" class="btn btn-secondary" style="width: 100%; text-align: center;">Discuss Visa Sponsorship &rarr;</button>
+            <a href="/staffing" data-link class="btn btn-primary" style="width: 100%; text-align: center; margin-top: 1.5rem;">Explore Staffing Solutions &rarr;</a>
           </div>
         </div>
       </div>
@@ -763,33 +755,20 @@ function renderEmployersView(container) {
     <!-- EMPLOYER VIDEO SECTION (LEFT VIDEO + RIGHT TEXT - IMAGE 4 LAYOUT) -->
     <section class="section section-spider-dark">
       <div class="container">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+        <div class="media-spotlight-grid">
           <!-- LEFT SIDE VIDEO -->
-          <div>
+          <div class="media-spotlight-video">
             ${renderVideoPlayer('employerVideo.mp4', 'Recruitment Cost Optimization Video', '4m 10s')}
           </div>
           <!-- RIGHT SIDE TEXT -->
-          <div>
-            <span class="badge-tag">Employer Insights</span>
-            <h2 class="heading-1" style="margin-top: 0.5rem;">Recruitment Doesn't Have to Be Expensive</h2>
-            <p class="lead-text" style="margin-top: 1rem; margin-bottom: 1.5rem;">
+          <div class="media-spotlight-content">
+            <span class="badge-tag" style="align-self: flex-start; margin-bottom: 0.75rem;">Employer Insights</span>
+            <h2 class="heading-1">Recruitment Doesn't Have to Be Expensive</h2>
+            <p class="lead-text">
               Learn how Australian SMEs and corporate enterprises save up to 70% in recruitment costs using Study & Work's host placement models.
             </p>
-            <button onclick="openModal('hire')" class="btn btn-primary">Host an Intern Zero Cost &rarr;</button>
+            <button onclick="openModal('hire')" class="btn btn-primary" style="align-self: flex-start; margin-top: 1rem;">Host an Intern Zero Cost &rarr;</button>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CLIENT LOGO TRACK -->
-    <section class="section section-spider-light">
-      <div class="container">
-        <div style="text-align: center; margin-bottom: 2rem;">
-          <span class="badge-tag">Partner Employers</span>
-          <h2 class="heading-2" style="margin-top: 0.5rem;">Join 3,000+ Host Employers Across Australia</h2>
-        </div>
-        <div class="logo-marquee-wrapper">
-          <div id="logoMarqueeTrack" class="logo-marquee-track"></div>
         </div>
       </div>
     </section>
@@ -858,19 +837,19 @@ function renderEducationProvidersView(container) {
     <!-- VIDEO SPOTLIGHT (LEFT VIDEO + RIGHT TEXT - IMAGE 4 LAYOUT) -->
     <section class="section section-spider-dark">
       <div class="container">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+        <div class="media-spotlight-grid">
           <!-- LEFT SIDE VIDEO -->
-          <div>
+          <div class="media-spotlight-video">
             ${renderVideoPlayer('PIPE.mp4', 'Work Integrated Learning Video', '5m 20s')}
           </div>
           <!-- RIGHT SIDE TEXT -->
-          <div>
-            <span class="badge-tag">University Partnerships</span>
-            <h2 class="heading-1" style="margin-top: 0.5rem;">Work Integrated Learning (PIPE) Overview</h2>
-            <p class="lead-text" style="margin-top: 1rem; margin-bottom: 1.5rem;">
+          <div class="media-spotlight-content">
+            <span class="badge-tag" style="align-self: flex-start; margin-bottom: 0.75rem;">University Partnerships</span>
+            <h2 class="heading-1">Work Integrated Learning (PIPE) Overview</h2>
+            <p class="lead-text">
               Watch how Study & Work collaborates with university faculties to deliver hands-on industry placements for Australian and international students.
             </p>
-            <button onclick="openModal('contact')" class="btn btn-primary">Request Faculty Proposal &rarr;</button>
+            <button onclick="openModal('contact')" class="btn btn-primary" style="align-self: flex-start; margin-top: 1rem;">Request Faculty Proposal &rarr;</button>
           </div>
         </div>
       </div>
@@ -985,20 +964,20 @@ function renderAboutView(container) {
             </p>
           </div>
 
-          <div style="background: var(--color-paper); border: 1px solid var(--color-slate-200); border-radius: var(--radius-lg); padding: 2.5rem; display: flex; flex-direction: column; gap: 1.5rem;">
-            <div style="border-bottom: 1px solid var(--color-slate-200); padding-bottom: 1rem;">
-              <div style="font-size: 2.5rem; font-weight: 800; color: var(--color-accent-blue); font-family: var(--font-display);">8,000+</div>
-              <div style="font-weight: 600; color: var(--color-slate-700);">Candidates Placed Into Professional Careers</div>
+          <div class="about-metrics-card" style="display: flex; flex-direction: column; gap: 1.5rem;">
+            <div style="border-bottom: 1.5px solid #E2E8F0; padding-bottom: 1.25rem;">
+              <div style="font-size: 2.5rem; font-weight: 800; color: var(--color-accent-blue); font-family: var(--font-display); line-height: 1.1;">8,000+</div>
+              <div style="font-weight: 600; color: #1E293B; margin-top: 0.35rem;">Candidates Placed Into Professional Careers</div>
             </div>
 
-            <div style="border-bottom: 1px solid var(--color-slate-200); padding-bottom: 1rem;">
-              <div style="font-size: 2.5rem; font-weight: 800; color: var(--color-accent-emerald); font-family: var(--font-display);">3,000+</div>
-              <div style="font-weight: 600; color: var(--color-slate-700);">Host Business Partners Across Australia</div>
+            <div style="border-bottom: 1.5px solid #E2E8F0; padding-bottom: 1.25rem;">
+              <div style="font-size: 2.5rem; font-weight: 800; color: var(--color-accent-emerald); font-family: var(--font-display); line-height: 1.1;">3,000+</div>
+              <div style="font-weight: 600; color: #1E293B; margin-top: 0.35rem;">Host Business Partners Across Australia</div>
             </div>
 
             <div>
-              <div style="font-size: 2.5rem; font-weight: 800; color: var(--color-accent-amber); font-family: var(--font-display);">2007</div>
-              <div style="font-weight: 600; color: var(--color-slate-700);">Established & Continuously Operating (19+ Years)</div>
+              <div style="font-size: 2.5rem; font-weight: 800; color: var(--color-accent-amber); font-family: var(--font-display); line-height: 1.1;">2007</div>
+              <div style="font-weight: 600; color: #1E293B; margin-top: 0.35rem;">Established & Continuously Operating (19+ Years)</div>
             </div>
           </div>
         </div>
@@ -1008,19 +987,19 @@ function renderAboutView(container) {
     <!-- CORPORATE VIDEO PLAYER (LEFT VIDEO + RIGHT TEXT - IMAGE 3 LAYOUT) -->
     <section class="section section-spider-dark">
       <div class="container">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+        <div class="media-spotlight-grid">
           <!-- LEFT SIDE VIDEO -->
-          <div>
+          <div class="media-spotlight-video">
             ${renderVideoPlayer('STUDYANDWORKABOUTUS.mp4', 'Study & Work Corporate Story', '6m 45s')}
           </div>
           <!-- RIGHT SIDE TEXT -->
-          <div>
-            <span class="badge-tag">Corporate Story</span>
-            <h2 class="heading-1" style="margin-top: 0.5rem;">Study & Work Corporate Story</h2>
-            <p class="lead-text" style="margin-top: 1rem; margin-bottom: 1.5rem;">
+          <div class="media-spotlight-content">
+            <span class="badge-tag" style="align-self: flex-start; margin-bottom: 0.75rem;">Corporate Story</span>
+            <h2 class="heading-1">Study & Work Corporate Story</h2>
+            <p class="lead-text">
               Watch the corporate background and vision behind Budding Talents Recruitment trading as Study & Work Australia.
             </p>
-            <button onclick="openModal('consultation')" class="btn btn-primary">Book Consultation &rarr;</button>
+            <button onclick="openModal('consultation')" class="btn btn-primary" style="align-self: flex-start; margin-top: 1rem;">Book Consultation &rarr;</button>
           </div>
         </div>
       </div>
@@ -1053,15 +1032,15 @@ function renderContactView(container) {
           <!-- LEFT COLUMN: TOP FORM, BOTTOM HOTLINES -->
           <div style="display: flex; flex-direction: column; gap: 2rem;">
             <!-- TOP: SEND US A MESSAGE FORM -->
-            <div style="background: var(--color-surface); border: 1px solid var(--color-slate-200); padding: 2.25rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-card);">
+            <div class="contact-form-card">
               <span class="badge-tag" style="margin-bottom: 0.5rem;">Direct Messaging</span>
               <h3 class="heading-2" style="margin-bottom: 1rem;">Send Us a Message</h3>
               <form onsubmit="alert('Thank you for contacting Study & Work Australia. Our team will get back to you within 24 hours!'); return false;" style="display: flex; flex-direction: column; gap: 1rem;">
-                <input type="text" placeholder="Your Full Name *" required style="padding: 0.875rem; border-radius: var(--radius-sm); border: 1px solid var(--color-slate-200); outline: none;">
-                <input type="email" placeholder="Your Email Address *" required style="padding: 0.875rem; border-radius: var(--radius-sm); border: 1px solid var(--color-slate-200); outline: none;">
-                <input type="tel" placeholder="Phone Number" style="padding: 0.875rem; border-radius: var(--radius-sm); border: 1px solid var(--color-slate-200); outline: none;">
-                <textarea rows="4" placeholder="How can we assist you?" required style="padding: 0.875rem; border-radius: var(--radius-sm); border: 1px solid var(--color-slate-200); outline: none;"></textarea>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message &rarr;</button>
+                <input type="text" placeholder="Your Full Name *" required style="padding: 0.95rem; border-radius: var(--radius-sm); outline: none;">
+                <input type="email" placeholder="Your Email Address *" required style="padding: 0.95rem; border-radius: var(--radius-sm); outline: none;">
+                <input type="tel" placeholder="Phone Number" style="padding: 0.95rem; border-radius: var(--radius-sm); outline: none;">
+                <textarea rows="4" placeholder="How can we assist you?" required style="padding: 0.95rem; border-radius: var(--radius-sm); outline: none;"></textarea>
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem;">Send Message &rarr;</button>
               </form>
             </div>
 
@@ -1071,27 +1050,27 @@ function renderContactView(container) {
               <h2 class="heading-2" style="margin-top: 0.5rem;">Office Locations & Hotlines</h2>
 
               <div style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: 1.25rem;">
-                <div style="background: var(--color-paper); border: 1px solid var(--color-slate-200); padding: 1.25rem; border-radius: var(--radius-md);">
-                  <div style="font-weight: 700; color: var(--color-ink); font-size: 1rem; margin-bottom: 0.25rem;">Parramatta Head Office</div>
-                  <div style="color: var(--color-slate-600); font-size: 0.9rem;">Level 15, 60 Station Street East, Parramatta NSW 2150</div>
+                <div class="office-location-card">
+                  <div style="font-weight: 700; color: var(--color-ink); font-size: 1.05rem; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-blue);">📍</span> Parramatta Head Office</div>
+                  <div style="color: #475569; font-size: 0.925rem;">Level 15, 60 Station Street East, Parramatta NSW 2150</div>
                 </div>
 
-                <div style="background: var(--color-paper); border: 1px solid var(--color-slate-200); padding: 1.25rem; border-radius: var(--radius-md);">
-                  <div style="font-weight: 700; color: var(--color-ink); font-size: 1rem; margin-bottom: 0.25rem;">Sydney City Office</div>
-                  <div style="color: var(--color-slate-600); font-size: 0.9rem;">Level 10, 66 Clarence Street, Sydney NSW 2000</div>
+                <div class="office-location-card">
+                  <div style="font-weight: 700; color: var(--color-ink); font-size: 1.05rem; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-blue);">📍</span> Sydney City Office</div>
+                  <div style="color: #475569; font-size: 0.925rem;">Level 10, 66 Clarence Street, Sydney NSW 2000</div>
                 </div>
 
-                <div style="background: var(--color-paper); border: 1px solid var(--color-slate-200); padding: 1.25rem; border-radius: var(--radius-md);">
-                  <div style="font-weight: 700; color: var(--color-ink); font-size: 1rem; margin-bottom: 0.25rem;">Melbourne City Office</div>
-                  <div style="color: var(--color-slate-600); font-size: 0.9rem;">330 Collins Street, Melbourne VIC 3000 (By Appointment)</div>
+                <div class="office-location-card">
+                  <div style="font-weight: 700; color: var(--color-ink); font-size: 1.05rem; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-blue);">📍</span> Melbourne City Office</div>
+                  <div style="color: #475569; font-size: 0.925rem;">330 Collins Street, Melbourne VIC 3000 (By Appointment)</div>
                 </div>
 
-                <div style="background: var(--color-surface); border: 2px solid var(--color-accent-blue); padding: 1.25rem; border-radius: var(--radius-md);">
-                  <div style="font-weight: 700; color: var(--color-accent-blue); font-size: 1rem; margin-bottom: 0.25rem;">Contact Hotlines</div>
-                  <div style="font-size: 0.9rem; color: var(--color-slate-700);">• Freecall Hotline: <strong>1300 79 80 69</strong></div>
-                  <div style="font-size: 0.9rem; color: var(--color-slate-700);">• Sydney Desk: <strong>02 8233 6138</strong></div>
-                  <div style="font-size: 0.9rem; color: var(--color-slate-700);">• Mobile: <strong>0421 338 592 | 0466 110 995</strong></div>
-                  <div style="font-size: 0.9rem; color: var(--color-slate-700);">• Email: <strong>service@studyandwork.com.au</strong></div>
+                <div class="contact-hotlines-card">
+                  <div style="font-weight: 700; color: var(--color-accent-blue); font-size: 1.05rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;"><span>📞</span> Contact Hotlines</div>
+                  <div style="font-size: 0.925rem; color: #1E293B; line-height: 1.7;">• Freecall Hotline: <strong>1300 79 80 69</strong></div>
+                  <div style="font-size: 0.925rem; color: #1E293B; line-height: 1.7;">• Sydney Desk: <strong>02 8233 6138</strong></div>
+                  <div style="font-size: 0.925rem; color: #1E293B; line-height: 1.7;">• Mobile: <strong>0421 338 592 | 0466 110 995</strong></div>
+                  <div style="font-size: 0.925rem; color: #1E293B; line-height: 1.7;">• Email: <strong>service@studyandwork.com.au</strong></div>
                 </div>
               </div>
             </div>
@@ -1182,24 +1161,33 @@ function renderInternshipView(container) {
     <!-- PROGRAM SPOTLIGHT VIDEO (LEFT VIDEO + RIGHT TEXT) -->
     <section class="section section-spider-dark">
       <div class="container">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+        <div class="media-spotlight-grid">
           <!-- LEFT SIDE VIDEO -->
-          <div>
+          <div class="media-spotlight-video">
             ${renderVideoPlayer('v1.mp4', 'Professional Internship Program Video', '2m 45s')}
           </div>
           <!-- RIGHT SIDE TEXT -->
-          <div>
-            <span class="badge-tag" style="background: rgba(2, 132, 199, 0.2); color: var(--color-accent-blue); border-color: rgba(2, 132, 199, 0.4);">Program Video</span>
-            <h2 class="heading-1" style="color: #fff; margin-top: 0.75rem;">Australian Workplace Experience That Converts Into Paid Careers</h2>
-            <p class="lead-text" style="color: var(--color-slate-300); margin-top: 1rem; margin-bottom: 1.5rem;">
+          <div class="media-spotlight-content">
+            <span class="badge-tag" style="align-self: flex-start; margin-bottom: 0.75rem;">Program Video</span>
+            <h2 class="heading-1">Australian Workplace Experience That Converts Into Paid Careers</h2>
+            <p class="lead-text">
               Over 85% of interns placed through Study & Work receive direct permanent employment offers upon graduation. Watch how we bridge the gap between qualifications and job offers.
             </p>
-            <ul style="list-style: none; padding: 0; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.75rem; color: var(--color-slate-200);">
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-blue); font-weight: bold;">✓</span> 100% Fair Work Act Section 12 Compliant Vocational Placement</li>
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-blue); font-weight: bold;">✓</span> Comprehensive Personal Accident & Public Liability Insurance Covered</li>
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-blue); font-weight: bold;">✓</span> 3,000+ Verified Australian Corporate Host Businesses</li>
+            <ul class="media-feature-checklist">
+              <li class="media-feature-item">
+                <span class="media-check-icon">✓</span>
+                <span>100% Fair Work Act Section 12 Compliant Vocational Placement</span>
+              </li>
+              <li class="media-feature-item">
+                <span class="media-check-icon">✓</span>
+                <span>Comprehensive Personal Accident & Public Liability Insurance Covered</span>
+              </li>
+              <li class="media-feature-item">
+                <span class="media-check-icon">✓</span>
+                <span>3,000+ Verified Australian Corporate Host Businesses</span>
+              </li>
             </ul>
-            <button onclick="openModal('work')" class="btn btn-primary btn-hero-primary">Apply for Internship Placement &rarr;</button>
+            <button onclick="openModal('work')" class="btn btn-primary btn-hero-primary" style="align-self: flex-start;">Apply for Internship Placement &rarr;</button>
           </div>
         </div>
       </div>
@@ -1309,24 +1297,33 @@ function renderJobPlacementView(container) {
     <!-- TESTIMONIAL VIDEO (LEFT VIDEO + RIGHT TEXT) -->
     <section class="section section-spider-dark">
       <div class="container">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+        <div class="media-spotlight-grid">
           <!-- LEFT SIDE VIDEO -->
-          <div>
+          <div class="media-spotlight-video">
             ${renderVideoPlayer('interns1.mp4', 'Graduate Career Journeys', '3m 15s')}
           </div>
           <!-- RIGHT SIDE TEXT -->
-          <div>
-            <span class="badge-tag" style="background: rgba(5, 150, 105, 0.2); color: var(--color-accent-emerald); border-color: rgba(5, 150, 105, 0.4);">Graduate Success</span>
-            <h2 class="heading-1" style="color: #fff; margin-top: 0.75rem;">Accelerating Graduates Into Full-Time Employment</h2>
-            <p class="lead-text" style="color: var(--color-slate-300); margin-top: 1rem; margin-bottom: 1.5rem;">
+          <div class="media-spotlight-content">
+            <span class="badge-tag" style="align-self: flex-start; margin-bottom: 0.75rem;">Graduate Success</span>
+            <h2 class="heading-1">Accelerating Graduates Into Full-Time Employment</h2>
+            <p class="lead-text">
               Hear from graduates who secured direct career positions in Australian enterprises through Study & Work Australia.
             </p>
-            <ul style="list-style: none; padding: 0; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.75rem; color: var(--color-slate-200);">
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-emerald); font-weight: bold;">✓</span> Average Starting Salary Range: $65,000 - $95,000 + Super</li>
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-emerald); font-weight: bold;">✓</span> Direct Interviews with Corporate Decision Makers</li>
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-emerald); font-weight: bold;">✓</span> Opportunities for Temporary Graduate Visa (Subclass 485) Holders</li>
+            <ul class="media-feature-checklist">
+              <li class="media-feature-item">
+                <span class="media-check-icon" style="background: rgba(16, 185, 129, 0.2); color: #34D399;">✓</span>
+                <span>Average Starting Salary Range: $65,000 - $95,000 + Super</span>
+              </li>
+              <li class="media-feature-item">
+                <span class="media-check-icon" style="background: rgba(16, 185, 129, 0.2); color: #34D399;">✓</span>
+                <span>Direct Interviews with Corporate Decision Makers</span>
+              </li>
+              <li class="media-feature-item">
+                <span class="media-check-icon" style="background: rgba(16, 185, 129, 0.2); color: #34D399;">✓</span>
+                <span>Opportunities for Temporary Graduate Visa (Subclass 485) Holders</span>
+              </li>
             </ul>
-            <button onclick="openModal('work')" class="btn btn-primary" style="background: var(--color-accent-emerald); border-color: var(--color-accent-emerald);">Register Graduate Profile Now &rarr;</button>
+            <button onclick="openModal('work')" class="btn btn-primary" style="background: var(--color-accent-emerald); border-color: var(--color-accent-emerald); align-self: flex-start;">Register Graduate Profile Now &rarr;</button>
           </div>
         </div>
       </div>
@@ -1435,24 +1432,33 @@ function renderStaffingView(container) {
     <!-- VIDEO SPOTLIGHT (LEFT VIDEO + RIGHT TEXT) -->
     <section class="section section-spider-dark">
       <div class="container">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+        <div class="media-spotlight-grid">
           <!-- LEFT SIDE VIDEO -->
-          <div>
+          <div class="media-spotlight-video">
             ${renderVideoPlayer('staffing.mp4', 'Professional Staffing Solution Video', '3m 50s')}
           </div>
           <!-- RIGHT SIDE TEXT -->
-          <div>
-            <span class="badge-tag" style="background: rgba(2, 132, 199, 0.2); color: var(--color-accent-blue); border-color: rgba(2, 132, 199, 0.4);">Corporate Video</span>
-            <h2 class="heading-1" style="color: #fff; margin-top: 0.75rem;">Corporate Staffing Overview & Client Outcomes</h2>
-            <p class="lead-text" style="color: var(--color-slate-300); margin-top: 1rem; margin-bottom: 1.5rem;">
+          <div class="media-spotlight-content">
+            <span class="badge-tag" style="align-self: flex-start; margin-bottom: 0.75rem;">Corporate Video</span>
+            <h2 class="heading-1">Corporate Staffing Overview & Client Outcomes</h2>
+            <p class="lead-text">
               Over 3,000 Australian enterprises have partnered with Study & Work since 2007. See how our bespoke sourcing saves time and recruitment expenditure.
             </p>
-            <ul style="list-style: none; padding: 0; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.75rem; color: var(--color-slate-200);">
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-blue); font-weight: bold;">✓</span> 24-48 Hour Candidate Shortlist Turnaround</li>
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-blue); font-weight: bold;">✓</span> Complete VEVO Work Rights and Qualification Verification</li>
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-blue); font-weight: bold;">✓</span> 6-Month Candidate Satisfaction Replacement Guarantee</li>
+            <ul class="media-feature-checklist">
+              <li class="media-feature-item">
+                <span class="media-check-icon">✓</span>
+                <span>24-48 Hour Candidate Shortlist Turnaround</span>
+              </li>
+              <li class="media-feature-item">
+                <span class="media-check-icon">✓</span>
+                <span>Complete VEVO Work Rights and Qualification Verification</span>
+              </li>
+              <li class="media-feature-item">
+                <span class="media-check-icon">✓</span>
+                <span>6-Month Candidate Satisfaction Replacement Guarantee</span>
+              </li>
             </ul>
-            <button onclick="openModal('hire')" class="btn btn-primary btn-hero-primary">Submit Employer Staffing Request &rarr;</button>
+            <button onclick="openModal('hire')" class="btn btn-primary btn-hero-primary" style="align-self: flex-start;">Submit Employer Staffing Request &rarr;</button>
           </div>
         </div>
       </div>
@@ -1530,25 +1536,37 @@ function renderCasualJobsView(container) {
     <!-- VISA COMPLIANCE SPOTLIGHT (LEFT VIDEO + RIGHT TEXT) -->
     <section class="section section-spider-dark">
       <div class="container">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+        <div class="media-spotlight-grid">
           <!-- LEFT SIDE VIDEO -->
-          <div>
+          <div class="media-spotlight-video">
             ${renderVideoPlayer('v1.mp4', 'Student Casual Work & Visa Rights', '2m 45s')}
           </div>
           <!-- RIGHT SIDE TEXT -->
-          <div>
-            <span class="badge-tag" style="background: rgba(217, 119, 6, 0.2); color: var(--color-accent-amber); border-color: rgba(217, 119, 6, 0.4);">Visa Compliance</span>
-            <h2 class="heading-1" style="color: #fff; margin-top: 0.75rem;">Student Visa Work Rights & Pay Standards</h2>
-            <p class="lead-text" style="color: var(--color-slate-300); margin-top: 1rem; margin-bottom: 1.5rem;">
+          <div class="media-spotlight-content">
+            <span class="badge-tag" style="align-self: flex-start; margin-bottom: 0.75rem;">Visa Compliance</span>
+            <h2 class="heading-1">Student Visa Work Rights & Pay Standards</h2>
+            <p class="lead-text">
               Protecting your international student visa (Subclass 500) while maximizing your earning potential legally in Australia.
             </p>
-            <ul style="list-style: none; padding: 0; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.75rem; color: var(--color-slate-200);">
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-amber); font-weight: bold;">✓</span> 48 Hours Per Fortnight During Active Semester Terms</li>
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-amber); font-weight: bold;">✓</span> Unlimited Work Hours During Official Scheduled University Breaks</li>
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-amber); font-weight: bold;">✓</span> Minimum Legal Wage: $24.97/hr + 25% Casual Loading = $31.21+/hr</li>
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-amber); font-weight: bold;">✓</span> 11.5% Mandatory Superannuation Contribution by Employer</li>
+            <ul class="media-feature-checklist">
+              <li class="media-feature-item">
+                <span class="media-check-icon" style="background: rgba(217, 119, 6, 0.2); color: #FBBF24;">✓</span>
+                <span>48 Hours Per Fortnight During Active Semester Terms</span>
+              </li>
+              <li class="media-feature-item">
+                <span class="media-check-icon" style="background: rgba(217, 119, 6, 0.2); color: #FBBF24;">✓</span>
+                <span>Unlimited Work Hours During Scheduled University Breaks</span>
+              </li>
+              <li class="media-feature-item">
+                <span class="media-check-icon" style="background: rgba(217, 119, 6, 0.2); color: #FBBF24;">✓</span>
+                <span>Minimum Legal Wage: $24.97/hr + 25% Casual Loading = $31.21+/hr</span>
+              </li>
+              <li class="media-feature-item">
+                <span class="media-check-icon" style="background: rgba(217, 119, 6, 0.2); color: #FBBF24;">✓</span>
+                <span>11.5% Mandatory Superannuation Contribution by Employer</span>
+              </li>
             </ul>
-            <button onclick="openModal('work')" class="btn btn-primary" style="background: var(--color-accent-amber); border-color: var(--color-accent-amber);">Register for Casual Student Jobs &rarr;</button>
+            <button onclick="openModal('work')" class="btn btn-primary" style="background: var(--color-accent-amber); border-color: var(--color-accent-amber); align-self: flex-start;">Register for Casual Student Jobs &rarr;</button>
           </div>
         </div>
       </div>
@@ -1618,24 +1636,33 @@ function renderCasualStaffingView(container) {
     <!-- VIDEO SPOTLIGHT (LEFT VIDEO + RIGHT TEXT) -->
     <section class="section section-spider-dark">
       <div class="container">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+        <div class="media-spotlight-grid">
           <!-- LEFT SIDE VIDEO -->
-          <div>
+          <div class="media-spotlight-video">
             ${renderVideoPlayer('staffing.mp4', 'Casual Staffing Workforce Solutions', '3m 50s')}
           </div>
           <!-- RIGHT SIDE TEXT -->
-          <div>
-            <span class="badge-tag" style="background: rgba(2, 132, 199, 0.2); color: var(--color-accent-blue); border-color: rgba(2, 132, 199, 0.4);">Workforce On-Demand</span>
-            <h2 class="heading-1" style="color: #fff; margin-top: 0.75rem;">Scalable Casual Teams Ready in 24 Hours</h2>
-            <p class="lead-text" style="color: var(--color-slate-300); margin-top: 1rem; margin-bottom: 1.5rem;">
+          <div class="media-spotlight-content">
+            <span class="badge-tag" style="align-self: flex-start; margin-bottom: 0.75rem;">Workforce On-Demand</span>
+            <h2 class="heading-1">Scalable Casual Teams Ready in 24 Hours</h2>
+            <p class="lead-text">
               Solve unexpected staff shortages, seasonal peaks, and event requirements without the hassle of direct recruitment.
             </p>
-            <ul style="list-style: none; padding: 0; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.75rem; color: var(--color-slate-200);">
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-blue); font-weight: bold;">✓</span> 24-48 Hour Emergency Roster Replacements</li>
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-blue); font-weight: bold;">✓</span> 100% VEVO Verified Work Authorisation</li>
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-blue); font-weight: bold;">✓</span> Consolidated Weekly Invoicing</li>
+            <ul class="media-feature-checklist">
+              <li class="media-feature-item">
+                <span class="media-check-icon">✓</span>
+                <span>24-48 Hour Emergency Roster Replacements</span>
+              </li>
+              <li class="media-feature-item">
+                <span class="media-check-icon">✓</span>
+                <span>100% VEVO Verified Work Authorisation</span>
+              </li>
+              <li class="media-feature-item">
+                <span class="media-check-icon">✓</span>
+                <span>Consolidated Weekly Invoicing</span>
+              </li>
             </ul>
-            <button onclick="openModal('hire')" class="btn btn-primary btn-hero-primary">Request Casual Staffing Now &rarr;</button>
+            <button onclick="openModal('hire')" class="btn btn-primary btn-hero-primary" style="align-self: flex-start;">Request Casual Staffing Now &rarr;</button>
           </div>
         </div>
       </div>
@@ -1713,24 +1740,33 @@ function renderApprenticeshipView(container) {
     <!-- VIDEO SPOTLIGHT (LEFT VIDEO + RIGHT TEXT) -->
     <section class="section section-spider-dark">
       <div class="container">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+        <div class="media-spotlight-grid">
           <!-- LEFT SIDE VIDEO -->
-          <div>
+          <div class="media-spotlight-video">
             ${renderVideoPlayer('apprentice.mp4', 'Apprenticeship & Traineeship Video', '3m 30s')}
           </div>
           <!-- RIGHT SIDE TEXT -->
-          <div>
-            <span class="badge-tag" style="background: rgba(217, 119, 6, 0.2); color: var(--color-accent-amber); border-color: rgba(217, 119, 6, 0.4);">Program Video</span>
-            <h2 class="heading-1" style="color: #fff; margin-top: 0.75rem;">Government Subsidized Apprenticeship Host Management</h2>
-            <p class="lead-text" style="color: var(--color-slate-300); margin-top: 1rem; margin-bottom: 1.5rem;">
+          <div class="media-spotlight-content">
+            <span class="badge-tag" style="align-self: flex-start; margin-bottom: 0.75rem;">Program Video</span>
+            <h2 class="heading-1">Government Subsidized Apprenticeship Host Management</h2>
+            <p class="lead-text">
               Study & Work operates as an experienced host employer partner, handling apprentice training contract administration, RTO liaison, and claim processing.
             </p>
-            <ul style="list-style: none; padding: 0; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.75rem; color: var(--color-slate-200);">
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-amber); font-weight: bold;">✓</span> Access to Australian Priority Wage Subsidies</li>
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-amber); font-weight: bold;">✓</span> Comprehensive Workplace Health and Safety (WHS) Inductions</li>
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-amber); font-weight: bold;">✓</span> Flexible Rotation Across Leading Host Companies</li>
+            <ul class="media-feature-checklist">
+              <li class="media-feature-item">
+                <span class="media-check-icon" style="background: rgba(217, 119, 6, 0.2); color: #FBBF24;">✓</span>
+                <span>Access to Australian Priority Wage Subsidies</span>
+              </li>
+              <li class="media-feature-item">
+                <span class="media-check-icon" style="background: rgba(217, 119, 6, 0.2); color: #FBBF24;">✓</span>
+                <span>Comprehensive Workplace Health and Safety (WHS) Inductions</span>
+              </li>
+              <li class="media-feature-item">
+                <span class="media-check-icon" style="background: rgba(217, 119, 6, 0.2); color: #FBBF24;">✓</span>
+                <span>Flexible Rotation Across Leading Host Companies</span>
+              </li>
             </ul>
-            <button onclick="openModal('hire')" class="btn btn-primary" style="background: var(--color-accent-amber); border-color: var(--color-accent-amber);">Host an Apprentice Now &rarr;</button>
+            <button onclick="openModal('hire')" class="btn btn-primary" style="background: var(--color-accent-amber); border-color: var(--color-accent-amber); align-self: flex-start;">Host an Apprentice Now &rarr;</button>
           </div>
         </div>
       </div>
@@ -1809,24 +1845,33 @@ function renderKnowYourRightsView(container) {
     <!-- OMBUDSMAN & WORKER ADVOCACY (LEFT VIDEO + RIGHT TEXT) -->
     <section class="section section-spider-dark">
       <div class="container">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+        <div class="media-spotlight-grid">
           <!-- LEFT SIDE VIDEO -->
-          <div>
+          <div class="media-spotlight-video">
             ${renderVideoPlayer('v1.mp4', 'Fair Work Legal Safeguards Overview', '2m 45s')}
           </div>
           <!-- RIGHT SIDE TEXT -->
-          <div>
-            <span class="badge-tag" style="background: rgba(5, 150, 105, 0.2); color: var(--color-accent-emerald); border-color: rgba(5, 150, 105, 0.4);">Ombudsman Standards</span>
-            <h2 class="heading-1" style="color: #fff; margin-top: 0.75rem;">Equal Protections for International Students</h2>
-            <p class="lead-text" style="color: var(--color-slate-300); margin-top: 1rem; margin-bottom: 1.5rem;">
+          <div class="media-spotlight-content">
+            <span class="badge-tag" style="align-self: flex-start; margin-bottom: 0.75rem;">Ombudsman Standards</span>
+            <h2 class="heading-1">Equal Protections for International Students</h2>
+            <p class="lead-text">
               In Australia, international visa holders have the exact same rights as Australian citizens under the Fair Work Act. An employer cannot threaten your visa status to avoid paying lawful wages.
             </p>
-            <ul style="list-style: none; padding: 0; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.75rem; color: var(--color-slate-200);">
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-emerald); font-weight: bold;">✓</span> Protection Against Unlawful Pay Deductions & Cash-in-Hand Underpayment</li>
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-emerald); font-weight: bold;">✓</span> Assurance Protocol Between Fair Work Ombudsman and Home Affairs</li>
-              <li style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-accent-emerald); font-weight: bold;">✓</span> Full Personal Accident & Public Liability Insurance Provided by Study & Work</li>
+            <ul class="media-feature-checklist">
+              <li class="media-feature-item">
+                <span class="media-check-icon" style="background: rgba(16, 185, 129, 0.2); color: #34D399;">✓</span>
+                <span>Protection Against Unlawful Pay Deductions & Cash Underpayment</span>
+              </li>
+              <li class="media-feature-item">
+                <span class="media-check-icon" style="background: rgba(16, 185, 129, 0.2); color: #34D399;">✓</span>
+                <span>Assurance Protocol Between Fair Work Ombudsman and Home Affairs</span>
+              </li>
+              <li class="media-feature-item">
+                <span class="media-check-icon" style="background: rgba(16, 185, 129, 0.2); color: #34D399;">✓</span>
+                <span>Full Personal Accident & Public Liability Insurance Provided</span>
+              </li>
             </ul>
-            <button onclick="openModal('consultation')" class="btn btn-primary" style="background: var(--color-accent-emerald); border-color: var(--color-accent-emerald);">Speak With a Fair Work Advisor &rarr;</button>
+            <button onclick="openModal('consultation')" class="btn btn-primary" style="background: var(--color-accent-emerald); border-color: var(--color-accent-emerald); align-self: flex-start;">Speak With a Fair Work Advisor &rarr;</button>
           </div>
         </div>
       </div>
@@ -1876,16 +1921,16 @@ function renderAlumniView(container) {
     <!-- ALUMNI NETWORK VIDEO SPOTLIGHT (LEFT VIDEO + RIGHT TEXT) -->
     <section class="section section-spider-dark">
       <div class="container">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+        <div class="media-spotlight-grid">
           <!-- LEFT SIDE VIDEO -->
-          <div>
+          <div class="media-spotlight-video">
             ${renderVideoPlayer('our_alumni.mp4', 'Alumni Placement Video', '3m 10s')}
           </div>
           <!-- RIGHT SIDE TEXT -->
-          <div>
-            <span class="badge-tag" style="background: rgba(5, 150, 105, 0.2); color: var(--color-accent-emerald); border-color: rgba(5, 150, 105, 0.4);">Alumni Video</span>
-            <h2 class="heading-1" style="color: #fff; margin-top: 0.75rem;">19+ Years of Career Transformations</h2>
-            <p class="lead-text" style="color: var(--color-slate-300); margin-top: 1rem; margin-bottom: 1.5rem;">
+          <div class="media-spotlight-content">
+            <span class="badge-tag" style="align-self: flex-start; margin-bottom: 0.75rem;">Alumni Video</span>
+            <h2 class="heading-1">19+ Years of Career Transformations</h2>
+            <p class="lead-text">
               Watch our alumni share how their initial 12-week placement transformed into permanent roles and Australian permanent residency pathways.
             </p>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
@@ -1898,7 +1943,7 @@ function renderAlumniView(container) {
                 <div style="color: var(--color-slate-300); font-size: 0.875rem;">Permanent Job Offers</div>
               </div>
             </div>
-            <button onclick="openModal('work')" class="btn btn-primary" style="background: var(--color-accent-emerald); border-color: var(--color-accent-emerald);">Register Candidate Profile &rarr;</button>
+            <button onclick="openModal('work')" class="btn btn-primary" style="background: var(--color-accent-emerald); border-color: var(--color-accent-emerald); align-self: flex-start;">Register Candidate Profile &rarr;</button>
           </div>
         </div>
       </div>
@@ -2122,6 +2167,27 @@ const ALUMNI_DATA = [
   }
 ];
 
+const AVATAR_GRADIENTS = [
+  "linear-gradient(135deg, #0284C7, #0369A1)",
+  "linear-gradient(135deg, #0D9488, #0F766E)",
+  "linear-gradient(135deg, #6366F1, #4338CA)",
+  "linear-gradient(135deg, #EA580C, #C2410C)",
+  "linear-gradient(135deg, #8B5CF6, #6D28D9)",
+  "linear-gradient(135deg, #059669, #047857)",
+  "linear-gradient(135deg, #2563EB, #1D4ED8)",
+  "linear-gradient(135deg, #DB2777, #BE185D)",
+  "linear-gradient(135deg, #D97706, #B45309)"
+];
+
+function getAlumniInitials(name) {
+  const clean = name.replace(/^(Mr|Ms|Mrs|Dr)\.?\s+/i, '').trim();
+  const parts = clean.split(/\s+/);
+  if (parts.length >= 2) {
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+  return clean.slice(0, 2).toUpperCase();
+}
+
 function initAlumniSearch() {
   const searchInput = document.getElementById('alumniSearchInput');
   const alumniGrid = document.getElementById('alumniGridContainer');
@@ -2130,23 +2196,42 @@ function initAlumniSearch() {
 
   function renderAlumni(list) {
     if (!list.length) {
-      alumniGrid.innerHTML = `<div style="grid-column: span 3; text-align: center; padding: 3rem; color: var(--color-slate-500);">No verified alumni records match your query.</div>`;
+      alumniGrid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--color-slate-500);">No verified alumni records match your query.</div>`;
       return;
     }
 
-    alumniGrid.innerHTML = list.map(item => `
-      <div class="alumni-card-editorial">
-        <div class="alumni-quote-text">"${item.quote}"</div>
-        <div class="alumni-meta-profile">
-          <div class="alumni-avatar-circle">${item.name.split(' ').pop().charAt(0)}</div>
-          <div>
-            <div style="font-weight: 700; color: var(--color-ink); font-size: 1.05rem;">${item.name}</div>
-            <div style="font-size: 0.8125rem; color: var(--color-slate-500);">${item.degree} — ${item.uni}</div>
-            <div style="font-size: 0.85rem; font-weight: 600; color: var(--color-accent-emerald); margin-top: 0.2rem;">Currently: ${item.role}</div>
+    alumniGrid.innerHTML = list.map((item, idx) => {
+      const initials = getAlumniInitials(item.name);
+      const gradient = AVATAR_GRADIENTS[idx % AVATAR_GRADIENTS.length];
+      return `
+        <div class="alumni-card-editorial">
+          <div class="alumni-card-header">
+            <div class="alumni-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <span class="alumni-outcome-pill">Verified Outcome</span>
+          </div>
+
+          <div class="alumni-quote-body">
+            <span class="alumni-quote-icon">&ldquo;</span>
+            <p class="alumni-quote-text">${item.quote}</p>
+          </div>
+
+          <div class="alumni-meta-profile">
+            <div class="alumni-avatar-circle" style="background: ${gradient};">
+              ${initials}
+            </div>
+            <div class="alumni-profile-info">
+              <div class="alumni-person-name">${item.name}</div>
+              <div class="alumni-academic-degree">${item.degree}</div>
+              <div class="alumni-academic-uni">${item.uni}</div>
+              <div class="alumni-current-role">
+                <span class="alumni-status-dot"></span>
+                <span>Currently: <strong>${item.role}</strong></span>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
   }
 
   // Initial render
@@ -2165,40 +2250,14 @@ function initAlumniSearch() {
     });
   }
 }
-
 /* --------------------------------------------------------------------------
-   6. INFINITE LOGO MARQUEE
-   -------------------------------------------------------------------------- */
-const LOGO_FILES = [
-  "AAPC-Limited.jpg", "Accor-Advantage-Plus.jpg", "Atkore-International.jpg", "BH-Worldwide.jpg",
-  "BigAir-Group.jpg", "Cater-Care-Australia.jpg", "Citigold-Corporation.jpg", "Daily-Fresh-Food-Service.jpg",
-  "Demonz-Media.jpg", "Drake-International.jpg", "Eaton-Industries.jpg", "Glencore-Technology.jpg",
-  "Global-Red-Australia.jpg", "Hilton-Hotel-Australia.jpg", "Impact-Minerals.jpg", "LG-Electronics.jpg",
-  "LS-Travel-Retail-Pacific.jpg", "Medicraft-Hill-Rom.jpg", "Metcash.jpg", "Opus-Group-Australia.jpg",
-  "Pacific-Restaurant-Group.jpg", "Peoplebank-Australia.jpg", "Publicis-Mojo-Australia.jpg", "SGS-Australia.jpg",
-  "Santos.jpg", "The-Lido-Group.jpg", "Toll-Dnata.jpg", "aviation.jpg", "csc.jpg", "eulara.jpg",
-  "holiday-inn.jpg", "tcg-group.jpg", "wh_smith.jpg"
-];
-
-function initLogoMarquee() {
-  const track = document.getElementById('logoMarqueeTrack');
-  if (!track) return;
-
-  const doubleLogos = [...LOGO_FILES, ...LOGO_FILES];
-  track.innerHTML = doubleLogos.map(filename => `
-    <div class="logo-marquee-item">
-      <img src="www.studyandwork.com.au/images/clients/${filename}" alt="Corporate Partner Logo" loading="lazy">
-    </div>
-  `).join('');
-}
-
-/* --------------------------------------------------------------------------
-   7. AUSTRALIAN LOCATIONS IMAGE TABS
+   6. AUSTRALIAN LOCATIONS IMAGE TABS
    -------------------------------------------------------------------------- */
 const CITY_DATA = {
   sydney: {
     title: "Sydney City & Parramatta Metropolitan Hub",
-    address: "Level 15, 60 Station Street East, Parramatta NSW 2150 & Level 10, 66 Clarence Street, Sydney NSW 2000",
+    address: "Level 10, 66 Clarence Street, Sydney NSW 2000 & Level 15, 60 Station St East, Parramatta NSW 2150",
+    mapUrl: "https://maps.google.com/maps?q=66+Clarence+Street,+Sydney+NSW+2000&t=&z=15&ie=UTF8&iwloc=&output=embed",
     desc: "Our primary Australian headquarters connects candidates directly with Australia's largest corporate, tech, financial, and engineering hubs across Sydney and Parramatta.",
     study: "University of Sydney, UNSW, UTS, Macquarie University, Western Sydney University, ICMS",
     jobs: "Corporate Accounting, AI Integration, Software Engineering, Civil Engineering, Finance, Hospitality"
@@ -2206,27 +2265,31 @@ const CITY_DATA = {
   melbourne: {
     title: "Melbourne Financial & Tech District",
     address: "330 Collins Street, Melbourne VIC 3000 (By Appointment)",
+    mapUrl: "https://maps.google.com/maps?q=330+Collins+Street,+Melbourne+VIC+3000&t=&z=15&ie=UTF8&iwloc=&output=embed",
     desc: "Connecting international students and university graduates with Melbourne's premier commerce, digital technology, healthcare, and retail enterprises.",
     study: "University of Melbourne, Monash University, RMIT, Swinburne, Deakin, La Trobe",
     jobs: "Database Development, Logistics & Supply Chain, IT Support, Business Analysis, Accounting"
   },
   brisbane: {
     title: "Brisbane & Queensland Growth Region",
-    address: "Queensland Metropolitan Operations",
+    address: "Level 21, 345 Queen Street, Brisbane City QLD 4000",
+    mapUrl: "https://maps.google.com/maps?q=345+Queen+Street,+Brisbane+City+QLD+4000&t=&z=15&ie=UTF8&iwloc=&output=embed",
     desc: "Facilitating engineering, IT automation, mining, and trade placements across Brisbane, Gold Coast, and regional Queensland.",
     study: "University of Queensland, QUT, Griffith University, James Cook University",
     jobs: "Project Engineering, Construction Management, Digital Marketing, Hotel Management"
   },
   perth: {
     title: "Perth & Western Australia",
-    address: "WA Corporate Network Operations",
+    address: "Level 12, 108 St Georges Terrace, Perth WA 6000",
+    mapUrl: "https://maps.google.com/maps?q=108+St+Georges+Terrace,+Perth+WA+6000&t=&z=15&ie=UTF8&iwloc=&output=embed",
     desc: "Specialized engineering, energy, resources, and IT staffing connections for skilled migrants and university graduates across Western Australia.",
     study: "University of Western Australia, Curtin University, Murdoch University, Edith Cowan",
     jobs: "Mechanical & Mining Engineering, Environmental Science, Accounting, Systems Admin"
   },
   adelaide: {
     title: "Adelaide & South Australia",
-    address: "South Australia Regional Operations",
+    address: "Level 5, 121 King William Street, Adelaide SA 5000",
+    mapUrl: "https://maps.google.com/maps?q=121+King+William+Street,+Adelaide+SA+5000&t=&z=15&ie=UTF8&iwloc=&output=embed",
     desc: "Dedicated traineeship, professional internship, and casual staffing solutions across South Australia's defense, tech, and agricultural sectors.",
     study: "University of Adelaide, University of South Australia, Flinders University",
     jobs: "Cyber Security, Agriculture Management, NDIS & Social Work, Finance"
@@ -2250,27 +2313,31 @@ function initCityTabs() {
       cityDisplay.innerHTML = `
         <div style="display: flex; flex-direction: column; gap: 1.25rem;">
           <span class="badge-tag">Australian Operations</span>
-          <h3 class="heading-2">${data.title}</h3>
-          <p class="lead-text" style="font-size: 1rem;">${data.desc}</p>
+          <h3 class="heading-2" style="color: #ffffff;">${data.title}</h3>
+          <p class="lead-text" style="font-size: 1rem; color: #94A3B8;">${data.desc}</p>
           
-          <div style="background: var(--color-paper); border: 1px solid var(--color-slate-200); padding: 1.25rem; border-radius: var(--radius-md);">
-            <div style="font-size: 0.875rem; color: var(--color-slate-700); margin-bottom: 0.5rem;">
-              <strong>Key Partner Universities:</strong> ${data.study}
+          <div style="background: rgba(15, 23, 42, 0.88); border: 1px solid rgba(255, 255, 255, 0.18); backdrop-filter: blur(12px); padding: 1.35rem; border-radius: var(--radius-md); box-shadow: 0 10px 30px rgba(0,0,0,0.4);">
+            <div style="font-size: 0.875rem; color: #E2E8F0; margin-bottom: 0.65rem; display: flex; align-items: flex-start; gap: 0.4rem;">
+              <strong style="color: #38BDF8;">📍 Address:</strong>
+              <span>${data.address}</span>
             </div>
-            <div style="font-size: 0.875rem; color: var(--color-slate-700);">
-              <strong>Key Placement Sectors:</strong> ${data.jobs}
+            <div style="font-size: 0.875rem; color: #CBD5E1; margin-bottom: 0.5rem;">
+              <strong style="color: #ffffff;">Key Partner Universities:</strong> ${data.study}
+            </div>
+            <div style="font-size: 0.875rem; color: #CBD5E1;">
+              <strong style="color: #ffffff;">Key Placement Sectors:</strong> ${data.jobs}
             </div>
           </div>
 
-          <div style="display: flex; gap: 1rem; align-items: center;">
+          <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
             <a href="tel:1300798069" class="btn btn-primary" style="padding: 0.65rem 1.35rem; font-size: 0.875rem;">Call 1300 79 80 69</a>
-            <button onclick="openModal('contact')" class="btn btn-secondary" style="padding: 0.65rem 1.35rem; font-size: 0.875rem;">Contact Office</button>
+            <button onclick="openModal('contact')" class="btn btn-secondary" style="padding: 0.65rem 1.35rem; font-size: 0.875rem; background: rgba(255, 255, 255, 0.12); color: #fff; border-color: rgba(255,255,255,0.3);">Contact Office</button>
           </div>
         </div>
 
-        <div style="border-radius: var(--radius-lg); overflow: hidden; height: 320px; background: var(--color-slate-100); box-shadow: var(--shadow-card);">
+        <div style="border-radius: var(--radius-lg); overflow: hidden; height: 320px; background: #0F172A; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);">
           <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3312.882496826258!2d151.2053006!3d-33.86691899999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b12af9674be1273%3A0xd9378a799b4965c5!2s66%20Clarence%20St%2C%20Sydney%20NSW%202000!5e0!3m2!1sen!2sau!4v1750910160218" 
+            src="${data.mapUrl}" 
             width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
         </div>
       `;

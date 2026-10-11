@@ -34,7 +34,7 @@
       }
 
       this.particles = [];
-      this.mouse = { x: null, y: null, radius: 175 };
+      this.mouse = { x: null, y: null, radius: 250 };
       this.isVisible = false;
       this.animId = null;
 
@@ -80,8 +80,8 @@
           });
         }
       } else {
-        // Light section: subtle clean corporate deep blue spider web network
-        const count = Math.max(35, Math.min(65, Math.floor((this.width * this.height) / 22000)));
+        // Light section: dense and responsive corporate blue spider web network
+        const count = Math.max(75, Math.min(130, Math.floor((this.width * this.height) / 10000)));
         for (let i = 0; i < count; i++) {
           this.particles.push({
             x: Math.random() * this.width,
@@ -89,19 +89,32 @@
             vx: (Math.random() - 0.5) * 0.65,
             vy: (Math.random() - 0.5) * 0.65,
             radius: i % 7 === 0 ? 2.8 : (i % 3 === 0 ? 2.0 : 1.4),
-            hasRing: i % 11 === 0
+            hasRing: i % 10 === 0
           });
         }
       }
     }
 
     bindEvents() {
-      // Track mouse position over section
-      this.section.addEventListener('mousemove', (e) => {
+      // Track mouse position over section and any child elements (videos, cards, buttons)
+      this.onMouseMove = (e) => {
+        if (!this.isVisible) return;
         const rect = this.canvas.getBoundingClientRect();
-        this.mouse.x = e.clientX - rect.left;
-        this.mouse.y = e.clientY - rect.top;
-      });
+        if (
+          e.clientX >= rect.left &&
+          e.clientX <= rect.right &&
+          e.clientY >= rect.top &&
+          e.clientY <= rect.bottom
+        ) {
+          this.mouse.x = e.clientX - rect.left;
+          this.mouse.y = e.clientY - rect.top;
+        } else {
+          this.mouse.x = null;
+          this.mouse.y = null;
+        }
+      };
+
+      window.addEventListener('mousemove', this.onMouseMove, { passive: true });
 
       this.section.addEventListener('mouseleave', () => {
         this.mouse.x = null;
@@ -197,7 +210,7 @@
         }
       } else {
         // --- 2. LIGHT SECTION: CLEAN CORPORATE BLUE SPIDER NETWORK ---
-        const maxConnDist = 120;
+        const maxConnDist = 140;
 
         // Draw web lines between neighboring particles
         for (let i = 0; i < particles.length; i++) {
@@ -207,9 +220,9 @@
             const dist = Math.sqrt(dx * dx + dy * dy);
 
             if (dist < maxConnDist) {
-              const alpha = (1 - dist / maxConnDist) * 0.16;
+              const alpha = (1 - dist / maxConnDist) * 0.22;
               ctx.strokeStyle = `rgba(${this.lineRgb}, ${alpha})`;
-              ctx.lineWidth = 0.85;
+              ctx.lineWidth = 0.95;
               ctx.beginPath();
               ctx.moveTo(particles[i].x, particles[i].y);
               ctx.lineTo(particles[j].x, particles[j].y);
@@ -218,7 +231,21 @@
           }
         }
 
-        // Update particle positions and apply Mouse Attraction
+        // Draw cursor magnetic center when mouse is active over section
+        if (mouse.x !== null && mouse.y !== null) {
+          ctx.strokeStyle = `rgba(${this.mouseLineRgb}, 0.35)`;
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.arc(mouse.x, mouse.y, 8, 0, Math.PI * 2);
+          ctx.stroke();
+
+          ctx.fillStyle = `rgba(${this.mouseLineRgb}, 0.25)`;
+          ctx.beginPath();
+          ctx.arc(mouse.x, mouse.y, 4, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Update particle positions and apply Responsive Mouse Magnetic Attraction
         for (let i = 0; i < particles.length; i++) {
           const p = particles[i];
 
@@ -236,17 +263,18 @@
             const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
 
             if (mdist < mouse.radius && mdist > 2) {
-              const mAlpha = (1 - mdist / mouse.radius) * 0.45;
+              const mAlpha = (1 - mdist / mouse.radius) * 0.7;
               ctx.strokeStyle = `rgba(${this.mouseLineRgb}, ${mAlpha})`;
-              ctx.lineWidth = 1.15;
+              ctx.lineWidth = 1.35;
               ctx.beginPath();
               ctx.moveTo(p.x, p.y);
               ctx.lineTo(mouse.x, mouse.y);
               ctx.stroke();
 
+              // Clear visible magnetic pull towards cursor arrow position
               const force = (mouse.radius - mdist) / mouse.radius;
-              p.x += (mdx / mdist) * force * 1.6;
-              p.y += (mdy / mdist) * force * 1.6;
+              p.x += (mdx / mdist) * force * 2.8;
+              p.y += (mdy / mdist) * force * 2.8;
             }
           }
 
@@ -257,7 +285,7 @@
 
           if (p.hasRing) {
             ctx.strokeStyle = this.ringColor;
-            ctx.lineWidth = 1.1;
+            ctx.lineWidth = 1.2;
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.radius + 5.5, 0, Math.PI * 2);
             ctx.stroke();
@@ -272,7 +300,6 @@
   // Global initializer called on page load and SPA view transitions
   window.initSpiderCanvases = function () {
     const lightSections = document.querySelectorAll('.section-spider-light');
-    const darkSections = document.querySelectorAll('.section-spider-dark');
 
     lightSections.forEach((sec) => {
       if (!sec._spiderCanvasAttached) {
@@ -281,12 +308,10 @@
       }
     });
 
-    darkSections.forEach((sec) => {
-      if (!sec._spiderCanvasAttached) {
-        new SpiderCanvas(sec, true);
-        sec._spiderCanvasAttached = true;
-      }
-    });
+    // Dark sections are powered by 3D Tornado Originkit Vortex
+    if (window.initVortexBackgrounds) {
+      window.initVortexBackgrounds();
+    }
   };
 
   // Run on initial DOM ready

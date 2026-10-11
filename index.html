@@ -14,7 +14,7 @@
     <!-- Google Fonts & Stylesheet -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="styles.css?v=6">
+    <link rel="stylesheet" href="styles.css?v=17">
 </head>
 <body>
 
@@ -467,18 +467,6 @@
                         <div class="stat-sub-num counter-val" data-target="2007" data-suffix="">0</div>
                         <div class="stat-label-text">Established</div>
                     </div>
-                </div>
-
-                <div style="text-align: center; margin-bottom: 2rem;">
-                    <h3 class="heading-3" style="color: var(--color-slate-400);">Trusted By 33+ Leading Corporate Partners</h3>
-                </div>
-
-                <!-- Infinite Logo Marquee Track -->
-                <div class="logo-marquee-wrapper">
-                    <div id="logoMarqueeTrack" class="logo-marquee-track">
-                        <!-- Injected via app.js with 33 real client logos -->
-                    </div>
-                </div>
             </div>
         </section>
 
@@ -585,6 +573,7 @@
 
     <!-- FOOTER -->
     <footer class="site-footer">
+        <div class="footer-3d-grid-overlay"></div>
         <div class="container">
             <div class="footer-grid">
                 <div>
@@ -592,6 +581,19 @@
                     <p style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.25rem;">
                         Budding Talents Recruitment Pty Ltd trading as <strong>STUDYANDWORK</strong> (ABN: 42 129 512 474). A unique career management and recruitment agency connecting graduates, students, and permanent skilled migrants with Australian employers since 2007.
                     </p>
+                    <!-- SOCIAL LINKS (FACEBOOK & X / TWITTER) -->
+                    <div class="footer-social-row" style="display: flex; gap: 0.75rem; margin-top: 1rem;">
+                        <a href="https://www.facebook.com/studyandworkjobs#" target="_blank" rel="noopener noreferrer" class="footer-social-btn" title="Follow us on Facebook" aria-label="Facebook">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                        </a>
+                        <a href="https://x.com/BuddingTalents" target="_blank" rel="noopener noreferrer" class="footer-social-btn" title="Follow us on X (Twitter)" aria-label="X (Twitter)">
+                            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
 
                 <div>
@@ -635,9 +637,15 @@
 
             <div class="footer-bottom">
                 <div>&copy; 2026 Budding Talents Recruitment Pty Ltd t/a STUDYANDWORK. All rights reserved.</div>
-                <div style="display: flex; gap: 1.5rem;">
-                    <a href="www.studyandwork.com.au/pages/privacy-policy.html" target="_blank" style="color: var(--color-slate-400);">Privacy Policy</a>
-                    <a href="#resources" style="color: var(--color-slate-400);">Fair Work Compliance</a>
+                <div>
+                    <a href="https://jobgen.ai/" target="_blank" rel="noopener noreferrer" class="jobgen-powered-badge" title="Powered by JobGen.AI">
+                        <span>Powered by</span>
+                        <svg class="jobgen-logo-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4.5 4.5L19.5 19.5M19.5 4.5L4.5 19.5" stroke="#0284C7" stroke-width="4.5" stroke-linecap="round"/>
+                            <path d="M12 6.5L17.5 12L12 17.5L6.5 12L12 6.5Z" fill="#38BDF8"/>
+                        </svg>
+                        <span class="jobgen-brand-text">JOBGEN.AI</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -653,10 +661,19 @@
         </div>
     </div>
 
+    <!-- Three.js 3D WebGL Library (Local Bundle) -->
+    <script src="three.min.js"></script>
+
+    <!-- 3D Tornado Originkit Vortex Particle System -->
+    <script src="tornado-canvas.js?v=2"></script>
+
     <!-- Interactive Spider Canvas Particle System -->
-    <script src="spider-canvas.js?v=2"></script>
+    <script src="spider-canvas.js?v=4"></script>
 
     <!-- Application JS -->
-    <script src="app.js?v=6"></script>
+    <script src="app.js?v=15"></script>
+
+    <!-- AI Career & Staffing Chatbot Engine -->
+    <script src="chatbot.js?v=1"></script>
 </body>
 </html>
