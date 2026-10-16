@@ -79,19 +79,7 @@ body {
   background-attachment: fixed;
 }
 
-/* Subtle 3D Tactile Editorial Noise Texture across all pages */
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 99999;
-  opacity: 0.065;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-}
+/* Editorial background styling - Noise overlay removed for crystal-clear video & UI */
 
 a {
   color: inherit;
@@ -438,15 +426,27 @@ video {
   z-index: 2;
 }
 
-/* 1. WHITE / LIGHT SPIDER SECTION */
+/* 1. CURSOR RING FIELD LIGHT SECTION (#CED1E0) */
 .section-spider-light,
-.section-light {
-  background-color: #FFFFFF !important;
-  color: var(--color-ink) !important;
+.section-light,
+.section-cursor-ring {
+  background-color: #CED1E0 !important;
+  color: #0F172A !important;
   position: relative;
   overflow: hidden;
-  border-top: 1px solid var(--color-slate-200);
-  border-bottom: 1px solid var(--color-slate-200);
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.cursor-ring-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  display: block;
 }
 
 .section-spider-light .heading-1,

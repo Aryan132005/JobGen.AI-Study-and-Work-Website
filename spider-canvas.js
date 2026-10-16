@@ -299,14 +299,10 @@
 
   // Global initializer called on page load and SPA view transitions
   window.initSpiderCanvases = function () {
-    const lightSections = document.querySelectorAll('.section-spider-light');
-
-    lightSections.forEach((sec) => {
-      if (!sec._spiderCanvasAttached) {
-        new SpiderCanvas(sec, false);
-        sec._spiderCanvasAttached = true;
-      }
-    });
+    // Light sections are powered by Cursor Ring Field — Originkit (#CED1E0)
+    if (window.initCursorRingFields) {
+      window.initCursorRingFields();
+    }
 
     // Dark sections are powered by 3D Tornado Originkit Vortex
     if (window.initVortexBackgrounds) {

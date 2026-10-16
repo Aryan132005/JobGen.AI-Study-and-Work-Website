@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeaderScroll();
   initModalHandlers();
   initRouter();
+  if (window.initCursorRingFields) {
+    window.initCursorRingFields();
+  }
   if (window.initSpiderCanvases) {
     window.initSpiderCanvases();
   }
@@ -297,6 +300,9 @@ function renderCurrentRoute() {
   initCityTabs();
   initJourneyProgressStepper();
   initSubnavScrollSpy();
+  if (window.initCursorRingFields) {
+    window.initCursorRingFields();
+  }
   if (window.initSpiderCanvases) {
     window.initSpiderCanvases();
   }
