@@ -207,7 +207,10 @@ function navigateTo(url, pushState = true) {
   if (targetHash) {
     setTimeout(() => {
       scrollToAnchor(targetHash);
-    }, 80);
+    }, 60);
+    setTimeout(() => {
+      scrollToAnchor(targetHash);
+    }, 180);
   } else {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -880,7 +883,7 @@ function renderCandidatesView(container) {
       </section>
 
       <!-- 4-STEP PLACEMENT PATHWAY -->
-      <section class="section section-spider-light">
+      <section class="section section-spider-light" style="padding-bottom: 2.25rem;">
         <div class="container">
           <div style="text-align: center; max-width: 680px; margin: 0 auto 3rem;">
             <span class="badge-tag">Structured Process</span>
@@ -921,7 +924,7 @@ function renderCandidatesView(container) {
          ====================================================================== -->
     <div id="job-placement" class="target-anchor-section">
       <!-- SALARY BANDS & DISCIPLINES -->
-      <section class="section section-spider-light">
+      <section class="section section-spider-light" style="padding-top: 2.25rem;">
         <div class="container">
           <div style="text-align: center; max-width: 800px; margin: 0 auto 3rem;">
             <h2 class="heading-1">Graduate Job Placement (Direct Paid Career Roles)</h2>
@@ -1139,7 +1142,6 @@ function renderCandidatesView(container) {
               ${renderVideoPlayer('bottom.mp4', 'Student Casual Jobs & Rights Video', '3m 20s')}
             </div>
             <div class="media-spotlight-content">
-              <span class="badge-tag" style="align-self: flex-start; margin-bottom: 0.75rem;">Visa Friendly</span>
               <h2 class="heading-1">Student Visa Work Limitations & Fair Wages</h2>
               <p class="lead-text">
                 All casual roles arranged through Study & Work are fully compliant with Australian student visa conditions (subclass 500) and pay award wages.
@@ -3815,20 +3817,316 @@ function initModalHandlers() {
         </form>
       `;
     } else if (type === 'search') {
+      const searchItems = [
+        {
+          title: 'Professional & Permanent Staffing Solutions',
+          category: 'Employers',
+          categoryColor: '#0284C7',
+          badge: 'Staffing (5%–10% Fee)',
+          description: 'Recruitment, payroll, superannuation, and candidate management backed by a 6-month free candidate replacement guarantee.',
+          url: '/employers#staffing',
+          keywords: 'professional permanent staffing solutions recruitment direct hire junior experienced talent 5% 10% fee replacement guarantee payroll hr'
+        },
+        {
+          title: 'Host an Intern (12-Week Free Evaluation Trial)',
+          category: 'Employers',
+          categoryColor: '#0284C7',
+          badge: 'Zero Cost Host Program',
+          description: 'Evaluate university graduates on live company projects for 12 weeks with zero placement fee. 85%+ retention rate into permanent roles.',
+          url: '/employers#internship',
+          keywords: 'host an intern employer free trial zero fee try before hire university graduates evaluate talent placement internship corporate host'
+        },
+        {
+          title: 'On-Demand Casual Workforce & Temporary Staffing',
+          category: 'Employers',
+          categoryColor: '#D97706',
+          badge: 'Casual Staffing',
+          description: 'Rapid response casual staffing for hospitality, retail, customer service, and events with a transparent 65% on-hire markup.',
+          url: '/employers#casual-staffing',
+          keywords: 'casual staffing temporary workforce on-demand labor hospitality retail warehouse on hire staffing solution markup superannuation'
+        },
+        {
+          title: 'Hire an Apprentice or Trainee',
+          category: 'Employers',
+          categoryColor: '#7C3AED',
+          badge: 'GTO Apprenticeships',
+          description: 'Build your trade and technical workforce with government-subsidized apprenticeship host arrangements and complete RTO compliance.',
+          url: '/employers#apprenticeship',
+          keywords: 'hire an apprentice trainee group training gto trade government subsidies wage subsidies electrical mechanical cookery business'
+        },
+        {
+          title: 'Professional Internship (12-Week Industry Placement)',
+          category: 'Candidates',
+          categoryColor: '#0284C7',
+          badge: 'Candidates Placement',
+          description: '12-week structured placement across 3,000+ corporate host employers in Australia. Accounting, IT, Engineering, Marketing & HR.',
+          url: '/candidates#internship',
+          keywords: 'internship professional intern vocational placement try before hire work experience accounting it engineering marketing student graduate'
+        },
+        {
+          title: 'Graduate Job Placement (Direct Paid Career Roles)',
+          category: 'Candidates',
+          categoryColor: '#059669',
+          badge: 'Graduate Salaries ($65k–$95k)',
+          description: 'Direct recruitment into permanent and full-time career roles with verified Australian enterprises, supported by a 6-month replacement guarantee.',
+          url: '/candidates#job-placement',
+          keywords: 'graduate job placement paid roles permanent full-time junior software engineer accountant cloud salary direct career high paying'
+        },
+        {
+          title: 'Student Casual Jobs & Fair Wages',
+          category: 'Candidates',
+          categoryColor: '#D97706',
+          badge: 'Casual Roles (Subclass 500)',
+          description: 'Casual employment compliant with Australian Student Visa limitations. Modern Award hourly wages plus 25% casual loading.',
+          url: '/candidates#casual-jobs',
+          keywords: 'casual jobs student visa 500 work hours award wage hospitality retail warehousing logistics shift flexible student friendly'
+        },
+        {
+          title: 'Know Your Rights Under the Fair Work Act 2009',
+          category: 'Legal & Rights',
+          categoryColor: '#059669',
+          badge: 'Fair Work Section 12',
+          description: 'Essential statutory protections governing vocational placements, paid vs unpaid internships, and worker rights in Australia.',
+          url: '/candidates#know-your-rights',
+          keywords: 'know your rights fair work act 2009 section 12 unpaid internship legal vocational placement minimum award wage ombudsman entitlements legal protection'
+        },
+        {
+          title: 'Australian Apprenticeship & Traineeship Programs',
+          category: 'Candidates',
+          categoryColor: '#7C3AED',
+          badge: 'Trade & Vocational',
+          description: 'Accredited trade pathways, vocational certifications (Cert III/IV), and hands-on skills development with government-subsidized employers.',
+          url: '/candidates#apprenticeship',
+          keywords: 'apprentice apprenticeship traineeship trade vocational cert iii cert iv electrical mechanical cookery business admin skills'
+        },
+        {
+          title: '8,000+ Verified Alumni Career Directory',
+          category: 'Candidates',
+          categoryColor: '#0284C7',
+          badge: 'Alumni Directory',
+          description: 'Search verified career outcomes from candidates placed across 145+ Australian and global universities since 2007.',
+          url: '/candidates#alumni',
+          keywords: 'alumni directory search past candidates verified success reviews universities unsw usyd monash unimelb uts placements career stories'
+        },
+        {
+          title: 'Invest in Emerging Talent for Maximum ROI',
+          category: 'Resources',
+          categoryColor: '#0284C7',
+          badge: 'Employer Research',
+          description: 'Economic insights and research demonstrating why hosting university interns yields superior ROI and up to 70% cost savings.',
+          url: '/resources#employer-roi',
+          keywords: 'employer roi invest in emerging talent research economics university graduates retention recruitment cost savings'
+        },
+        {
+          title: 'Skilled Migrants Deserve a Fair Go',
+          category: 'Resources',
+          categoryColor: '#D97706',
+          badge: 'Advocacy & Diversity',
+          description: 'Breaking down the "no local experience" catch-22 for overseas-qualified accountants, software engineers, and professionals.',
+          url: '/resources#skilled-migrants',
+          keywords: 'skilled migrants deserve a fair go overseas qualified local experience permanent residents diversity inclusion career advocacy'
+        },
+        {
+          title: 'Education Provider & University Partnerships',
+          category: 'Education',
+          categoryColor: '#059669',
+          badge: 'WIL Framework',
+          description: 'Partner with Study & Work to deliver accredited Work-Integrated Learning (WIL) internships for tertiary students across Australia.',
+          url: '/education-providers',
+          keywords: 'education providers universities tafe higher education wil work integrated learning internships institutional partnership'
+        },
+        {
+          title: 'About Study & Work Australia (Since 2007)',
+          category: 'About',
+          categoryColor: '#0F172A',
+          badge: '19+ Years Leadership',
+          description: 'Budding Talents Recruitment Pty Ltd trading as STUDYANDWORK (ABN: 42 129 512 474). Founded by Ryan Shrestha in 2007.',
+          url: '/about',
+          keywords: 'about us history budding talents recruitment ryan shrestha 2007 established australia parramatta sydney'
+        },
+        {
+          title: 'Contact Us & Head Office Locations',
+          category: 'Contact',
+          categoryColor: '#0284C7',
+          badge: 'Offices & Hotline',
+          description: 'Level 15, Parramatta & Level 10, Sydney City offices. Freecall hotline: 1300 79 80 69, email: service@studyandwork.com.au.',
+          url: '/contact',
+          keywords: 'contact office address phone hotline parramatta sydney level 15 email 1300 79 80 69 customer service'
+        }
+      ];
+
       modalBody.innerHTML = `
-        <span class="badge-tag" style="margin-bottom: 0.75rem;">Global Search</span>
-        <h3 class="heading-2">Search Study & Work Australia</h3>
-        <input type="text" placeholder="Search internships, jobs, legal rights, or employers..." style="width: 100%; padding: 1rem; border-radius: var(--radius-full); border: 1px solid var(--color-slate-200); font-size: 1rem; outline: none; margin: 1.5rem 0;" oninput="this.nextElementSibling.style.display = this.value ? 'block' : 'none'">
-        <div style="display: none; background: var(--color-slate-100); padding: 1rem; border-radius: var(--radius-md);">
-          <div style="font-size: 0.875rem; color: var(--color-slate-600); margin-bottom: 0.5rem;">Quick Links:</div>
-          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9375rem;">
-            <li><a href="/candidates" data-link onclick="closeModal()">Candidate Opportunities &rarr;</a></li>
-            <li><a href="/employers" data-link onclick="closeModal()">Employer Staffing Solutions &rarr;</a></li>
-            <li><a href="/alumni" data-link onclick="closeModal()">8,000+ Alumni Directory &rarr;</a></li>
-            <li><a href="/know-your-rights" data-link onclick="closeModal()">Fair Work Act Legal Rights &rarr;</a></li>
-          </ul>
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+          <span class="badge-tag" style="margin: 0;">Global Search Engine</span>
+          <span style="font-size: 0.78rem; color: var(--color-slate-500); font-weight: 500;">Press Enter to Jump</span>
+        </div>
+        <h3 class="heading-2" style="margin-top: 0.25rem; margin-bottom: 0.5rem;">Search Study & Work Australia</h3>
+        <p style="font-size: 0.9rem; color: var(--color-slate-600); margin-bottom: 1.25rem;">
+          Find any program, employer staffing model, salary band, legal right, or section instantly:
+        </p>
+
+        <div class="global-search-input-wrap">
+          <input type="text" id="globalSearchInput" class="global-search-input" placeholder="Type to search (e.g. Staffing, Internship, Casual, Fair Work, Graduate...)" autocomplete="off">
+          <button type="button" id="globalSearchClearBtn" class="global-search-clear-btn" title="Clear search">✕</button>
+        </div>
+
+        <div id="globalSearchResultsContainer">
+          <!-- Live Results Rendered Here -->
         </div>
       `;
+
+      const input = document.getElementById('globalSearchInput');
+      const clearBtn = document.getElementById('globalSearchClearBtn');
+      const container = document.getElementById('globalSearchResultsContainer');
+
+      function escapeHtml(str) {
+        return (str || '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
+      }
+
+      function highlightText(text, query) {
+        if (!query) return escapeHtml(text);
+        const escaped = escapeHtml(text);
+        const terms = query.toLowerCase().trim().split(/\s+/).filter(t => t.length > 0);
+        if (!terms.length) return escaped;
+        const regex = new RegExp('(' + terms.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')', 'gi');
+        return escaped.replace(regex, '<span class="global-search-highlight">$1</span>');
+      }
+
+      function renderInitialQuickView() {
+        container.innerHTML = `
+          <div style="background: var(--color-slate-100); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--color-slate-200);">
+            <div style="font-size: 0.825rem; font-weight: 700; color: var(--color-slate-600); margin-bottom: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">
+              Popular Sections & Quick Jumps:
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem;">
+              <span class="global-search-tag-chip" data-search-term="Staffing">🏢 Professional Staffing</span>
+              <span class="global-search-tag-chip" data-search-term="Internship">🎓 12-Week Internship</span>
+              <span class="global-search-tag-chip" data-search-term="Graduate">💼 Graduate Jobs ($65k-$95k)</span>
+              <span class="global-search-tag-chip" data-search-term="Fair Work">⚖️ Fair Work Legal Rights</span>
+              <span class="global-search-tag-chip" data-search-term="Casual">☕ Student Casual Jobs</span>
+              <span class="global-search-tag-chip" data-search-term="Alumni">🌟 Alumni Directory</span>
+              <span class="global-search-tag-chip" data-search-term="Apprentice">🛠️ Apprenticeships</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--color-slate-500); border-top: 1px solid var(--color-slate-200); padding-top: 0.75rem;">
+              Direct Portals: 
+              <a href="#" onclick="closeModal(); openModal('work'); return false;" style="color: var(--color-accent-blue); font-weight: 600; text-decoration: underline; margin-left: 0.35rem;">Candidate Registration</a> • 
+              <a href="#" onclick="closeModal(); openModal('hire'); return false;" style="color: var(--color-accent-blue); font-weight: 600; text-decoration: underline; margin-left: 0.35rem;">Employer Request Form</a> • 
+              <a href="/contact" data-link onclick="closeModal();" style="color: var(--color-accent-blue); font-weight: 600; text-decoration: underline; margin-left: 0.35rem;">Contact Office</a>
+            </div>
+          </div>
+        `;
+
+        container.querySelectorAll('.global-search-tag-chip').forEach(chip => {
+          chip.addEventListener('click', () => {
+            const term = chip.getAttribute('data-search-term');
+            input.value = term;
+            performSearch(term);
+          });
+        });
+      }
+
+      function performSearch(query) {
+        const trimmed = (query || '').trim().toLowerCase();
+        if (!trimmed) {
+          clearBtn.style.display = 'none';
+          renderInitialQuickView();
+          return;
+        }
+
+        clearBtn.style.display = 'flex';
+        const queryTokens = trimmed.split(/\s+/).filter(Boolean);
+
+        const results = searchItems.filter(item => {
+          const haystack = (item.title + ' ' + item.category + ' ' + item.badge + ' ' + item.description + ' ' + item.keywords).toLowerCase();
+          return queryTokens.every(token => haystack.includes(token));
+        });
+
+        if (!results.length) {
+          container.innerHTML = `
+            <div style="text-align: center; padding: 2.5rem 1.5rem; background: var(--color-slate-100); border-radius: var(--radius-md); border: 1px dashed var(--color-slate-300);">
+              <div style="font-size: 2.25rem; margin-bottom: 0.75rem;">🔍</div>
+              <h4 style="font-size: 1.1rem; color: var(--color-ink); margin-bottom: 0.35rem;">No exact sections found for "${escapeHtml(query)}"</h4>
+              <p style="font-size: 0.875rem; color: var(--color-slate-600); margin-bottom: 1.25rem;">Try searching by job type, service, or click a popular section:</p>
+              <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center;">
+                <span class="global-search-tag-chip" data-search-term="Staffing">Professional Staffing</span>
+                <span class="global-search-tag-chip" data-search-term="Internship">12-Week Internship</span>
+                <span class="global-search-tag-chip" data-search-term="Graduate Jobs">Graduate Roles</span>
+                <span class="global-search-tag-chip" data-search-term="Fair Work">Legal Rights</span>
+              </div>
+            </div>
+          `;
+          container.querySelectorAll('.global-search-tag-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+              const term = chip.getAttribute('data-search-term');
+              input.value = term;
+              performSearch(term);
+            });
+          });
+          return;
+        }
+
+        let html = `
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.65rem; font-size: 0.825rem; color: var(--color-slate-600);">
+            <span><strong>${results.length}</strong> section${results.length > 1 ? 's' : ''} found:</span>
+            <span style="font-size: 0.75rem; color: var(--color-slate-400);">Click any result to jump directly</span>
+          </div>
+          <div class="global-search-results-list">
+        `;
+
+        results.forEach((res, index) => {
+          html += `
+            <div class="global-search-result-card ${index === 0 ? 'selected' : ''}" data-url="${res.url}">
+              <div class="global-search-card-header">
+                <span class="badge-tag" style="background: rgba(2, 132, 199, 0.1); color: ${res.categoryColor || '#0284C7'}; border-color: rgba(2, 132, 199, 0.25); font-size: 0.7rem; padding: 0.2rem 0.55rem; margin: 0;">
+                  ${escapeHtml(res.category)} &bull; ${escapeHtml(res.badge)}
+                </span>
+                <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-accent-blue);">Jump &rarr;</span>
+              </div>
+              <div class="global-search-result-title">${highlightText(res.title, query)}</div>
+              <p class="global-search-result-desc">${highlightText(res.description, query)}</p>
+            </div>
+          `;
+        });
+
+        html += `</div>`;
+        container.innerHTML = html;
+
+        container.querySelectorAll('.global-search-result-card').forEach(card => {
+          card.addEventListener('click', () => {
+            const targetUrl = card.getAttribute('data-url');
+            closeModal();
+            navigateTo(targetUrl);
+          });
+        });
+      }
+
+      renderInitialQuickView();
+
+      input.addEventListener('input', (e) => {
+        performSearch(e.target.value);
+      });
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const firstCard = container.querySelector('.global-search-result-card');
+          if (firstCard) {
+            const targetUrl = firstCard.getAttribute('data-url');
+            closeModal();
+            navigateTo(targetUrl);
+          }
+        }
+      });
+
+      clearBtn.addEventListener('click', () => {
+        input.value = '';
+        input.focus();
+        performSearch('');
+      });
+
+      setTimeout(() => {
+        input.focus();
+      }, 70);
     }
   };
 
