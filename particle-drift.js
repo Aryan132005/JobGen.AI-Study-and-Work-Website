@@ -183,7 +183,7 @@
 
     init() {
       this.section.style.position = 'relative';
-      this.section.style.overflow = 'hidden';
+      this.section.style.overflow = 'visible';
       this.section.style.backgroundColor = this.options.background;
 
       // Create container

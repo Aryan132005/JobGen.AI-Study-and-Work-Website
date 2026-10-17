@@ -52,17 +52,17 @@ function initHeaderScroll() {
 /* --------------------------------------------------------------------------
    2. VIDEO PLAYER BUILDER (HTML5 CONTROLS, UNRESTRICTED SEEKING)
    -------------------------------------------------------------------------- */
-function renderVideoPlayer(src, title, duration) {
+function renderVideoPlayer(src, title, duration, isContactStretched = false) {
   const cleanSrc = src.startsWith('/') ? src : '/' + src;
   const vidId = 'vid_' + Math.random().toString(36).substring(2, 9);
   return `
-    <div class="video-player-box" style="position: relative; border-radius: 1.25rem; overflow: hidden; background: #000; box-shadow: var(--shadow-card); margin: 1.75rem 0;">
+    <div class="video-player-box ${isContactStretched ? 'contact-video-stretched' : ''}" style="position: relative; border-radius: 1.25rem; overflow: hidden; background: #000; box-shadow: var(--shadow-card); ${isContactStretched ? 'margin: 0; flex: 1; display: flex; flex-direction: column; height: 100%;' : 'margin: 1.75rem 0;'}">
       ${duration ? `<div class="video-meta-badge" style="position: absolute; top: 1rem; right: 1rem; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); color: #fff; padding: 0.35rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; z-index: 5; pointer-events: none;">Duration: ${duration}</div>` : ''}
-      <video id="${vidId}" controls preload="auto" playsinline class="custom-html5-player" style="width: 100%; border-radius: 1.25rem 1.25rem 0 0; background: #000; display: block;">
+      <video id="${vidId}" controls preload="auto" playsinline class="custom-html5-player" style="width: 100%; border-radius: 1.25rem 1.25rem 0 0; background: #000; display: block; ${isContactStretched ? 'flex: 1; min-height: 680px; max-height: none; object-fit: contain;' : ''}">
         <source src="${cleanSrc}" type="video/mp4">
         Your browser does not support HTML5 video playback. <a href="${cleanSrc}" target="_blank" style="color: var(--color-accent-blue); text-decoration: underline;">Download video file (${title})</a>
       </video>
-      <div class="video-playback-toolbar" style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 1rem; background: rgba(15, 23, 42, 0.96); border-top: 1px solid rgba(255, 255, 255, 0.12); gap: 0.75rem;">
+      <div class="video-playback-toolbar" style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 1rem; background: rgba(15, 23, 42, 0.96); border-top: 1px solid rgba(255, 255, 255, 0.12); gap: 0.75rem; flex-shrink: 0;">
         <div style="font-size: 0.75rem; color: #94A3B8; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
           ${title || 'Australian Career Video'}
         </div>
@@ -634,20 +634,16 @@ function renderCandidatesView(container) {
     </nav>
 
     <!-- ======================================================================
-         OPTION 1: CANDIDATES OVERVIEW & PATHWAYS
+         CANDIDATES OVERVIEW & PATHWAYS
          ====================================================================== -->
     <div id="overview" class="target-anchor-section">
-      <div class="section-stream-divider">
-        <div class="container" style="text-align: center; max-width: 760px; margin: 0 auto;">
-          <span class="section-stream-pill-badge badge-blue">Option 01 / 07 &bull; Candidates Overview</span>
-          <h2 class="heading-1" style="margin-top: 0.35rem;">Dedicated Candidate Pathways</h2>
-          <p class="lead-text" style="margin-top: 0.5rem;">Choose the pathway that matches your current qualification, visa status, and career ambitions.</p>
-        </div>
-      </div>
-
       <!-- CANDIDATE PROGRAMS GRID (WITH SMOOTH ANCHOR GLIDE BUTTONS) -->
-      <section class="section section-spider-light" style="padding-top: 1.5rem;">
+      <section class="section section-spider-light">
         <div class="container">
+          <div style="text-align: center; max-width: 760px; margin: 0 auto 3rem;">
+            <h2 class="heading-1">Dedicated Candidate Pathways</h2>
+            <p class="lead-text" style="margin-top: 0.5rem;">Choose the pathway that matches your current qualification, visa status, and career ambitions.</p>
+          </div>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 1.75rem;">
             <!-- CARD 1: INTERNSHIP -->
             <div style="background: var(--color-surface); border: 1.5px solid var(--color-slate-200); border-radius: var(--radius-lg); padding: 2rem; display: flex; flex-direction: column; justify-space-between; box-shadow: var(--shadow-card);">
@@ -802,22 +798,18 @@ function renderCandidatesView(container) {
     </div>
 
     <!-- ======================================================================
-         OPTION 2: PROFESSIONAL INTERNSHIP PROGRAM (12 WEEKS)
+         PROFESSIONAL INTERNSHIP PROGRAM (12 WEEKS)
          ====================================================================== -->
     <div id="internship" class="target-anchor-section">
-      <div class="section-stream-divider">
-        <div class="container" style="text-align: center; max-width: 800px; margin: 0 auto;">
-          <span class="section-stream-pill-badge badge-blue">Option 02 / 07 &bull; Professional Internship</span>
-          <h2 class="heading-1" style="margin-top: 0.35rem;">12-Week Professional Internship Program</h2>
-          <p class="lead-text" style="margin-top: 0.5rem;">
-            Gain vital local Australian workplace experience with leading host companies across IT, Accounting, Engineering, Marketing, and Business Management.
-          </p>
-        </div>
-      </div>
-
       <!-- DISCIPLINES & ELIGIBILITY SECTION -->
-      <section class="section section-spider-light" style="padding-top: 1.5rem;">
+      <section class="section section-spider-light">
         <div class="container">
+          <div style="text-align: center; max-width: 800px; margin: 0 auto 3rem;">
+            <h2 class="heading-1">12-Week Professional Internship Program</h2>
+            <p class="lead-text" style="margin-top: 0.5rem;">
+              Gain vital local Australian workplace experience with leading host companies across IT, Accounting, Engineering, Marketing, and Business Management.
+            </p>
+          </div>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
             <div style="background: var(--color-surface); border: 1.5px solid var(--color-slate-200); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-card);">
               <div style="font-size: 2rem; margin-bottom: 0.75rem;">💻</div>
@@ -925,22 +917,18 @@ function renderCandidatesView(container) {
     </div>
 
     <!-- ======================================================================
-         OPTION 3: GRADUATE JOB PLACEMENT (DIRECT PAID ROLES)
+         GRADUATE JOB PLACEMENT (DIRECT PAID ROLES)
          ====================================================================== -->
     <div id="job-placement" class="target-anchor-section">
-      <div class="section-stream-divider">
-        <div class="container" style="text-align: center; max-width: 800px; margin: 0 auto;">
-          <span class="section-stream-pill-badge badge-emerald">Option 03 / 07 &bull; Graduate Job Placement</span>
-          <h2 class="heading-1" style="margin-top: 0.35rem;">Graduate Job Placement (Direct Paid Career Roles)</h2>
-          <p class="lead-text" style="margin-top: 0.5rem;">
-            Direct recruitment into permanent and full-time career roles with verified Australian enterprises, supported by a 6-month satisfaction replacement guarantee.
-          </p>
-        </div>
-      </div>
-
       <!-- SALARY BANDS & DISCIPLINES -->
-      <section class="section section-spider-light" style="padding-top: 1.5rem;">
+      <section class="section section-spider-light">
         <div class="container">
+          <div style="text-align: center; max-width: 800px; margin: 0 auto 3rem;">
+            <h2 class="heading-1">Graduate Job Placement (Direct Paid Career Roles)</h2>
+            <p class="lead-text" style="margin-top: 0.5rem;">
+              Direct recruitment into permanent and full-time career roles with verified Australian enterprises, supported by a 6-month satisfaction replacement guarantee.
+            </p>
+          </div>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
             <div style="background: var(--color-surface); border: 1.5px solid var(--color-slate-200); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-card);">
               <span class="badge-tag" style="background: rgba(5, 150, 105, 0.1); color: var(--color-accent-emerald); border-color: rgba(5, 150, 105, 0.2); margin-bottom: 0.75rem;">$75,000 – $95,000</span>
@@ -1012,22 +1000,18 @@ function renderCandidatesView(container) {
     </div>
 
     <!-- ======================================================================
-         OPTION 4: APPRENTICESHIPS & TRAINEESHIPS
+         APPRENTICESHIPS & TRAINEESHIPS
          ====================================================================== -->
     <div id="apprenticeship" class="target-anchor-section">
-      <div class="section-stream-divider">
-        <div class="container" style="text-align: center; max-width: 800px; margin: 0 auto;">
-          <span class="section-stream-pill-badge badge-amber">Option 04 / 07 &bull; Apprenticeships & Traineeships</span>
-          <h2 class="heading-1" style="margin-top: 0.35rem;">Apprenticeship & Traineeship Programs</h2>
-          <p class="lead-text" style="margin-top: 0.5rem;">
-            Earn while learning in trade, technical, and commercial operations supported by Australian government subsidies.
-          </p>
-        </div>
-      </div>
-
       <!-- VOCATIONAL SPECIALISATIONS -->
-      <section class="section section-spider-light" style="padding-top: 1.5rem;">
+      <section class="section section-spider-light">
         <div class="container">
+          <div style="text-align: center; max-width: 800px; margin: 0 auto 3rem;">
+            <h2 class="heading-1">Apprenticeship & Traineeship Programs</h2>
+            <p class="lead-text" style="margin-top: 0.5rem;">
+              Earn while learning in trade, technical, and commercial operations supported by Australian government subsidies.
+            </p>
+          </div>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
             <div style="background: var(--color-surface); border: 1.5px solid var(--color-slate-200); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-card);">
               <div style="font-size: 2rem; margin-bottom: 0.75rem;">⚡</div>
@@ -1099,22 +1083,18 @@ function renderCandidatesView(container) {
     </div>
 
     <!-- ======================================================================
-         OPTION 5: CASUAL JOBS FOR STUDENTS
+         CASUAL JOBS FOR STUDENTS
          ====================================================================== -->
     <div id="casual-jobs" class="target-anchor-section">
-      <div class="section-stream-divider">
-        <div class="container" style="text-align: center; max-width: 800px; margin: 0 auto;">
-          <span class="section-stream-pill-badge badge-amber">Option 05 / 07 &bull; Casual Jobs for Students</span>
-          <h2 class="heading-1" style="margin-top: 0.35rem;">Casual Jobs for Students in Australia</h2>
-          <p class="lead-text" style="margin-top: 0.5rem;">
-            Flexible casual work opportunities matching Australian student visa work limits (48 hours per fortnight during semester terms).
-          </p>
-        </div>
-      </div>
-
       <!-- POPULAR CASUAL SECTORS -->
-      <section class="section section-spider-light" style="padding-top: 1.5rem;">
+      <section class="section section-spider-light">
         <div class="container">
+          <div style="text-align: center; max-width: 800px; margin: 0 auto 3rem;">
+            <h2 class="heading-1">Casual Jobs for Students in Australia</h2>
+            <p class="lead-text" style="margin-top: 0.5rem;">
+              Flexible casual work opportunities matching Australian student visa work limits (48 hours per fortnight during semester terms).
+            </p>
+          </div>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
             <div style="background: var(--color-surface); border: 1.5px solid var(--color-slate-200); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-card);">
               <div style="font-size: 2rem; margin-bottom: 0.75rem;">☕</div>
@@ -1186,22 +1166,18 @@ function renderCandidatesView(container) {
     </div>
 
     <!-- ======================================================================
-         OPTION 6: KNOW YOUR RIGHTS UNDER FAIR WORK ACT
+         KNOW YOUR RIGHTS UNDER FAIR WORK ACT
          ====================================================================== -->
     <div id="know-your-rights" class="target-anchor-section">
-      <div class="section-stream-divider">
-        <div class="container" style="text-align: center; max-width: 800px; margin: 0 auto;">
-          <span class="section-stream-pill-badge badge-emerald">Option 06 / 07 &bull; Fair Work Legal Protections</span>
-          <h2 class="heading-1" style="margin-top: 0.35rem;">Know Your Rights Under the Fair Work Act 2009</h2>
-          <p class="lead-text" style="margin-top: 0.5rem;">
-            Essential legal protections for international students, university interns, and Australian workers under the Fair Work Act 2009.
-          </p>
-        </div>
-      </div>
-
       <!-- LEGAL BOUNDARIES SECTION -->
-      <section class="section section-spider-light" style="padding-top: 1.5rem;">
+      <section class="section section-spider-light">
         <div class="container">
+          <div style="text-align: center; max-width: 800px; margin: 0 auto 3rem;">
+            <h2 class="heading-1">Know Your Rights Under the Fair Work Act 2009</h2>
+            <p class="lead-text" style="margin-top: 0.5rem;">
+              Essential legal protections for international students, university interns, and Australian workers under the Fair Work Act 2009.
+            </p>
+          </div>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem;">
             <div style="background: var(--color-surface); border: 2px solid var(--color-accent-blue); border-radius: var(--radius-lg); padding: 2.25rem; box-shadow: var(--shadow-card);">
               <span class="badge-tag" style="background: var(--color-accent-blue); color: #fff; margin-bottom: 1rem;">Section 12 Exemption</span>
@@ -1274,22 +1250,18 @@ function renderCandidatesView(container) {
     </div>
 
     <!-- ======================================================================
-         OPTION 7: ALUMNI DIRECTORY & SUCCESS STORIES
+         ALUMNI DIRECTORY & SUCCESS STORIES
          ====================================================================== -->
     <div id="alumni" class="target-anchor-section">
-      <div class="section-stream-divider">
-        <div class="container" style="text-align: center; max-width: 800px; margin: 0 auto;">
-          <span class="section-stream-pill-badge badge-blue">Option 07 / 07 &bull; Alumni Success Directory</span>
-          <h2 class="heading-1" style="margin-top: 0.35rem;">8,000+ Graduate Success Stories Since 2007</h2>
-          <p class="lead-text" style="margin-top: 0.5rem;">
-            Search and explore verified career outcomes from candidates placed into over 3,000 Australian host businesses across 145+ Australian and global universities.
-          </p>
-        </div>
-      </div>
-
       <!-- LIVE SEARCHABLE ALUMNI DIRECTORY -->
-      <section class="section section-particle-drift" style="padding-top: 1.5rem;">
+      <section class="section section-particle-drift">
         <div class="container">
+          <div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+            <h2 class="heading-1">8,000+ Graduate Success Stories Since 2007</h2>
+            <p class="lead-text" style="margin-top: 0.5rem;">
+              Search and explore verified career outcomes from candidates placed into over 3,000 Australian host businesses across 145+ Australian and global universities.
+            </p>
+          </div>
           <div style="max-width: 600px; margin: 0 auto 2.5rem;">
             <input type="text" id="alumniSearchInput" placeholder="Search by candidate name, university, degree, or job role..." style="width: 100%; padding: 1rem 1.5rem; border-radius: var(--radius-full); font-size: 1rem; outline: none; border: 1.5px solid var(--color-slate-300); box-shadow: var(--shadow-card);">
           </div>
@@ -1364,20 +1336,16 @@ function renderEmployersView(container) {
     </nav>
 
     <!-- ======================================================================
-         OPTION 1: EMPLOYER SOLUTIONS OVERVIEW
+         EMPLOYER SOLUTIONS OVERVIEW
          ====================================================================== -->
     <div id="overview" class="target-anchor-section">
-      <div class="section-stream-divider">
-        <div class="container" style="text-align: center; max-width: 760px; margin: 0 auto;">
-          <span class="section-stream-pill-badge badge-blue">Option 01 / 05 &bull; Solutions Overview</span>
-          <h2 class="heading-1" style="margin-top: 0.35rem;">Cost-Effective Talent Acquisition Models</h2>
-          <p class="lead-text" style="margin-top: 0.5rem;">Choose from zero-cost intern evaluations, direct permanent hires, or flexible temporary staffing models.</p>
-        </div>
-      </div>
-
       <!-- EMPLOYER SERVICES BREAKDOWN -->
-      <section class="section section-spider-light" style="padding-top: 1.5rem;">
+      <section class="section section-spider-light">
         <div class="container">
+          <div style="text-align: center; max-width: 760px; margin: 0 auto 3rem;">
+            <h2 class="heading-1">Cost-Effective Talent Acquisition Models</h2>
+            <p class="lead-text" style="margin-top: 0.5rem;">Choose from zero-cost intern evaluations, direct permanent hires, or flexible temporary staffing models.</p>
+          </div>
           <div class="employer-solutions-3col-grid">
             <!-- SERVICE 1: HOST AN INTERN -->
             <div class="employer-solution-card">
@@ -1493,22 +1461,18 @@ function renderEmployersView(container) {
     </div>
 
     <!-- ======================================================================
-         OPTION 2: HOST AN INTERN (TRY BEFORE YOU HIRE)
+         HOST AN INTERN (TRY BEFORE YOU HIRE)
          ====================================================================== -->
     <div id="internship" class="target-anchor-section">
-      <div class="section-stream-divider">
-        <div class="container" style="text-align: center; max-width: 800px; margin: 0 auto;">
-          <span class="section-stream-pill-badge badge-blue">Option 02 / 05 &bull; Host an Intern (Try Before You Hire)</span>
-          <h2 class="heading-1" style="margin-top: 0.35rem;">Host an Intern at Zero Placement Fee</h2>
-          <p class="lead-text" style="margin-top: 0.5rem;">
-            Test high-achieving university graduates on live company projects for 12 weeks with zero recruitment placement fees under Australian Fair Work Act Section 12.
-          </p>
-        </div>
-      </div>
-
       <!-- VALUE PILLARS GRID -->
-      <section class="section section-spider-light" style="padding-top: 1.5rem;">
+      <section class="section section-spider-light">
         <div class="container">
+          <div style="text-align: center; max-width: 800px; margin: 0 auto 3rem;">
+            <h2 class="heading-1">Host an Intern at Zero Placement Fee</h2>
+            <p class="lead-text" style="margin-top: 0.5rem;">
+              Test high-achieving university graduates on live company projects for 12 weeks with zero recruitment placement fees under Australian Fair Work Act Section 12.
+            </p>
+          </div>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.75rem;">
             <div style="background: var(--color-surface); border: 1.5px solid var(--color-slate-200); border-radius: var(--radius-lg); padding: 1.75rem; box-shadow: var(--shadow-card);">
               <div style="font-size: 2rem; margin-bottom: 0.5rem;">💰</div>
@@ -1580,22 +1544,18 @@ function renderEmployersView(container) {
     </div>
 
     <!-- ======================================================================
-         OPTION 3: PROFESSIONAL & PERMANENT STAFFING
+         PROFESSIONAL & PERMANENT STAFFING
          ====================================================================== -->
     <div id="staffing" class="target-anchor-section">
-      <div class="section-stream-divider">
-        <div class="container" style="text-align: center; max-width: 800px; margin: 0 auto;">
-          <span class="section-stream-pill-badge badge-emerald">Option 03 / 05 &bull; Professional Staffing</span>
-          <h2 class="heading-1" style="margin-top: 0.35rem;">Professional & Permanent Staffing Solutions</h2>
-          <p class="lead-text" style="margin-top: 0.5rem;">
-            End-to-end recruitment, payroll, superannuation, and candidate management for Australian enterprises since 2007.
-          </p>
-        </div>
-      </div>
-
       <!-- PRICING & GUARANTEE SECTION -->
-      <section class="section section-spider-light" style="padding-top: 1.5rem;">
+      <section class="section section-spider-light">
         <div class="container">
+          <div style="text-align: center; max-width: 800px; margin: 0 auto 3rem;">
+            <h2 class="heading-1">Professional & Permanent Staffing Solutions</h2>
+            <p class="lead-text" style="margin-top: 0.5rem;">
+              End-to-end recruitment, payroll, superannuation, and candidate management for Australian enterprises since 2007.
+            </p>
+          </div>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
             <div style="background: var(--color-surface); border: 2px solid var(--color-accent-blue); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-card);">
               <span class="badge-tag" style="background: var(--color-accent-blue); color: #fff; margin-bottom: 1rem;">Junior Roles (&lt;2 Years)</span>
@@ -1668,22 +1628,18 @@ function renderEmployersView(container) {
     </div>
 
     <!-- ======================================================================
-         OPTION 4: CASUAL & TEMPORARY STAFFING SOLUTIONS
+         CASUAL & TEMPORARY STAFFING SOLUTIONS
          ====================================================================== -->
     <div id="casual-staffing" class="target-anchor-section">
-      <div class="section-stream-divider">
-        <div class="container" style="text-align: center; max-width: 800px; margin: 0 auto;">
-          <span class="section-stream-pill-badge badge-amber">Option 04 / 05 &bull; Casual Staffing</span>
-          <h2 class="heading-1" style="margin-top: 0.35rem;">On-Demand Casual Workforce Solutions</h2>
-          <p class="lead-text" style="margin-top: 0.5rem;">
-            Rapid response casual staffing for hospitality, retail, customer service, and events with a transparent 65% markup covering salary, super, tax, and insurance.
-          </p>
-        </div>
-      </div>
-
       <!-- MARKUP BREAKDOWN SECTION -->
-      <section class="section section-spider-light" style="padding-top: 1.5rem;">
+      <section class="section section-spider-light">
         <div class="container">
+          <div style="text-align: center; max-width: 800px; margin: 0 auto 3rem;">
+            <h2 class="heading-1">On-Demand Casual Workforce Solutions</h2>
+            <p class="lead-text" style="margin-top: 0.5rem;">
+              Rapid response casual staffing for hospitality, retail, customer service, and events with a transparent 65% markup covering salary, super, tax, and insurance.
+            </p>
+          </div>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
             <div style="background: var(--color-surface); border: 1.5px solid var(--color-slate-200); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-card);">
               <div style="font-size: 2rem; margin-bottom: 0.75rem;">💵</div>
@@ -1747,22 +1703,18 @@ function renderEmployersView(container) {
     </div>
 
     <!-- ======================================================================
-         OPTION 5: HIRE AN APPRENTICE & TRAINEE
+         HIRE AN APPRENTICE & TRAINEE
          ====================================================================== -->
     <div id="apprenticeship" class="target-anchor-section">
-      <div class="section-stream-divider">
-        <div class="container" style="text-align: center; max-width: 800px; margin: 0 auto;">
-          <span class="section-stream-pill-badge badge-amber">Option 05 / 05 &bull; Hire an Apprentice</span>
-          <h2 class="heading-1" style="margin-top: 0.35rem;">Apprenticeship & Traineeship Host Management</h2>
-          <p class="lead-text" style="margin-top: 0.5rem;">
-            Build your future trade and technical workforce with government-subsidized apprenticeship host arrangements.
-          </p>
-        </div>
-      </div>
-
       <!-- APPRENTICE DISCIPLINES -->
-      <section class="section section-spider-light" style="padding-top: 1.5rem;">
+      <section class="section section-spider-light">
         <div class="container">
+          <div style="text-align: center; max-width: 800px; margin: 0 auto 3rem;">
+            <h2 class="heading-1">Apprenticeship & Traineeship Host Management</h2>
+            <p class="lead-text" style="margin-top: 0.5rem;">
+              Build your future trade and technical workforce with government-subsidized apprenticeship host arrangements.
+            </p>
+          </div>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
             <div style="background: var(--color-surface); border: 1.5px solid var(--color-slate-200); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-card);">
               <div style="font-size: 2rem; margin-bottom: 0.75rem;">⚡</div>
@@ -1950,20 +1902,16 @@ function renderResourcesView(container) {
     </nav>
 
     <!-- ======================================================================
-         OPTION 1: RESOURCES & ARTICLES HUB OVERVIEW
+         RESOURCES & ARTICLES HUB OVERVIEW
          ====================================================================== -->
     <div id="overview" class="target-anchor-section">
-      <div class="section-stream-divider">
-        <div class="container" style="text-align: center; max-width: 760px; margin: 0 auto;">
-          <span class="section-stream-pill-badge badge-amber">Option 01 / 04 &bull; Resources & Articles Hub</span>
-          <h2 class="heading-1" style="margin-top: 0.35rem;">Authoritative Industry Publications & Legal Guides</h2>
-          <p class="lead-text" style="margin-top: 0.5rem;">Explore in-depth articles, Australian workplace laws, and economic data prepared by Study & Work Australia.</p>
-        </div>
-      </div>
-
       <!-- ARTICLES SUMMARY TILES -->
-      <section class="section section-spider-light" style="padding-top: 1.5rem;">
+      <section class="section section-spider-light">
         <div class="container">
+          <div style="text-align: center; max-width: 760px; margin: 0 auto 3rem;">
+            <h2 class="heading-1">Authoritative Industry Publications & Legal Guides</h2>
+            <p class="lead-text" style="margin-top: 0.5rem;">Explore in-depth articles, Australian workplace laws, and economic data prepared by Study & Work Australia.</p>
+          </div>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem;">
             <!-- CARD 1 -->
             <div style="background: var(--color-surface); border: 1.5px solid var(--color-slate-200); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-card); display: flex; flex-direction: column; justify-content: space-between;">
@@ -2037,20 +1985,16 @@ function renderResourcesView(container) {
     </div>
 
     <!-- ======================================================================
-         OPTION 2: FAIR WORK RIGHTS GUIDE
+         FAIR WORK RIGHTS GUIDE
          ====================================================================== -->
     <div id="know-your-rights" class="target-anchor-section">
-      <div class="section-stream-divider">
-        <div class="container" style="text-align: center; max-width: 760px; margin: 0 auto;">
-          <span class="section-stream-pill-badge badge-emerald">Option 02 / 04 &bull; Fair Work Compliance</span>
-          <h2 class="heading-1" style="margin-top: 0.35rem;">Know Your Legal Rights Under Fair Work Act 2009</h2>
-          <p class="lead-text" style="margin-top: 0.5rem;">Legal protections governing student vocational placements, paid vs unpaid internships, and worker rights in Australia.</p>
-        </div>
-      </div>
-
       <!-- LEGAL CRITERIA BREAKDOWN -->
-      <section class="section section-spider-light" style="padding-top: 1.5rem;">
+      <section class="section section-spider-light">
         <div class="container">
+          <div style="text-align: center; max-width: 760px; margin: 0 auto 3rem;">
+            <h2 class="heading-1">Know Your Legal Rights Under Fair Work Act 2009</h2>
+            <p class="lead-text" style="margin-top: 0.5rem;">Legal protections governing student vocational placements, paid vs unpaid internships, and worker rights in Australia.</p>
+          </div>
           <div style="background: var(--color-surface); padding: 2.75rem; border-radius: var(--radius-lg); border: 1.5px solid var(--color-slate-200); box-shadow: var(--shadow-card); margin-bottom: 2.5rem;">
             <div style="max-width: 820px;">
               <span class="badge-tag" style="margin-bottom: 0.75rem;">Fair Work Act 2009 &bull; Section 12</span>
@@ -2141,20 +2085,16 @@ function renderResourcesView(container) {
     </div>
 
     <!-- ======================================================================
-         OPTION 3: EMPLOYER ROI INSIGHTS
+         EMPLOYER ROI INSIGHTS
          ====================================================================== -->
     <div id="employer-roi" class="target-anchor-section">
-      <div class="section-stream-divider">
-        <div class="container" style="text-align: center; max-width: 760px; margin: 0 auto;">
-          <span class="section-stream-pill-badge badge-blue">Option 03 / 04 &bull; Employer Research & Economics</span>
-          <h2 class="heading-1" style="margin-top: 0.35rem;">Invest in Emerging Talent for Maximum ROI</h2>
-          <p class="lead-text" style="margin-top: 0.5rem;">Why hosting university interns and recruiting graduates yields superior retention, innovation, and cost savings for Australian businesses.</p>
-        </div>
-      </div>
-
       <!-- ROI PILLARS & FINANCIAL ADVANTAGE -->
-      <section class="section section-spider-light" style="padding-top: 1.5rem;">
+      <section class="section section-spider-light">
         <div class="container">
+          <div style="text-align: center; max-width: 760px; margin: 0 auto 3rem;">
+            <h2 class="heading-1">Invest in Emerging Talent for Maximum ROI</h2>
+            <p class="lead-text" style="margin-top: 0.5rem;">Why hosting university interns and recruiting graduates yields superior retention, innovation, and cost savings for Australian businesses.</p>
+          </div>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
             <div style="background: var(--color-surface); padding: 1.75rem; border-radius: var(--radius-md); border: 1.5px solid var(--color-slate-200); box-shadow: var(--shadow-card);">
               <div style="font-size: 2rem; font-weight: 800; color: var(--color-accent-blue); font-family: var(--font-display);">70%</div>
@@ -2253,20 +2193,16 @@ function renderResourcesView(container) {
     </div>
 
     <!-- ======================================================================
-         OPTION 4: SKILLED MIGRANTS ADVOCACY
+         SKILLED MIGRANTS ADVOCACY
          ====================================================================== -->
     <div id="skilled-migrants" class="target-anchor-section">
-      <div class="section-stream-divider">
-        <div class="container" style="text-align: center; max-width: 760px; margin: 0 auto;">
-          <span class="section-stream-pill-badge badge-amber">Option 04 / 04 &bull; Advocacy & Inclusion</span>
-          <h2 class="heading-1" style="margin-top: 0.35rem;">Skilled Migrants Deserve a Fair Go</h2>
-          <p class="lead-text" style="margin-top: 0.5rem;">Unlocking Australia's immense overseas-qualified talent pool by breaking down the "no local experience" barrier.</p>
-        </div>
-      </div>
-
       <!-- ADVOCACY ARTICLE CONTENT -->
-      <section class="section section-spider-light" style="padding-top: 1.5rem;">
+      <section class="section section-spider-light">
         <div class="container" style="max-width: 860px;">
+          <div style="text-align: center; max-width: 760px; margin: 0 auto 3rem;">
+            <h2 class="heading-1">Skilled Migrants Deserve a Fair Go</h2>
+            <p class="lead-text" style="margin-top: 0.5rem;">Unlocking Australia's immense overseas-qualified talent pool by breaking down the "no local experience" barrier.</p>
+          </div>
           <div style="background: var(--color-surface); padding: 3rem; border-radius: var(--radius-lg); border: 1.5px solid var(--color-slate-200); box-shadow: var(--shadow-card); line-height: 1.8; font-size: 1.05rem; color: var(--color-slate-700);">
             <p style="margin-bottom: 1.5rem; font-size: 1.15rem; font-weight: 500; color: var(--color-ink);">
               Australia has long benefited from the drive, intelligence, and ambition of overseas-qualified professionals. However, thousands of qualified accountants, software engineers, data analysts, and marketers face the classic catch-22: <strong>"No local Australian experience, no job; no job, no local experience."</strong>
@@ -2419,7 +2355,7 @@ function renderContactView(container) {
     <!-- CONTACT DETAILS & FORM (LEFT: FORM + HOTLINES, RIGHT: VIDEO - IMAGE 5 LAYOUT) -->
     <section class="section section-spider-light">
       <div class="container">
-        <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 3rem; align-items: start;">
+        <div class="contact-page-layout-grid" style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 3rem; align-items: stretch;">
           <!-- LEFT COLUMN: TOP FORM, BOTTOM HOTLINES -->
           <div style="display: flex; flex-direction: column; gap: 2rem;">
             <!-- TOP: SEND US A MESSAGE FORM -->
@@ -2467,12 +2403,14 @@ function renderContactView(container) {
             </div>
           </div>
 
-          <!-- RIGHT COLUMN: CONTACT VIDEO -->
-          <div>
-            <div style="position: sticky; top: calc(var(--nav-height) + 2rem);">
-              <span class="badge-tag">Virtual Office Tour</span>
+          <!-- RIGHT COLUMN: CONTACT VIDEO STRETCHED TO MATCH HOTLINES -->
+          <div class="contact-right-col" style="display: flex; flex-direction: column; height: 100%;">
+            <div style="display: flex; flex-direction: column; height: 100%;">
+              <span class="badge-tag" style="align-self: flex-start;">Virtual Office Tour</span>
               <h2 class="heading-2" style="margin-top: 0.5rem; margin-bottom: 1rem;">Experience Our Headquarters</h2>
-              ${renderVideoPlayer('contact1.mp4', 'Contact & Office Tour Video', '2m 10s')}
+              <div class="contact-video-stretched-wrapper" style="flex: 1; display: flex; flex-direction: column; height: 100%;">
+                ${renderVideoPlayer('contact1.mp4', 'Contact & Office Tour Video', '2m 10s', true)}
+              </div>
             </div>
           </div>
         </div>
