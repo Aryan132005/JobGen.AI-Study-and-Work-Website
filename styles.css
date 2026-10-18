@@ -69,7 +69,7 @@ html {
 
 body {
   line-height: 1.6;
-  overflow-x: hidden;
+  overflow-x: clip;
   position: relative;
   background-color: var(--color-paper);
   background-image:
@@ -158,15 +158,16 @@ video {
   max-width: fit-content;
   white-space: nowrap;
   gap: 0.5rem;
-  padding: 0.4rem 0.9rem;
-  border-radius: var(--radius-full);
+  padding: 0 !important;
+  border-radius: 0 !important;
   font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  background: rgba(2, 132, 199, 0.08);
-  color: var(--color-accent-blue);
-  border: 1px solid rgba(2, 132, 199, 0.2);
+  background: transparent !important;
+  color: var(--color-accent-blue) !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 /* Button System */
@@ -426,11 +427,11 @@ video {
   z-index: 2;
 }
 
-/* 1. CURSOR RING FIELD LIGHT SECTION (#CED1E0) */
+/* 1. CURSOR RING FIELD LIGHT SECTION (#B3B7CD) */
 .section-spider-light,
 .section-light,
 .section-cursor-ring {
-  background-color: #CED1E0 !important;
+  background-color: #B3B7CD !important;
   color: #0F172A !important;
   position: relative;
   overflow: hidden;
@@ -899,6 +900,20 @@ video {
   max-width: fit-content !important;
   align-self: flex-start !important;
   white-space: nowrap !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  color: #38BDF8 !important;
+  box-shadow: none !important;
+}
+
+.section-spider-light .badge-tag,
+.fx-light .badge-tag {
+  background: transparent !important;
+  color: #0284C7 !important;
+  border: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
 }
 
 #cityDetailContainer {
@@ -987,16 +1002,14 @@ video {
 }
 
 .badge-tag.hero-badge {
-  background: rgba(255, 255, 255, 0.16);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  padding: 0.32rem 0.8rem;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  background: transparent !important;
+  color: #ffffff !important;
+  border: none !important;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0 !important;
+  box-shadow: none !important;
 }
 
 .display-hero.hero-title {
@@ -1467,9 +1480,11 @@ video {
 }
 
 .section-particle-drift .badge-tag {
-  background: rgba(56, 189, 248, 0.15) !important;
+  background: transparent !important;
   color: #38BDF8 !important;
-  border-color: rgba(56, 189, 248, 0.35) !important;
+  border: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
 }
 
 /* 3D GLASSMORPHIC CAREER JOURNEY CARDS */
@@ -3877,14 +3892,444 @@ div[id].target-anchor-section {
 }
 
 /* Seamless continuity when adjacent sections share the same visual theme */
-.section-spider-light + .section-spider-light,
-.target-anchor-section + .target-anchor-section > .section-spider-light:first-child,
-.section-spider-light + .target-anchor-section > .section-spider-light:first-child {
+.section-spider-light+.section-spider-light,
+.target-anchor-section+.target-anchor-section>.section-spider-light:first-child,
+.section-spider-light+.target-anchor-section>.section-spider-light:first-child {
   border-top: none !important;
 }
 
-.section-spider-dark + .section-spider-dark,
-.target-anchor-section + .target-anchor-section > .section-spider-dark:first-child,
-.section-spider-dark + .target-anchor-section > .section-spider-dark:first-child {
+.section-spider-dark+.section-spider-dark,
+.target-anchor-section+.target-anchor-section>.section-spider-dark:first-child,
+.section-spider-dark+.target-anchor-section>.section-spider-dark:first-child {
   border-top: none !important;
+}
+
+/* ==========================================================================
+   1. STANDALONE FLOATING STUDY & WORK BRAND LOGO (OUTSIDE NAVBAR BOX)
+   ========================================================================== */
+.site-floating-logo {
+  position: fixed;
+  top: 1.1rem;
+  left: 2rem;
+  z-index: 1002;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  background: transparent;
+  padding: 0;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), filter 0.35s ease;
+  cursor: pointer;
+}
+
+.site-floating-logo:hover {
+  transform: scale(1.1) translateY(-2px);
+  filter: drop-shadow(0 8px 24px rgba(56, 189, 248, 0.65));
+}
+
+.site-floating-logo img {
+  height: 64px;
+  width: auto;
+  max-width: 190px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.7));
+  transition: all 0.35s ease;
+}
+
+/* Hide duplicate tiny logo from inside the floating capsule box */
+.site-header .brand-logo {
+  display: none !important;
+}
+
+@media (max-width: 991px) {
+  .site-floating-logo {
+    top: 0.85rem;
+    left: 1rem;
+  }
+  .site-floating-logo img {
+    height: 44px;
+    max-width: 130px;
+  }
+}
+
+/* ==========================================================================
+   2. SOME OF OUR SERVICES — PHOTO CARDS SHOWCASE (MATCHING IMAGE 3)
+   ========================================================================== */
+.services-showcase-section {
+  padding: 5rem 0 6rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.services-header-wrap {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto 3.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.services-badge {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius-full);
+  background: rgba(2, 132, 199, 0.12);
+  color: #0369A1;
+  font-size: 0.825rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.85rem;
+  border: 1px solid rgba(2, 132, 199, 0.25);
+}
+
+.services-main-title {
+  font-size: clamp(2rem, 3.2vw, 2.75rem);
+  font-weight: 800;
+  color: #0B192C;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 1rem;
+  line-height: 1.2;
+}
+
+.services-sublead {
+  font-size: 1.05rem;
+  color: #475569;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.services-columns-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 900px) {
+  .services-columns-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+.services-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.services-col-header {
+  margin-bottom: 1.75rem;
+}
+
+.services-col-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+}
+
+.jobseekers-title {
+  color: #059669; /* Emerald Green matching Image 3 */
+}
+
+.employers-title {
+  color: #334155; /* Slate matching Image 3 */
+}
+
+.services-col-line {
+  height: 2px;
+  width: 100%;
+  border-radius: 2px;
+}
+
+.jobseekers-line {
+  background: linear-gradient(90deg, #F87171, rgba(248, 113, 113, 0.2));
+}
+
+.employers-line {
+  background: linear-gradient(90deg, #94A3B8, rgba(148, 163, 184, 0.2));
+}
+
+.services-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 540px) {
+  .services-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Individual Service Photo Card */
+.service-photo-card {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  display: block;
+  text-decoration: none;
+  background: #0F172A;
+  box-shadow: 0 10px 25px -4px rgba(0, 0, 0, 0.15), 0 4px 10px -2px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
+  aspect-ratio: 1.15;
+}
+
+.service-photo-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.service-photo-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: center center;
+}
+
+.service-photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 0%, rgba(15, 23, 42, 0.45) 55%, rgba(15, 23, 42, 0.88) 100%);
+  transition: background 0.4s ease;
+}
+
+/* Photo Zoom on Hover: "jis bhi photo per arrow jahe zoom ho jahe vo" */
+.service-photo-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 24px 45px -8px rgba(0, 0, 0, 0.32), 0 0 25px rgba(45, 212, 191, 0.3);
+  border-color: rgba(45, 212, 191, 0.7);
+}
+
+.service-photo-card:hover .service-photo-media img {
+  transform: scale(1.14); /* Smooth photo zoom */
+}
+
+.service-photo-card:hover .service-photo-overlay {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(15, 23, 42, 0.35) 45%, rgba(15, 23, 42, 0.94) 100%);
+}
+
+/* Info Box Inside the Card */
+.service-photo-info {
+  position: absolute;
+  bottom: 0.85rem;
+  left: 0.85rem;
+  right: 0.85rem;
+  background: rgba(15, 23, 42, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  z-index: 2;
+  transition: all 0.35s ease;
+}
+
+.service-photo-card:hover .service-photo-info {
+  background: rgba(15, 23, 42, 0.94);
+  border-color: rgba(45, 212, 191, 0.5);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+  transform: translateY(-2px);
+}
+
+.service-photo-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #2DD4BF; /* Teal/green header matching Image 3 */
+  margin: 0 0 0.3rem;
+  line-height: 1.25;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.service-photo-card:hover .service-photo-title {
+  color: #34D399;
+  text-shadow: 0 0 12px rgba(52, 211, 153, 0.6);
+}
+
+.service-photo-desc {
+  font-size: 0.775rem;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   3. LEFT STICKY TOPIC PREVIEW CARD (NO MORE EMPTY SPACE ON LEFT)
+   ========================================================================== */
+.fx-topic-showcase {
+  margin-top: 1.75rem;
+  width: 100%;
+  max-width: 440px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 18px;
+  border: 2px solid var(--c, #0284C7);
+  box-shadow: 0 16px 36px -8px rgba(2, 132, 199, 0.22);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.fx-topic-showcase:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 48px -6px rgba(2, 132, 199, 0.35);
+}
+
+.fx-topic-preview-img-wrap {
+  width: 100%;
+  height: 175px;
+  position: relative;
+  overflow: hidden;
+  background: #0F172A;
+}
+
+.fx-topic-preview-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+}
+
+.fx-topic-showcase:hover .fx-topic-preview-img-wrap img {
+  transform: scale(1.08);
+}
+
+.fx-topic-badge-overlay {
+  position: absolute;
+  top: 0.85rem;
+  left: 0.85rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  z-index: 2;
+}
+
+.fx-topic-num-pill {
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 0.8rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.fx-topic-status-pill {
+  background: var(--c, #0284C7);
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.fx-topic-details {
+  padding: 1.15rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.fx-topic-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fx-topic-category {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--c, #0284C7);
+}
+
+.fx-topic-indicator-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c, #0284C7);
+  box-shadow: 0 0 8px var(--c, #0284C7);
+  animation: pulse-dot 2s infinite;
+}
+
+.fx-topic-display-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #0B192C;
+  margin: 0;
+  line-height: 1.25;
+  transition: opacity 0.3s ease;
+}
+
+.fx-topic-display-desc {
+  font-size: 0.825rem;
+  color: #475569;
+  line-height: 1.45;
+  margin: 0;
+  transition: opacity 0.3s ease;
+}
+
+.fx-topic-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.35rem;
+}
+
+.fx-chip {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  background: rgba(11, 25, 44, 0.06);
+  color: #1E293B;
+  border: 1px solid rgba(11, 25, 44, 0.08);
+}
+
+/* ==========================================================================
+   4. SMOOTH SCROLL REVEAL ANIMATIONS (NO MORE SIMPLE / STATIC SCROLL)
+   ========================================================================== */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.95) translateY(24px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-scale.revealed {
+  opacity: 1;
+  transform: scale(1) translateY(0);
 }

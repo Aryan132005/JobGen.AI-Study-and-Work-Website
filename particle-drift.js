@@ -204,7 +204,9 @@
       // Content above canvas
       Array.from(this.section.children).forEach(c => {
         if (c !== wrapper) {
-          c.style.position = 'relative';
+          if (!c.classList.contains('fx-p-left') && !c.classList.contains('fx-j-left')) {
+            c.style.position = 'relative';
+          }
           c.style.zIndex = '2';
         }
       });
@@ -563,20 +565,20 @@
       }
     });
 
-    // 2. Query target section: ONLY .section-particle-drift (Section 2 - Career Pathway)
-    const targets = document.querySelectorAll('.section-particle-drift');
+    // 2. Query target sections: .section-particle-drift, #journey, #alumni
+    const targets = document.querySelectorAll('.section-particle-drift, #journey, #alumni');
     targets.forEach((sec) => {
       if (activeInstances.has(sec)) return;
       const inst = new ParticleDriftInstance(sec, {
-        background: "#000000",
-        baseColor: "#FFFFFF",
-        accentColor: "#38BDF8", // Vibrant Sky Blue
-        density: 288,
-        dotSize: 2.2,
-        speed: 56,
-        hover: 16,
+        background: "#050F23",
+        baseColor: "#C1BBBB",
+        accentColor: "#ACB63669",
+        density: 194,
+        dotSize: 1.6,
+        speed: 46,
+        hover: 2,
         linkDistance: 0,
-        linkThickness: 2
+        linkThickness: 1
       });
       activeInstances.set(sec, inst);
     });

@@ -26,7 +26,7 @@
   const MAX_POINTS = 65536;
   const TAU = Math.PI * 2;
   const MAX_COLORS = 5;
-  const DEFAULT_COLORS = ["#7189ff", "#3074f9", "#0b0b18"];
+  const DEFAULT_COLORS = ["#1A2279", "#407387"];
 
   const RING_EDGE = 4;
 
@@ -506,17 +506,17 @@ void main(){
   }
 
   const DEFAULT_PRESET = {
-    background: "#CED1E0",
-    colors: ["#7189ff", "#3074f9", "#0b0b18"],
-    density: 260,
-    dotSize: 115,
-    speed: 26,
-    cameraDistance: 260,
+    background: "#B3B7CD",
+    colors: ["#1A2279", "#407387"],
+    density: 230,
+    dotSize: 65,
+    speed: 6,
+    cameraDistance: 290,
     ring: {
-      push: 50,
-      width: 9,
-      radius: 16,
-      turbulence: 100
+      push: 18,
+      width: 15,
+      radius: 13,
+      turbulence: 55
     }
   };
 
@@ -936,12 +936,30 @@ void main(){
   }
 
   // Global Initializer
+  window._cursorRingInstances = window._cursorRingInstances || [];
+
   window.initCursorRingFields = function () {
-    const lightSections = document.querySelectorAll('.section-spider-light, .section-cursor-ring');
+    // 1. Clean up instances whose host is disconnected from DOM
+    window._cursorRingInstances = (window._cursorRingInstances || []).filter((inst) => {
+      if (!inst.host || !document.contains(inst.host) || inst.disposed) {
+        try { inst.dispose(); } catch (e) {}
+        return false;
+      }
+      return true;
+    });
+
+    // 2. Query all light/white sections across all views
+    const lightSections = document.querySelectorAll('.section-spider-light, .section-cursor-ring, .section-light, .fx-light, .services-showcase-section');
     lightSections.forEach((sec) => {
-      if (!sec._cursorRingAttached) {
-        new CursorRingField(sec, DEFAULT_PRESET);
-        sec._cursorRingAttached = true;
+      const hasActiveCanvas = sec.querySelector('.cursor-ring-canvas');
+      if (!hasActiveCanvas || !sec._cursorRingAttached) {
+        try {
+          const inst = new CursorRingField(sec, DEFAULT_PRESET);
+          sec._cursorRingAttached = true;
+          window._cursorRingInstances.push(inst);
+        } catch (err) {
+          console.warn("CursorRingField init error:", err);
+        }
       }
     });
   };

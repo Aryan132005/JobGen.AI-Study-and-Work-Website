@@ -1,0 +1,123 @@
+<!-- ===== Markup for the 3 effects (copy these structures into your pages) ===== -->
+<!-- IMPORTANT: no parent of these sections may have overflow:hidden (it breaks position:sticky). -->
+
+<!-- ========== EFFECT 1: Journey. Headline LEFT (sticky), cards RIGHT ========== -->
+<section class="fx-journey fx-light"> <!-- keep "fx-light" only if this section has a WHITE background -->
+ <div class="fx-j-left">
+ <span class="badge-tag">Personalised Pathways</span>
+ <h2 data-fx-heading>Where are you in your journey?</h2>
+ <p class="lead-text" style="margin-top: 0.75rem; color: var(--fx-mute);">Explore dedicated entry points designed specifically for candidate aspirations and employer hiring demands.</p>
+ <div class="fx-dots"></div> <!-- JS fills the small progress bars -->
+ </div>
+ <div class="fx-j-list">
+ <!-- one block per card; --c is the colour of that card -->
+ <div class="fx-j-card" style="--c:#0284C7">
+ <small>01 Internship</small>
+ <h3>Professional Internship</h3>
+ <p>12-week structured placement in Australian host companies aligned with your university qualification.</p>
+ <a href="/internship" data-link>Explore Internship &rarr;</a>
+ </div>
+ <div class="fx-j-card" style="--c:#10B981">
+ <small>02 Job Placement</small>
+ <h3>Graduate Jobs</h3>
+ <p>Direct recruitment and permanent career placement across IT, Accounting, Engineering and Business.</p>
+ <a href="/job-placement" data-link>Graduate Opportunities &rarr;</a>
+ </div>
+ <div class="fx-j-card" style="--c:#F59E0B">
+ <small>03 Casual Jobs</small>
+ <h3>Casual Student Jobs</h3>
+ <p>Flexible employment opportunities designed to support international student living expenses.</p>
+ <a href="/casual-jobs" data-link>Explore Student Jobs &rarr;</a>
+ </div>
+ <div class="fx-j-card" style="--c:#0284C7">
+ <small>04 Employer Trial</small>
+ <h3>Host an Intern (12 Weeks Zero Cost)</h3>
+ <p>Evaluate enthusiastic university graduates for 12 weeks at zero placement fee before extending a permanent job offer.</p>
+ <a href="/employers" data-link>Host an Intern &rarr;</a>
+ </div>
+ <div class="fx-j-card" style="--c:#7C3AED">
+ <small>05 Staffing Solutions</small>
+ <h3>Permanent &amp; Casual Staffing</h3>
+ <p>5%-10% permanent placement fee with 6-month replacement guarantee, or flexible 65% markup casual staffing.</p>
+ <a href="/staffing" data-link>Explore Staffing &rarr;</a>
+ </div>
+ </div>
+</section>
+
+<!-- ========== EFFECT 2: Reviews in ONE row ========== -->
+<section style="overflow: visible; padding: 4rem 0;">
+ <div style="text-align: center; max-width: 680px; margin: 0 auto 1rem;">
+   <span class="badge-tag">Audited Outcomes</span>
+   <h2 data-fx-heading style="margin-top: 0.5rem;">Real graduates. Real jobs.</h2>
+   <p class="lead-text" style="color: var(--color-slate-400);">Verified career outcomes from candidates placed into over 3,000 Australian host businesses.</p>
+ </div>
+ <!-- Row moves by itself (left to right). The card in the CENTRE zooms in and glows, the others shrink and dim.
+ Hover = pause + zoom that card. Optional: data-fx-speed="40" (px per second), data-fx-dir="right" to reverse.
+ -->
+ <div class="fx-row" data-fx-speed="40" data-fx-dir="right">
+ <div class="fx-track">
+ <!-- put each review ONCE here. JS copies the list automatically for a seamless loop -->
+ <div class="fx-rcard">
+ <q>Within a short period of time Study &amp; Work lined up an interview. They gave me tips and guidance. My first interview was successful and I was offered the job!</q>
+ <hr>
+ <b>Ms Thyaga Keerthipala</b>
+ <span>Bachelor of Science in Information Technology, Manchester Metropolitan University, UK</span>
+ <em>Currently: Database Developer</em>
+ </div>
+ <div class="fx-rcard">
+ <q>Study &amp; Work sets you up with interviews with prospective employers who have an open mind regarding hiring international students. Highly recommended!</q>
+ <hr>
+ <b>Mr Devesh Soni</b>
+ <span>Master of Professional Accounting, University of Wollongong</span>
+ <em>Currently: Senior Fund Accountant</em>
+ </div>
+ <div class="fx-rcard">
+ <q>I secured a permanent position as a Junior Software Engineer within 3 weeks of completing my 12-week placement. The coaching was instrumental.</q>
+ <hr>
+ <b>Mr Chen Wei</b>
+ <span>Master of Information Technology, University of Sydney</span>
+ <em>Currently: Junior Cloud Engineer</em>
+ </div>
+ <div class="fx-rcard">
+ <q>The team at Study &amp; Work helped me navigate the Fair Work regulations and placed me in an ASX-listed accounting host. Now permanently employed!</q>
+ <hr>
+ <b>Ms Priya Sharma</b>
+ <span>Master of Commerce (Accounting), UNSW</span>
+ <em>Currently: Financial Analyst</em>
+ </div>
+ <div class="fx-rcard">
+ <q>They restructured my CV and prepared me for Australian workplace cultural expectations. Landed my dream civil engineering graduate role.</q>
+ <hr>
+ <b>Mr Ahmed Al-Mansoor</b>
+ <span>Bachelor of Civil Engineering, University of Melbourne</span>
+ <em>Currently: Project Engineer</em>
+ </div>
+ <div class="fx-rcard">
+ <q>Coming from overseas with no local experience felt impossible until I joined Study &amp; Work. The internship converted directly into sponsorship.</q>
+ <hr>
+ <b>Ms Sarah Jenkins</b>
+ <span>Master of Marketing &amp; Analytics, Macquarie University</span>
+ <em>Currently: Digital Growth Manager</em>
+ </div>
+ </div>
+ </div>
+</section>
+
+<!-- ========== EFFECT 3: Pathway. Headline LEFT (sticky), winding line + cards RIGHT ========== -->
+<section class="fx-path" id="journey">
+ <div class="fx-p-left">
+ <span class="badge-tag">End-to-end progression</span>
+ <h2 data-fx-heading>Your Australian Career Pathway</h2>
+ <p class="lead-text" style="margin-top: 0.75rem; color: var(--fx-mute);">A structured 7-stage framework guiding candidates from education to long-term career growth.</p>
+ </div>
+ <div class="fx-map">
+ <!-- JS draws the line (SVG) by itself and places the cards. Only add the cards: -->
+ <div class="fx-step"><div class="num">1</div><h3>Discover</h3><p>Skills Audit</p></div>
+ <div class="fx-step"><div class="num">2</div><h3>Study</h3><p>University Degree</p></div>
+ <div class="fx-step"><div class="num">3</div><h3>Prepare</h3><p>Resume &amp; Coaching</p></div>
+ <div class="fx-step"><div class="num">4</div><h3>Experience</h3><p>12-Wk Internship</p></div>
+ <div class="fx-step"><div class="num">5</div><h3>Connect</h3><p>3,000+ Employers</p></div>
+ <div class="fx-step"><div class="num">6</div><h3>Get Hired</h3><p>Paid Job Offer</p></div>
+ <div class="fx-step"><div class="num">7</div><h3>Grow</h3><p>Visa &amp; Leadership</p></div>
+ </div>
+</section>
