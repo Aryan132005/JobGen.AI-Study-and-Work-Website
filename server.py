@@ -65,13 +65,20 @@ class RangeHTTPRequestHandler(SimpleHTTPRequestHandler):
                 return self.list_directory(path)
         
         if not os.path.exists(path):
-            # Check if asset exists in root (e.g. /candidates/v1.mp4 -> ./v1.mp4)
-            base_asset = os.path.join(os.getcwd(), os.path.basename(path))
-            if os.path.isfile(base_asset):
-                path = base_asset
-            elif not os.path.splitext(path)[1] or self.path.startswith(('/candidates', '/employers', '/internship', '/job-placement', '/casual-jobs', '/staffing', '/about', '/contact', '/resources')):
-                # Fallback to index.html for Single Page Application routing
-                path = os.path.join(os.getcwd(), 'index.html')
+            # Check if asset path contains www.studyandwork.com.au
+            if 'www.studyandwork.com.au' in self.path:
+                sw_subpath = self.path[self.path.find('www.studyandwork.com.au'):]
+                sw_full = os.path.join(os.getcwd(), sw_subpath)
+                if os.path.isfile(sw_full):
+                    path = sw_full
+            if not os.path.exists(path):
+                # Check if asset exists in root (e.g. /candidates/v1.mp4 -> ./v1.mp4)
+                base_asset = os.path.join(os.getcwd(), os.path.basename(path))
+                if os.path.isfile(base_asset):
+                    path = base_asset
+                elif not os.path.splitext(path)[1] or self.path.startswith(('/candidates', '/employers', '/education-providers', '/internship', '/job-placement', '/casual-jobs', '/staffing', '/about', '/contact', '/resources', '/alumni', '/our-alumni')):
+                    # Fallback to index.html for Single Page Application routing
+                    path = os.path.join(os.getcwd(), 'index.html')
 
         ctype = self.guess_type(path)
         try:
