@@ -238,9 +238,6 @@ function initRouter() {
   });
 
   window.addEventListener('popstate', () => {
-    if (typeof destroyStack === 'function') {
-      destroyStack();
-    }
     renderCurrentRoute();
   });
 
@@ -347,10 +344,6 @@ function navigateTo(url, pushState = true) {
     return;
   }
 
-  if (typeof destroyStack === 'function') {
-    destroyStack();
-  }
-
   renderCurrentRoute();
 
   if (targetHash) {
@@ -390,9 +383,6 @@ function updateActiveNavLinks(routePath) {
 }
 
 function renderCurrentRoute() {
-  if (typeof destroyStack === 'function') {
-    destroyStack();
-  }
   const { path, hash } = parseUrlParts();
   const mainContent = document.getElementById('mainContent');
   if (!mainContent) return;
@@ -471,12 +461,8 @@ function renderCurrentRoute() {
     window.initFx();
   }
 
-  // Card Stacking Slides Scroll Effect
   if (!targetSectionHash) {
     window.scrollTo(0, 0);
-  }
-  if (typeof initStack === 'function') {
-    initStack(mainContent);
   }
 
   if (targetSectionHash) {

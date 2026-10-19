@@ -998,7 +998,7 @@ video {
   position: relative;
   width: 100%;
   min-height: 100vh;
-  height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3648,7 +3648,7 @@ section[id] {
 }
 
 div[id].target-anchor-section {
-  scroll-margin-top: 96px;
+  scroll-margin-top: 140px;
   padding: 0;
   margin: 0;
   display: block;
@@ -3656,11 +3656,11 @@ div[id].target-anchor-section {
 
 .subnav-sticky-bar {
   position: sticky;
-  top: 82px;
+  top: 80px;
   z-index: 800;
   background: transparent;
-  padding: 0;
-  height: 0;
+  padding: 0.6rem 0;
+  height: auto;
   overflow: visible;
   pointer-events: none;
   transition: all var(--transition-normal);
@@ -3668,20 +3668,20 @@ div[id].target-anchor-section {
 
 .subnav-pills-container {
   pointer-events: auto;
-  background: rgba(15, 23, 42, 0.88);
+  background: rgba(15, 23, 42, 0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: var(--radius-full);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32);
-  padding: 0.24rem 0.45rem;
+  padding: 0.32rem 0.6rem;
   width: fit-content;
   max-width: 95%;
   margin: 0 auto;
-  transform: translateY(10px);
+  transform: none;
   display: flex;
   align-items: center;
-  gap: 0.32rem;
+  gap: 0.35rem;
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;

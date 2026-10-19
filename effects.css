@@ -57,7 +57,9 @@ main, #mainContent {
 }
 
 .fx-light.section-spider-light {
-  background-color: #B3B7CD !important;
+  background: radial-gradient(circle at 85% 15%, rgba(2, 132, 199, 0.08) 0%, transparent 45%),
+              radial-gradient(circle at 15% 85%, rgba(139, 92, 246, 0.06) 0%, transparent 45%),
+              linear-gradient(180deg, #F8FAFC 0%, #EEF2F6 50%, #E2E8F0 100%) !important;
 }
 
 .fx-j-left,
