@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeaderScroll();
   initModalHandlers();
   initRouter();
+  initVideoPlayers();
   if (window.initCursorRingFields) {
     window.initCursorRingFields();
   }
@@ -58,14 +59,19 @@ function initHeaderScroll() {
 /* --------------------------------------------------------------------------
    2. VIDEO PLAYER BUILDER (HTML5 CONTROLS, UNRESTRICTED SEEKING)
    -------------------------------------------------------------------------- */
-function renderVideoPlayer(src, title, duration, isContactStretched = false) {
+function renderVideoPlayer(src, title, duration, isContactStretched = false, poster = '') {
   const cleanSrc = src.startsWith('/') ? src : '/' + src;
+  const rawSrc = src.replace(/^\//, '');
   const vidId = 'vid_' + Math.random().toString(36).substring(2, 9);
+  const posterAttr = poster ? `poster="${poster}"` : '';
   return `
     <div class="video-player-box ${isContactStretched ? 'contact-video-stretched' : ''}" style="position: relative; border-radius: 1.25rem; overflow: hidden; background: #000; box-shadow: var(--shadow-card); ${isContactStretched ? 'margin: 0; flex: 1; display: flex; flex-direction: column; height: 100%;' : 'margin: 1.75rem 0;'}">
       ${duration ? `<div class="video-meta-badge" style="position: absolute; top: 1rem; right: 1rem; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); color: #fff; padding: 0.35rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; z-index: 5; pointer-events: none;">Duration: ${duration}</div>` : ''}
-      <video id="${vidId}" controls preload="auto" playsinline class="custom-html5-player" style="width: 100%; border-radius: 1.25rem 1.25rem 0 0; background: #000; display: block; ${isContactStretched ? 'flex: 1; min-height: 680px; max-height: none; object-fit: contain;' : ''}">
+      <video id="${vidId}" src="${cleanSrc}#t=0.001" ${posterAttr} controls preload="metadata" playsinline class="custom-html5-player" style="width: 100%; border-radius: 1.25rem 1.25rem 0 0; background: #000; display: block; ${isContactStretched ? 'flex: 1; min-height: 680px; max-height: none; object-fit: contain;' : ''}">
         <source src="${cleanSrc}" type="video/mp4">
+        <source src="${rawSrc}" type="video/mp4">
+        <source src="/our_alumni.mp4" type="video/mp4">
+        <source src="/www.studyandwork.com.au/video/${rawSrc}" type="video/mp4">
         Your browser does not support HTML5 video playback. <a href="${cleanSrc}" target="_blank" style="color: var(--color-accent-blue); text-decoration: underline;">Download video file (${title})</a>
       </video>
       <div class="video-playback-toolbar" style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 1rem; background: rgba(15, 23, 42, 0.96); border-top: 1px solid rgba(255, 255, 255, 0.12); gap: 0.75rem; flex-shrink: 0;">
@@ -73,13 +79,30 @@ function renderVideoPlayer(src, title, duration, isContactStretched = false) {
           ${title || 'Australian Career Video'}
         </div>
         <div style="display: flex; gap: 0.5rem; align-items: center; flex-shrink: 0;">
+          <button type="button" onclick="(function(){ const v = document.getElementById('${vidId}'); if(v) { if(v.paused) v.play(); else v.pause(); } })()" style="background: rgba(56, 189, 248, 0.2); color: #38BDF8; border: 1px solid rgba(56, 189, 248, 0.4); padding: 0.3rem 0.75rem; border-radius: 6px; font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: all 0.2s;" title="Play / Pause Video">&#9654; Play / Pause</button>
           <button type="button" onclick="(function(){ const v = document.getElementById('${vidId}'); if(v) { v.currentTime = Math.max(0, v.currentTime - 10); } })()" style="background: rgba(255, 255, 255, 0.12); color: #F8FAFC; border: 1px solid rgba(255, 255, 255, 0.2); padding: 0.3rem 0.65rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" title="Rewind 10 seconds">&#9194; -10s</button>
           <button type="button" onclick="(function(){ const v = document.getElementById('${vidId}'); if(v) { v.currentTime = Math.min(v.duration || 99999, v.currentTime + 10); } })()" style="background: rgba(255, 255, 255, 0.12); color: #F8FAFC; border: 1px solid rgba(255, 255, 255, 0.2); padding: 0.3rem 0.65rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" title="Forward 10 seconds">+10s &#9193;</button>
-          <button type="button" onclick="(function(){ const v = document.getElementById('${vidId}'); if(v) { v.currentTime = Math.min(v.duration || 99999, v.currentTime + 30); } })()" style="background: rgba(255, 255, 255, 0.12); color: #F8FAFC; border: 1px solid rgba(255, 255, 255, 0.2); padding: 0.3rem 0.65rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" title="Forward 30 seconds">+30s &#9193;</button>
         </div>
       </div>
     </div>
   `;
+}
+
+function initVideoPlayers() {
+  document.querySelectorAll('video.custom-html5-player').forEach(v => {
+    if (!v.getAttribute('poster')) {
+      v.addEventListener('loadedmetadata', function () {
+        if (this.currentTime === 0) {
+          try { this.currentTime = 0.001; } catch (e) { }
+        }
+      }, { once: true });
+    }
+    try {
+      if (v.readyState < 1) {
+        v.load();
+      }
+    } catch (e) { }
+  });
 }
 
 /* --------------------------------------------------------------------------
@@ -420,9 +443,8 @@ function renderCurrentRoute() {
   } else if (path === '/know-your-rights') {
     renderCandidatesView(mainContent);
     targetSectionHash = 'know-your-rights';
-  } else if (path === '/alumni') {
-    renderCandidatesView(mainContent);
-    targetSectionHash = 'alumni';
+  } else if (path === '/our-alumni' || path === '/alumni' || path === '/alumni-directory') {
+    renderAlumniView(mainContent);
   } else if (path === '/staffing') {
     renderEmployersView(mainContent);
     targetSectionHash = 'staffing';
@@ -442,6 +464,7 @@ function renderCurrentRoute() {
 
   // Re-initialize dynamic widgets for rendered view
   initAlumniSearch();
+  initVideoPlayers();
   initCityTabs();
   initJourneyProgressStepper();
   initSubnavScrollSpy();
@@ -482,7 +505,7 @@ function renderHomeView(container) {
     <!-- CINEMATIC BRAND HERO SECTION WITH BACKGROUND VIDEO -->
     <section id="explore" class="hero-section cinematic-hero">
       <!-- Background Video (Layer 1) -->
-      <video class="hero-bg-video" autoplay loop muted playsinline preload="auto" poster="Student-friendlyJobs.png">
+      <video class="hero-bg-video" autoplay loop muted playsinline preload="auto" poster="candidates_hero_bg.jpg">
         <source src="Creating_Australian_career_video.mp4" type="video/mp4">
         <source src="/Creating_Australian_career_video.mp4" type="video/mp4">
         <source src="www.studyandwork.com.au/video/Creating_Australian_career_video.mp4" type="video/mp4">
@@ -979,28 +1002,28 @@ function renderCandidatesView(container) {
         </div>
 
         <div class="fx-j-list">
-          <div class="fx-j-card" style="--c:#0284C7">
+          <div class="fx-j-card" style="--c:#0284C7" data-img="/candidates_hero_bg.jpg">
             <small>01 Registration</small>
             <h3>Register Profile</h3>
             <p>Submit your resume, academic transcripts, and target placement sector to activate your profile.</p>
             <a href="javascript:void(0)" onclick="openModal('work')">Start Profile &rarr;</a>
           </div>
 
-          <div class="fx-j-card" style="--c:#10B981">
+          <div class="fx-j-card" style="--c:#10B981" data-img="/education_hero_bg.jpg">
             <small>02 Coaching</small>
             <h3>Skills Assessment</h3>
             <p>Undergo tailored career consultation and Australian workplace cultural readiness coaching.</p>
             <a href="javascript:void(0)" onclick="openModal('consultation')">Book Readiness Session &rarr;</a>
           </div>
 
-          <div class="fx-j-card" style="--c:#F59E0B">
+          <div class="fx-j-card" style="--c:#F59E0B" data-img="/www.studyandwork.com.au/images/home/2.png">
             <small>03 Host Matching</small>
             <h3>Host Matching</h3>
             <p>Interview directly with vetted Australian host companies matching your technical qualifications.</p>
             <a href="/candidates#internship" data-link>View Host Criteria &rarr;</a>
           </div>
 
-          <div class="fx-j-card" style="--c:#8B5CF6">
+          <div class="fx-j-card" style="--c:#8B5CF6" data-img="/alumni_hero_bg.jpg">
             <small>04 Placement</small>
             <h3>Workplace Placement</h3>
             <p>Complete your 12-week structured vocational internship or transition into direct paid graduate employment.</p>
@@ -1010,8 +1033,6 @@ function renderCandidatesView(container) {
       </section>
     </div>
 
-    ${renderServicesShowcaseSection()}
-
     <!-- ======================================================================
          PROFESSIONAL INTERNSHIP PROGRAM (12 WEEKS)
          ====================================================================== -->
@@ -1019,28 +1040,28 @@ function renderCandidatesView(container) {
       <!-- DISCIPLINES & ELIGIBILITY SECTION — SCROLL EFFECT (RIGHT STICKY + LEFT CARDS) -->
       <section class="fx-journey fx-rev fx-light section-spider-light">
         <div class="fx-j-list">
-          <div class="fx-j-card" style="--c:#0284C7">
+          <div class="fx-j-card" style="--c:#0284C7" data-img="/www.studyandwork.com.au/images/home/5.png">
             <small>💻 Tech Discipline</small>
             <h3>IT &amp; Software Engineering</h3>
             <p>Full-stack web development, Python, mobile apps, DevOps cloud pipelines, cybersecurity auditing, and automated QA testing.</p>
             <a href="javascript:void(0)" onclick="openModal('work')">Apply for Tech Placement &rarr;</a>
           </div>
 
-          <div class="fx-j-card" style="--c:#10B981">
+          <div class="fx-j-card" style="--c:#10B981" data-img="/www.studyandwork.com.au/images/home/7.png">
             <small>📊 Finance Discipline</small>
             <h3>Professional Accounting &amp; Tax</h3>
             <p>Financial reporting, MYOB &amp; Xero reconciliation, BAS preparation, corporate audit assist, and management accounting.</p>
             <a href="javascript:void(0)" onclick="openModal('work')">Apply for Accounting Placement &rarr;</a>
           </div>
 
-          <div class="fx-j-card" style="--c:#F59E0B">
+          <div class="fx-j-card" style="--c:#F59E0B" data-img="/apprenticeship_hero_bg.jpg">
             <small>⚙️ Engineering Discipline</small>
             <h3>Civil, Mech &amp; Electrical Engineering</h3>
             <p>AutoCAD design, BIM modeling, site estimation, project scheduling, and quality assurance under Australian standards.</p>
             <a href="javascript:void(0)" onclick="openModal('work')">Apply for Engineering Placement &rarr;</a>
           </div>
 
-          <div class="fx-j-card" style="--c:#8B5CF6">
+          <div class="fx-j-card" style="--c:#8B5CF6" data-img="/www.studyandwork.com.au/images/home/4.png">
             <small>📈 Commercial Discipline</small>
             <h3>Digital Marketing &amp; Business</h3>
             <p>SEO/SEM campaign management, Google Analytics 4, social media strategy, B2B lead generation, and market research.</p>
@@ -1105,28 +1126,28 @@ function renderCandidatesView(container) {
         </div>
 
         <div class="fx-j-list">
-          <div class="fx-j-card" style="--c:#0284C7">
+          <div class="fx-j-card" style="--c:#0284C7" data-img="/www.studyandwork.com.au/images/home/1.png">
             <small>01 Assessment</small>
             <h3>Skills Assessment</h3>
             <p>Detailed evaluation of your degree transcripts, technical strengths, and Australian visa status.</p>
             <a href="javascript:void(0)" onclick="openModal('consultation')">Book Skills Review &rarr;</a>
           </div>
 
-          <div class="fx-j-card" style="--c:#10B981">
+          <div class="fx-j-card" style="--c:#10B981" data-img="/www.studyandwork.com.au/images/home/6.png">
             <small>02 Preparation</small>
             <h3>Resume &amp; Coaching</h3>
             <p>Tailored Australian workplace interview training and technical CV restructuring.</p>
             <a href="javascript:void(0)" onclick="openModal('consultation')">Explore Coaching &rarr;</a>
           </div>
 
-          <div class="fx-j-card" style="--c:#F59E0B">
+          <div class="fx-j-card" style="--c:#F59E0B" data-img="/contact_hero_bg.jpg">
             <small>03 Connection</small>
             <h3>Host Matching</h3>
             <p>Direct placement interviews arranged with corporate hosts in Sydney, Melbourne, Brisbane or Perth.</p>
             <a href="/candidates#internship" data-link>Explore Locations &rarr;</a>
           </div>
 
-          <div class="fx-j-card" style="--c:#8B5CF6">
+          <div class="fx-j-card" style="--c:#8B5CF6" data-img="/internship_hero_bg.jpg">
             <small>04 Experience</small>
             <h3>12-Week Placement</h3>
             <p>Work alongside senior industry professionals with continuous Study &amp; Work mentor support.</p>
@@ -1143,28 +1164,28 @@ function renderCandidatesView(container) {
       <!-- SALARY BANDS & DISCIPLINES — SCROLL EFFECT (RIGHT STICKY + LEFT CARDS) -->
       <section class="fx-journey fx-rev fx-light section-spider-light">
         <div class="fx-j-list">
-          <div class="fx-j-card" style="--c:#0284C7">
+          <div class="fx-j-card" style="--c:#0284C7" data-img="/job_placement_hero_bg.jpg">
             <small>$75,000 – $95,000 Salary Band</small>
             <h3>Junior Software &amp; Cloud Engineers</h3>
             <p>Full-stack engineers, cloud infrastructure specialists, data analysts, and cybersecurity junior consultants.</p>
             <a href="javascript:void(0)" onclick="openModal('work')">Apply for Tech Roles &rarr;</a>
           </div>
 
-          <div class="fx-j-card" style="--c:#10B981">
+          <div class="fx-j-card" style="--c:#10B981" data-img="/www.studyandwork.com.au/images/home/3.png">
             <small>$65,000 – $78,000 Salary Band</small>
             <h3>Graduate Accountants &amp; Analysts</h3>
             <p>Corporate financial accountants, tax compliance analysts, commercial auditors, and junior business controllers.</p>
             <a href="javascript:void(0)" onclick="openModal('work')">Apply for Finance Roles &rarr;</a>
           </div>
 
-          <div class="fx-j-card" style="--c:#F59E0B">
+          <div class="fx-j-card" style="--c:#F59E0B" data-img="/resources_hero_bg.jpg">
             <small>$72,000 – $88,000 Salary Band</small>
             <h3>Graduate Project Engineers</h3>
             <p>Civil, structural, electrical, and mechanical engineers placed into major infrastructure and industrial engineering firms.</p>
             <a href="javascript:void(0)" onclick="openModal('work')">Apply for Engineering Roles &rarr;</a>
           </div>
 
-          <div class="fx-j-card" style="--c:#8B5CF6">
+          <div class="fx-j-card" style="--c:#8B5CF6" data-img="/about_hero_bg.jpg">
             <small>$65,000 – $80,000 Salary Band</small>
             <h3>Digital Growth &amp; Marketing</h3>
             <p>Performance marketing specialists, product growth associates, brand campaign analysts, and e-commerce managers.</p>
@@ -1314,36 +1335,64 @@ function renderCandidatesView(container) {
             </p>
           </div>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
-            <div style="background: var(--color-surface); border: 1.5px solid var(--color-slate-200); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-card);">
-              <div style="font-size: 2rem; margin-bottom: 0.75rem;">☕</div>
-              <h3 class="heading-3">Hospitality & Barista</h3>
-              <p style="color: var(--color-slate-600); margin-top: 0.5rem; line-height: 1.6;">
+            <!-- CARD 1: HOSPITALITY & BARISTA (WARM AMBER) -->
+            <div class="card-3d-elevated card-3d-amber" style="background: linear-gradient(180deg, #FFFFFF 0%, #FFFBEB 100%); border-top: 5px solid #F59E0B; padding: 2.25rem 2rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-card);">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+                <div style="width: 52px; height: 52px; border-radius: 14px; background: rgba(245, 158, 11, 0.15); display: flex; align-items: center; justify-content: center; font-size: 1.75rem; border: 1px solid rgba(245, 158, 11, 0.3);">☕</div>
+                <span style="background: rgba(245, 158, 11, 0.15); color: #B45309; font-size: 0.75rem; font-weight: 700; padding: 0.3rem 0.75rem; border-radius: 999px; letter-spacing: 0.02em;">Award Wages + 25% Loading</span>
+              </div>
+              <h3 class="heading-3" style="color: #92400E; margin-bottom: 0.5rem; font-size: 1.25rem;">Hospitality &amp; Barista</h3>
+              <p style="color: #475569; margin-top: 0.5rem; line-height: 1.6; font-size: 0.95rem;">
                 Specialty cafes, hotel dining, banquet catering, and licensed venues. Award wages with 25% casual loading and weekend penalty rates.
               </p>
+              <div style="margin-top: 1.25rem; font-size: 0.85rem; font-weight: 700; color: #D97706; display: flex; align-items: center; gap: 0.35rem;">
+                Explore Cafe &amp; Dining Shifts &rarr;
+              </div>
             </div>
 
-            <div style="background: var(--color-surface); border: 1.5px solid var(--color-slate-200); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-card);">
-              <div style="font-size: 2rem; margin-bottom: 0.75rem;">🛍️</div>
-              <h3 class="heading-3">Retail & Customer Experience</h3>
-              <p style="color: var(--color-slate-600); margin-top: 0.5rem; line-height: 1.6;">
+            <!-- CARD 2: RETAIL & CUSTOMER EXPERIENCE (VIVID SKY BLUE) -->
+            <div class="card-3d-elevated card-3d-blue" style="background: linear-gradient(180deg, #FFFFFF 0%, #F0F9FF 100%); border-top: 5px solid #0284C7; padding: 2.25rem 2rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-card);">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+                <div style="width: 52px; height: 52px; border-radius: 14px; background: rgba(2, 132, 199, 0.15); display: flex; align-items: center; justify-content: center; font-size: 1.75rem; border: 1px solid rgba(2, 132, 199, 0.3);">🛍️</div>
+                <span style="background: rgba(2, 132, 199, 0.15); color: #0369A1; font-size: 0.75rem; font-weight: 700; padding: 0.3rem 0.75rem; border-radius: 999px; letter-spacing: 0.02em;">Flexible Shopping Centres</span>
+              </div>
+              <h3 class="heading-3" style="color: #0369A1; margin-bottom: 0.5rem; font-size: 1.25rem;">Retail &amp; Customer Experience</h3>
+              <p style="color: #475569; margin-top: 0.5rem; line-height: 1.6; font-size: 0.95rem;">
                 Fashion boutiques, electronics stores, and supermarkets across Sydney, Melbourne, and Brisbane retail centres.
               </p>
+              <div style="margin-top: 1.25rem; font-size: 0.85rem; font-weight: 700; color: #0284C7; display: flex; align-items: center; gap: 0.35rem;">
+                Explore Store &amp; Sales Roles &rarr;
+              </div>
             </div>
 
-            <div style="background: var(--color-surface); border: 1.5px solid var(--color-slate-200); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-card);">
-              <div style="font-size: 2rem; margin-bottom: 0.75rem;">🎪</div>
-              <h3 class="heading-3">Event Operations & Venues</h3>
-              <p style="color: var(--color-slate-600); margin-top: 0.5rem; line-height: 1.6;">
+            <!-- CARD 3: EVENT OPERATIONS & VENUES (ROYAL PURPLE) -->
+            <div class="card-3d-elevated card-3d-purple" style="background: linear-gradient(180deg, #FFFFFF 0%, #FAF5FF 100%); border-top: 5px solid #8B5CF6; padding: 2.25rem 2rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-card);">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+                <div style="width: 52px; height: 52px; border-radius: 14px; background: rgba(139, 92, 246, 0.15); display: flex; align-items: center; justify-content: center; font-size: 1.75rem; border: 1px solid rgba(139, 92, 246, 0.3);">🎪</div>
+                <span style="background: rgba(139, 92, 246, 0.15); color: #6D28D9; font-size: 0.75rem; font-weight: 700; padding: 0.3rem 0.75rem; border-radius: 999px; letter-spacing: 0.02em;">Stadiums &amp; Concerts</span>
+              </div>
+              <h3 class="heading-3" style="color: #6D28D9; margin-bottom: 0.5rem; font-size: 1.25rem;">Event Operations &amp; Venues</h3>
+              <p style="color: #475569; margin-top: 0.5rem; line-height: 1.6; font-size: 0.95rem;">
                 Concerts, corporate conferences, sporting stadiums, and trade exhibitions. Highly flexible weekend shifts.
               </p>
+              <div style="margin-top: 1.25rem; font-size: 0.85rem; font-weight: 700; color: #8B5CF6; display: flex; align-items: center; gap: 0.35rem;">
+                Explore Weekend Shifts &rarr;
+              </div>
             </div>
 
-            <div style="background: var(--color-surface); border: 1.5px solid var(--color-slate-200); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-card);">
-              <div style="font-size: 2rem; margin-bottom: 0.75rem;">📦</div>
-              <h3 class="heading-3">Warehousing & Logistics</h3>
-              <p style="color: var(--color-slate-600); margin-top: 0.5rem; line-height: 1.6;">
+            <!-- CARD 4: WAREHOUSING & LOGISTICS (EMERALD GREEN) -->
+            <div class="card-3d-elevated card-3d-emerald" style="background: linear-gradient(180deg, #FFFFFF 0%, #F0FDF4 100%); border-top: 5px solid #10B981; padding: 2.25rem 2rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-card);">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+                <div style="width: 52px; height: 52px; border-radius: 14px; background: rgba(16, 185, 129, 0.15); display: flex; align-items: center; justify-content: center; font-size: 1.75rem; border: 1px solid rgba(16, 185, 129, 0.3);">📦</div>
+                <span style="background: rgba(16, 185, 129, 0.15); color: #047857; font-size: 0.75rem; font-weight: 700; padding: 0.3rem 0.75rem; border-radius: 999px; letter-spacing: 0.02em;">High Hourly Rates</span>
+              </div>
+              <h3 class="heading-3" style="color: #065F46; margin-bottom: 0.5rem; font-size: 1.25rem;">Warehousing &amp; Logistics</h3>
+              <p style="color: #475569; margin-top: 0.5rem; line-height: 1.6; font-size: 0.95rem;">
                 Inventory management, picking, packing, and dispatch operations in modern fulfillment centres.
               </p>
+              <div style="margin-top: 1.25rem; font-size: 0.85rem; font-weight: 700; color: #10B981; display: flex; align-items: center; gap: 0.35rem;">
+                Explore Logistics Shifts &rarr;
+              </div>
             </div>
           </div>
         </div>
@@ -1518,21 +1567,21 @@ function renderEmployersView(container) {
         </div>
 
         <div class="fx-j-list">
-          <div class="fx-j-card" style="--c:#0284C7">
+          <div class="fx-j-card" style="--c:#0284C7" data-img="/internship_hero_bg.jpg">
             <small>Flagship Program (Zero Placement Fee)</small>
             <h3>Host an Intern (Try Before You Hire)</h3>
             <p>Evaluate enthusiastic university graduates for 12 weeks at <strong>zero placement fee</strong>. Assess candidate performance, technical skills, and culture fit before making a permanent job offer.</p>
             <a href="/employers#internship" data-link>Explore Host Program &rarr;</a>
           </div>
 
-          <div class="fx-j-card" style="--c:#10B981">
+          <div class="fx-j-card" style="--c:#10B981" data-img="/employers_hero_bg.jpg">
             <small>Permanent Placement (5%-10% Fee)</small>
             <h3>Direct-Hire Permanent Recruitment</h3>
             <p>Full end-to-end recruitment for junior to senior professionals across IT, Accounting, Engineering, and Business with a 6-month satisfaction replacement guarantee.</p>
             <a href="/employers#staffing" data-link>Explore Staffing &rarr;</a>
           </div>
 
-          <div class="fx-j-card" style="--c:#F59E0B">
+          <div class="fx-j-card" style="--c:#F59E0B" data-img="/casual_jobs_hero_bg.jpg">
             <small>Flexible Workforce (65% On-Hire Markup)</small>
             <h3>On-Hire Temporary &amp; Casual Staffing</h3>
             <p>Flexible casual workforce solutions for hospitality, retail, customer service, warehousing, and admin with full payroll tax, superannuation, and insurance covered.</p>
@@ -1563,28 +1612,28 @@ function renderEmployersView(container) {
       <!-- 4-STEP EMPLOYER WORKFLOW — SCROLL EFFECT (RIGHT STICKY + LEFT CARDS) -->
       <section class="fx-journey fx-rev fx-light section-spider-light">
         <div class="fx-j-list">
-          <div class="fx-j-card" style="--c:#0284C7" data-img="www.studyandwork.com.au/images/home/4.png">
+          <div class="fx-j-card" style="--c:#0284C7" data-img="/contact_hero_bg.jpg">
             <small>01 Vacancy</small>
             <h3>Submit Vacancy</h3>
             <p>Detail your skill requirements, host duration, and supervisor mentor details in under 2 minutes.</p>
             <a href="javascript:void(0)" onclick="openModal('hire')">Submit Role Details &rarr;</a>
           </div>
 
-          <div class="fx-j-card" style="--c:#10B981" data-img="www.studyandwork.com.au/images/home/7.png">
+          <div class="fx-j-card" style="--c:#10B981" data-img="/candidates_hero_bg.jpg">
             <small>02 Shortlist</small>
             <h3>Candidate Shortlist</h3>
             <p>Receive screened candidate profiles within 24-48 hours matching your specific tech stack and culture.</p>
             <a href="javascript:void(0)" onclick="openModal('hire')">Request Candidate Pool &rarr;</a>
           </div>
 
-          <div class="fx-j-card" style="--c:#F59E0B" data-img="www.studyandwork.com.au/images/home/2.png">
+          <div class="fx-j-card" style="--c:#F59E0B" data-img="/www.studyandwork.com.au/images/home/2.png">
             <small>03 Trial</small>
             <h3>Interview &amp; Trial</h3>
             <p>Interview preferred candidates and begin the 12-week host placement evaluation with zero upfront fee.</p>
             <a href="javascript:void(0)" onclick="openModal('hire')">Schedule Interviews &rarr;</a>
           </div>
 
-          <div class="fx-j-card" style="--c:#8B5CF6" data-img="www.studyandwork.com.au/images/home/1.png">
+          <div class="fx-j-card" style="--c:#8B5CF6" data-img="/alumni_hero_bg.jpg">
             <small>04 Conversion</small>
             <h3>Direct Hire Option</h3>
             <p>Retain top performers directly as permanent full-time team members with zero risk after seeing live work output.</p>
@@ -1990,21 +2039,21 @@ function renderEducationProvidersView(container) {
       </div>
 
       <div class="fx-j-list">
-        <div class="fx-j-card" style="--c:#0284C7">
+        <div class="fx-j-card" style="--c:#0284C7" data-img="/education_hero_bg.jpg">
           <small>🎓 Academic Credit</small>
           <h3>Curriculum Placement Integration</h3>
           <p>We embed 12-week professional internships directly into university degree credit requirements, ensuring 100% compliance with Australian higher education standards.</p>
           <a href="javascript:void(0)" onclick="openModal('contact')">Integrate Degrees &rarr;</a>
         </div>
 
-        <div class="fx-j-card" style="--c:#10B981">
+        <div class="fx-j-card" style="--c:#10B981" data-img="/know_your_rights_hero_bg.jpg">
           <small>⚖️ Legal Assurance</small>
           <h3>Fair Work &amp; Legal Compliance</h3>
           <p>All host company placements strictly comply with Section 12 of the Australian Fair Work Act 2009 regarding vocational placements and international student visa conditions.</p>
           <a href="javascript:void(0)" onclick="openModal('contact')">Review Governance &rarr;</a>
         </div>
 
-        <div class="fx-j-card" style="--c:#F59E0B">
+        <div class="fx-j-card" style="--c:#F59E0B" data-img="/www.studyandwork.com.au/images/home/1.png">
           <small>📈 Graduate Outcomes</small>
           <h3>Graduate Employability Uplift</h3>
           <p>Over 85% of placed interns receive permanent employment offers within 3 months of program completion, significantly boosting university QILT graduate outcome metrics.</p>
@@ -2258,78 +2307,103 @@ function renderResourcesView(container) {
       <!-- ROI PILLARS & FINANCIAL ADVANTAGE -->
       <section class="section section-spider-light">
         <div class="container">
-          <div style="text-align: center; max-width: 760px; margin: 0 auto 3rem;">
+          <div style="text-align: center; max-width: 820px; margin: 0 auto 3rem;">
+            <span class="badge-tag" style="background: rgba(2, 132, 199, 0.15); color: var(--color-accent-blue); border-color: rgba(2, 132, 199, 0.3); margin-bottom: 0.75rem;">Strategic Talent Value</span>
             <h2 class="heading-1">Invest in Emerging Talent for Maximum ROI</h2>
             <p class="lead-text" style="margin-top: 0.5rem;">Why hosting university interns and recruiting graduates yields superior retention, innovation, and cost savings for Australian businesses.</p>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
-            <div class="card-3d-elevated card-3d-blue" style="padding: 2rem;">
-              <div style="font-size: 2.25rem; font-weight: 800; color: var(--color-accent-blue); font-family: var(--font-display);">70%</div>
-              <div style="font-weight: 700; color: #0F172A; margin-top: 0.35rem; font-size: 1.05rem;">Recruitment Cost Savings</div>
-              <p style="color: var(--color-slate-600); font-size: 0.9rem; margin-top: 0.5rem; line-height: 1.5;">
-                Eliminate traditional agency fees of 15%-25% by evaluating talent during a 12-week zero-fee trial.
-              </p>
-            </div>
-
-            <div class="card-3d-elevated card-3d-emerald" style="padding: 2rem;">
-              <div style="font-size: 2.25rem; font-weight: 800; color: var(--color-accent-emerald); font-family: var(--font-display);">85%+</div>
-              <div style="font-weight: 700; color: #0F172A; margin-top: 0.35rem; font-size: 1.05rem;">Permanent Hire Conversion</div>
-              <p style="color: var(--color-slate-600); font-size: 0.9rem; margin-top: 0.5rem; line-height: 1.5;">
-                Over 85% of host employers offer ongoing employment to their interns following placement completion.
-              </p>
-            </div>
-
-            <div class="card-3d-elevated card-3d-amber" style="padding: 2rem;">
-              <div style="font-size: 2.25rem; font-weight: 800; color: var(--color-accent-amber); font-family: var(--font-display);">6 Mos</div>
-              <div style="font-weight: 700; color: #0F172A; margin-top: 0.35rem; font-size: 1.05rem;">Replacement Guarantee</div>
-              <p style="color: var(--color-slate-600); font-size: 0.9rem; margin-top: 0.5rem; line-height: 1.5;">
-                Double the industry standard: we provide a full 6-month free replacement guarantee on all permanent placements.
-              </p>
-            </div>
-
-            <div class="card-3d-elevated card-3d-purple" style="padding: 2rem;">
-              <div style="font-size: 2.25rem; font-weight: 800; color: #8b5cf6; font-family: var(--font-display);">3,000+</div>
-              <div style="font-weight: 700; color: #0F172A; margin-top: 0.35rem; font-size: 1.05rem;">Host Employers Since 2007</div>
-              <p style="color: var(--color-slate-600); font-size: 0.9rem; margin-top: 0.5rem; line-height: 1.5;">
-                Trusted by Australian SMEs, ASX-listed corporations, accounting firms, and tech innovators nationwide.
-              </p>
-            </div>
           </div>
 
-          <!-- COMPARATIVE TABLE: TRADITIONAL RECRUITMENT VS STUDY & WORK -->
-          <div class="card-3d-elevated card-3d-blue" style="padding: 2.5rem;">
-            <h3 class="heading-2" style="margin-bottom: 1.25rem; color: #0F172A;">Head-to-Head Comparison: Traditional Agency vs Study & Work</h3>
-            <div style="overflow-x: auto;">
-              <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;">
-                <thead>
-                  <tr style="border-bottom: 2px solid var(--color-slate-200);">
-                    <th style="padding: 1rem; color: var(--color-slate-500); font-weight: 600;">Metric</th>
-                    <th style="padding: 1rem; color: var(--color-slate-500); font-weight: 600;">Traditional Agency</th>
-                    <th style="padding: 1rem; color: var(--color-accent-blue); font-weight: 700;">Study & Work Australia</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr style="border-bottom: 1px solid var(--color-slate-100);">
-                    <td style="padding: 1rem; font-weight: 600;">Upfront Placement Fee</td>
-                    <td style="padding: 1rem; color: #dc2626;">15% – 25% of Annual Salary ($12k–$25k)</td>
-                    <td style="padding: 1rem; color: #16a34a; font-weight: 600;">5% – 10% ($3,500–$7,000) or $0 for 12-wk trial</td>
-                  </tr>
-                  <tr style="border-bottom: 1px solid var(--color-slate-100);">
-                    <td style="padding: 1rem; font-weight: 600;">Trial Evaluation Period</td>
-                    <td style="padding: 1rem; color: var(--color-slate-600);">None (immediate hiring commitment)</td>
-                    <td style="padding: 1rem; color: #16a34a; font-weight: 600;">12 Weeks Zero Cost Trial talent</td>
-                  </tr>
-                  <tr style="border-bottom: 1px solid var(--color-slate-100);">
-                    <td style="padding: 1rem; font-weight: 600;">Satisfaction Guarantee</td>
-                    <td style="padding: 1rem; color: var(--color-slate-600);">3 Months standard</td>
-                    <td style="padding: 1rem; color: #16a34a; font-weight: 600;">6 Months Free Replacement Guarantee</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 1rem; font-weight: 600;">Candidate Loyalty & Retention</td>
-                    <td style="padding: 1rem; color: var(--color-slate-600);">Average 14 months tenure</td>
-                    <td style="padding: 1rem; color: #16a34a; font-weight: 600;">3+ Years average tenure with host employer</td>
-                  </tr>
-                </tbody>
-              </table>
+          <div class="employer-roi-split-layout" style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 2rem; align-items: stretch;">
+            <!-- LEFT COLUMN: 4 VALUE METRICS (2x2 GRID) -->
+            <div class="roi-boxes-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem;">
+              <div class="card-3d-elevated card-3d-blue" style="padding: 1.75rem 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                  <div style="font-size: 2.25rem; font-weight: 800; color: var(--color-accent-blue); font-family: var(--font-display); line-height: 1;">70%</div>
+                  <div style="font-weight: 700; color: #0F172A; margin-top: 0.5rem; font-size: 1rem;">Recruitment Cost Savings</div>
+                  <p style="color: var(--color-slate-600); font-size: 0.85rem; margin-top: 0.5rem; line-height: 1.45;">
+                    Eliminate traditional agency fees of 15%-25% by evaluating talent during a 12-week zero-fee trial.
+                  </p>
+                </div>
+                <div style="margin-top: 1rem; font-size: 0.75rem; font-weight: 700; color: var(--color-accent-blue);">Zero upfront fee &rarr;</div>
+              </div>
+
+              <div class="card-3d-elevated card-3d-emerald" style="padding: 1.75rem 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                  <div style="font-size: 2.25rem; font-weight: 800; color: var(--color-accent-emerald); font-family: var(--font-display); line-height: 1;">85%+</div>
+                  <div style="font-weight: 700; color: #0F172A; margin-top: 0.5rem; font-size: 1rem;">Permanent Hire Conversion</div>
+                  <p style="color: var(--color-slate-600); font-size: 0.85rem; margin-top: 0.5rem; line-height: 1.45;">
+                    Over 85% of host employers offer ongoing employment to their interns following placement completion.
+                  </p>
+                </div>
+                <div style="margin-top: 1rem; font-size: 0.75rem; font-weight: 700; color: var(--color-accent-emerald);">Proven retention &rarr;</div>
+              </div>
+
+              <div class="card-3d-elevated card-3d-amber" style="padding: 1.75rem 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                  <div style="font-size: 2.25rem; font-weight: 800; color: var(--color-accent-amber); font-family: var(--font-display); line-height: 1;">6 Mos</div>
+                  <div style="font-weight: 700; color: #0F172A; margin-top: 0.5rem; font-size: 1rem;">Replacement Guarantee</div>
+                  <p style="color: var(--color-slate-600); font-size: 0.85rem; margin-top: 0.5rem; line-height: 1.45;">
+                    Double the industry standard: we provide a full 6-month free replacement guarantee on all permanent placements.
+                  </p>
+                </div>
+                <div style="margin-top: 1rem; font-size: 0.75rem; font-weight: 700; color: var(--color-accent-amber);">Risk-free protection &rarr;</div>
+              </div>
+
+              <div class="card-3d-elevated card-3d-purple" style="padding: 1.75rem 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                  <div style="font-size: 2.25rem; font-weight: 800; color: #8b5cf6; font-family: var(--font-display); line-height: 1;">3,000+</div>
+                  <div style="font-weight: 700; color: #0F172A; margin-top: 0.5rem; font-size: 1rem;">Host Employers Since 2007</div>
+                  <p style="color: var(--color-slate-600); font-size: 0.85rem; margin-top: 0.5rem; line-height: 1.45;">
+                    Trusted by Australian SMEs, ASX-listed corporations, accounting firms, and tech innovators nationwide.
+                  </p>
+                </div>
+                <div style="margin-top: 1rem; font-size: 0.75rem; font-weight: 700; color: #8b5cf6;">National network &rarr;</div>
+              </div>
+            </div>
+
+            <!-- RIGHT COLUMN: COMPARATIVE TABLE -->
+            <div class="card-3d-elevated card-3d-blue" style="padding: 2.25rem; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <span class="badge-tag" style="background: rgba(2, 132, 199, 0.15); color: var(--color-accent-blue); border-color: rgba(2, 132, 199, 0.3); margin-bottom: 0.75rem;">Agency Comparison</span>
+                <h3 class="heading-2" style="margin-bottom: 1.25rem; color: #0F172A; font-size: 1.35rem;">Head-to-Head: Traditional Agency vs Study &amp; Work</h3>
+                <div style="overflow-x: auto;">
+                  <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem;">
+                    <thead>
+                      <tr style="border-bottom: 2px solid var(--color-slate-200);">
+                        <th style="padding: 0.85rem 0.5rem; color: var(--color-slate-500); font-weight: 600;">Metric</th>
+                        <th style="padding: 0.85rem 0.5rem; color: var(--color-slate-500); font-weight: 600;">Traditional Agency</th>
+                        <th style="padding: 0.85rem 0.5rem; color: var(--color-accent-blue); font-weight: 700;">Study &amp; Work Australia</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr style="border-bottom: 1px solid var(--color-slate-100);">
+                        <td style="padding: 0.85rem 0.5rem; font-weight: 600; color: #0F172A;">Upfront Placement Fee</td>
+                        <td style="padding: 0.85rem 0.5rem; color: #dc2626; font-size: 0.85rem;">15% – 25% ($12k–$25k)</td>
+                        <td style="padding: 0.85rem 0.5rem; color: #16a34a; font-weight: 700; font-size: 0.85rem;">5% – 10% ($3,500–$7,000) or $0 for 12-wk trial</td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid var(--color-slate-100);">
+                        <td style="padding: 0.85rem 0.5rem; font-weight: 600; color: #0F172A;">Trial Evaluation Period</td>
+                        <td style="padding: 0.85rem 0.5rem; color: var(--color-slate-600); font-size: 0.85rem;">None (immediate commitment)</td>
+                        <td style="padding: 0.85rem 0.5rem; color: #16a34a; font-weight: 700; font-size: 0.85rem;">12 Weeks Zero Cost Trial talent</td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid var(--color-slate-100);">
+                        <td style="padding: 0.85rem 0.5rem; font-weight: 600; color: #0F172A;">Satisfaction Guarantee</td>
+                        <td style="padding: 0.85rem 0.5rem; color: var(--color-slate-600); font-size: 0.85rem;">3 Months standard</td>
+                        <td style="padding: 0.85rem 0.5rem; color: #16a34a; font-weight: 700; font-size: 0.85rem;">6 Months Free Replacement Guarantee</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 0.85rem 0.5rem; font-weight: 600; color: #0F172A;">Retention Tenure</td>
+                        <td style="padding: 0.85rem 0.5rem; color: var(--color-slate-600); font-size: 0.85rem;">Average 14 months tenure</td>
+                        <td style="padding: 0.85rem 0.5rem; color: #16a34a; font-weight: 700; font-size: 0.85rem;">3+ Years average host employer tenure</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                <button onclick="openModal('hire')" class="btn btn-primary" style="padding: 0.65rem 1.25rem; font-size: 0.85rem;">Host an Intern at Zero Cost &rarr;</button>
+                <button onclick="openModal('consultation')" class="btn btn-secondary" style="padding: 0.65rem 1.25rem; font-size: 0.85rem;">Employer Cost Calculator &rarr;</button>
+              </div>
             </div>
           </div>
         </div>
@@ -2364,36 +2438,124 @@ function renderResourcesView(container) {
     <div id="skilled-migrants" class="target-anchor-section">
       <!-- ADVOCACY ARTICLE CONTENT -->
       <section class="section section-spider-light">
-        <div class="container" style="max-width: 860px;">
-          <div style="text-align: center; max-width: 760px; margin: 0 auto 3rem;">
+        <div class="container">
+          <div style="text-align: center; max-width: 820px; margin: 0 auto 3rem;">
+            <span class="badge-tag" style="background: rgba(217, 119, 6, 0.15); color: #B45309; border-color: rgba(217, 119, 6, 0.3); margin-bottom: 0.75rem;">National Advocacy &amp; Mobility</span>
             <h2 class="heading-1">Skilled Migrants Deserve a Fair Go</h2>
             <p class="lead-text" style="margin-top: 0.5rem;">Unlocking Australia's immense overseas-qualified talent pool by breaking down the "no local experience" barrier.</p>
           </div>
-          <div class="card-3d-elevated card-3d-amber" style="padding: 3rem; line-height: 1.8; font-size: 1.05rem; color: var(--color-slate-700);">
-            <p style="margin-bottom: 1.5rem; font-size: 1.15rem; font-weight: 500; color: var(--color-ink);">
-              Australia has long benefited from the drive, intelligence, and ambition of overseas-qualified professionals. However, thousands of qualified accountants, software engineers, data analysts, and marketers face the classic catch-22: <strong>"No local Australian experience, no job; no job, no local experience."</strong>
-            </p>
 
-            <h3 class="heading-2" style="margin: 2rem 0 1rem; color: var(--color-ink);">Overcoming The "Local Experience" Barrier</h3>
-            <p style="margin-bottom: 1.5rem;">
-              When employers ask for Australian workplace experience, they are rarely questioning academic capability or technical competence. Instead, they are seeking assurance regarding cultural communication, collaborative team dynamics, and familiarity with Australian regulatory standards.
-            </p>
-
-            <div style="background: var(--color-paper); border-left: 4px solid var(--color-accent-amber); padding: 1.5rem; border-radius: var(--radius-sm); margin: 2rem 0;">
-              <h4 style="font-weight: 700; color: var(--color-ink); margin-bottom: 0.5rem;">Key Takeaway for Australian Employers:</h4>
-              <p style="margin: 0; color: var(--color-slate-600); font-size: 0.95rem;">
-                Overseas-qualified professionals bring global perspectives, multilingual communication skills, and proven resilience. By offering a structured 12-week host placement or direct graduate role, companies gain dedicated, high-performing talent at significant cost savings.
+          <div class="skilled-migrants-grid" style="display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 2rem; align-items: start;">
+            <!-- LEFT COLUMN: ADVOCACY ARTICLE -->
+            <div class="card-3d-elevated card-3d-amber" style="padding: 2.75rem; line-height: 1.8; font-size: 1rem; color: var(--color-slate-700);">
+              <span class="badge-tag" style="background: rgba(245, 158, 11, 0.15); color: #B45309; margin-bottom: 1rem; display: inline-block;">Industry Policy Briefing</span>
+              <p style="margin-bottom: 1.5rem; font-size: 1.1rem; font-weight: 600; color: var(--color-ink); line-height: 1.6;">
+                Australia has long benefited from the drive, intelligence, and ambition of overseas-qualified professionals. However, thousands of qualified accountants, software engineers, data analysts, and marketers face the classic catch-22: <strong>&ldquo;No local Australian experience, no job; no job, no local experience.&rdquo;</strong>
               </p>
+
+              <h3 class="heading-2" style="margin: 1.75rem 0 0.85rem; color: var(--color-ink); font-size: 1.35rem;">Overcoming The &ldquo;Local Experience&rdquo; Barrier</h3>
+              <p style="margin-bottom: 1.25rem;">
+                When employers ask for Australian workplace experience, they are rarely questioning academic capability or technical competence. Instead, they are seeking assurance regarding cultural communication, collaborative team dynamics, and familiarity with Australian regulatory standards.
+              </p>
+
+              <div style="background: var(--color-paper); border-left: 4px solid var(--color-accent-amber); padding: 1.25rem 1.5rem; border-radius: var(--radius-sm); margin: 1.5rem 0;">
+                <h4 style="font-weight: 700; color: var(--color-ink); margin-bottom: 0.4rem; font-size: 1rem;">Key Takeaway for Australian Employers:</h4>
+                <p style="margin: 0; color: var(--color-slate-600); font-size: 0.92rem; line-height: 1.55;">
+                  Overseas-qualified professionals bring global perspectives, multilingual communication skills, and proven resilience. By offering a structured 12-week host placement or direct graduate role, companies gain dedicated, high-performing talent at significant cost savings.
+                </p>
+              </div>
+
+              <h3 class="heading-2" style="margin: 1.75rem 0 0.85rem; color: var(--color-ink); font-size: 1.35rem;">The Study &amp; Work Solution</h3>
+              <p style="margin-bottom: 1.5rem;">
+                Since 2007, Study &amp; Work Australia has broken down this barrier for over 8,000 candidates by connecting them with forward-thinking host companies across Sydney, Melbourne, Brisbane, and Perth. Our placements provide the verified Australian local reference and commercial portfolio needed to launch lasting professional careers.
+              </p>
+
+              <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                <button onclick="openModal('work')" class="btn btn-primary" style="background: var(--color-accent-amber); border-color: var(--color-accent-amber); color: #0F172A; font-weight: 700;">Apply as a Skilled Migrant &rarr;</button>
+                <button onclick="openModal('hire')" class="btn btn-secondary">Hire Skilled Migrant Talent &rarr;</button>
+              </div>
             </div>
 
-            <h3 class="heading-2" style="margin: 2rem 0 1rem; color: var(--color-ink);">The Study & Work Solution</h3>
-            <p style="margin-bottom: 1.5rem;">
-              Since 2007, Study & Work Australia has broken down this barrier for over 8,000 candidates by connecting them with forward-thinking host companies across Sydney, Melbourne, Brisbane, and Perth. Our placements provide the verified Australian local reference and commercial portfolio needed to launch lasting professional careers.
-            </p>
+            <!-- RIGHT COLUMN: SKILLED MIGRANT CAREER MOBILITY HUB (RICH FILLER) -->
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+              <!-- PANEL 1: MIGRANT MOBILITY STATS -->
+              <div class="card-3d-elevated card-3d-blue" style="padding: 2rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
+                  <h4 style="font-size: 1.15rem; font-weight: 800; color: #0C4A6E; margin: 0;">Migrant Mobility Benchmarks</h4>
+                  <span style="background: rgba(2, 132, 199, 0.15); color: #0284C7; font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 999px;">Since 2007</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                  <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 1rem; border-radius: 12px; text-align: center;">
+                    <div style="font-size: 1.75rem; font-weight: 800; color: #0284C7; font-family: var(--font-display);">8,000+</div>
+                    <div style="font-size: 0.78rem; font-weight: 600; color: #475569; margin-top: 0.25rem;">Placed Migrants</div>
+                  </div>
+                  <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 1rem; border-radius: 12px; text-align: center;">
+                    <div style="font-size: 1.75rem; font-weight: 800; color: #10B981; font-family: var(--font-display);">85%+</div>
+                    <div style="font-size: 0.78rem; font-weight: 600; color: #475569; margin-top: 0.25rem;">Permanent Conversion</div>
+                  </div>
+                  <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 1rem; border-radius: 12px; text-align: center;">
+                    <div style="font-size: 1.75rem; font-weight: 800; color: #F59E0B; font-family: var(--font-display);">100%</div>
+                    <div style="font-size: 0.78rem; font-weight: 600; color: #475569; margin-top: 0.25rem;">VEVO Visa Verified</div>
+                  </div>
+                  <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 1rem; border-radius: 12px; text-align: center;">
+                    <div style="font-size: 1.75rem; font-weight: 800; color: #8B5CF6; font-family: var(--font-display);">19+ Yrs</div>
+                    <div style="font-size: 0.78rem; font-weight: 600; color: #475569; margin-top: 0.25rem;">Industry Leadership</div>
+                  </div>
+                </div>
+              </div>
 
-            <div style="margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap;">
-              <button onclick="openModal('work')" class="btn btn-primary" style="background: var(--color-accent-amber); border-color: var(--color-accent-amber); color: #0F172A; font-weight: 700;">Apply as a Skilled Migrant &rarr;</button>
-              <button onclick="openModal('hire')" class="btn btn-secondary">Hire Skilled Migrant Talent &rarr;</button>
+              <!-- PANEL 2: 4-STAGE ACCELERATOR PATHWAY -->
+              <div class="card-3d-elevated card-3d-emerald" style="padding: 2rem;">
+                <h4 style="font-size: 1.15rem; font-weight: 800; color: #064E3B; margin: 0 0 1.25rem;">4-Step Migrant Career Accelerator</h4>
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                  <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                    <div style="width: 32px; height: 32px; border-radius: 50%; background: rgba(16, 185, 129, 0.2); color: #059669; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.85rem;">1</div>
+                    <div>
+                      <div style="font-weight: 700; color: #0F172A; font-size: 0.95rem;">Degree &amp; VEVO Visa Verification</div>
+                      <div style="font-size: 0.82rem; color: #64748B; margin-top: 0.2rem;">Free qualification assessment and legal Australian work rights audit (485, 482, 189, 190 visas).</div>
+                    </div>
+                  </div>
+                  <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                    <div style="width: 32px; height: 32px; border-radius: 50%; background: rgba(16, 185, 129, 0.2); color: #059669; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.85rem;">2</div>
+                    <div>
+                      <div style="font-weight: 700; color: #0F172A; font-size: 0.95rem;">Australian Workplace CV &amp; Culture</div>
+                      <div style="font-size: 0.82rem; color: #64748B; margin-top: 0.2rem;">Restructure overseas experience to highlight transferable competencies in local corporate formats.</div>
+                    </div>
+                  </div>
+                  <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                    <div style="width: 32px; height: 32px; border-radius: 50%; background: rgba(16, 185, 129, 0.2); color: #059669; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.85rem;">3</div>
+                    <div>
+                      <div style="font-weight: 700; color: #0F172A; font-size: 0.95rem;">12-Week Vetted Host Placement</div>
+                      <div style="font-size: 0.82rem; color: #64748B; margin-top: 0.2rem;">Hands-on commercial engagement with leading Australian companies with comprehensive insurance.</div>
+                    </div>
+                  </div>
+                  <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                    <div style="width: 32px; height: 32px; border-radius: 50%; background: rgba(16, 185, 129, 0.2); color: #059669; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.85rem;">4</div>
+                    <div>
+                      <div style="font-weight: 700; color: #0F172A; font-size: 0.95rem;">Local Reference &amp; PR Pathway</div>
+                      <div style="font-size: 0.82rem; color: #64748B; margin-top: 0.2rem;">Gain verified Australian managerial references and permanent employment contract offers.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- PANEL 3: ALUMNI CASE TESTIMONIAL -->
+              <div style="background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%); border: 1px solid rgba(255, 255, 255, 0.12); padding: 1.75rem; border-radius: var(--radius-lg); color: #fff;">
+                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem;">
+                  <img src="/www.studyandwork.com.au/images/home/1.png" alt="Placed Skilled Migrant" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid #38BDF8;">
+                  <div>
+                    <div style="font-weight: 700; font-size: 0.95rem; color: #F8FAFC;">Priya Sharma</div>
+                    <div style="font-size: 0.75rem; color: #94A3B8;">Senior Tax Consultant &bull; Sydney ASX Firm</div>
+                  </div>
+                </div>
+                <p style="font-size: 0.88rem; color: #CBD5E1; line-height: 1.55; margin: 0; font-style: italic;">
+                  &ldquo;I had 4 years of overseas finance experience but got rejected for 6 months because I didn't have local Australian experience. Study &amp; Work placed me in a 12-week host role that converted into a full-time $85k package with visa nomination.&rdquo;
+                </p>
+                <div style="margin-top: 1rem; display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; color: #38BDF8;">
+                  <span>Verified Placement 2025</span>
+                  <a href="/our-alumni" data-link style="color: #38BDF8; font-weight: 700; text-decoration: underline;">Read More Stories &rarr;</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -2993,36 +3155,64 @@ function renderCasualJobsView(container) {
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
-          <div style="background: var(--color-surface); border: 1px solid var(--color-slate-200); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-card);">
-            <div style="font-size: 2rem; margin-bottom: 0.75rem;">☕</div>
-            <h3 class="heading-3">Hospitality & Barista</h3>
-            <p style="color: var(--color-slate-600); margin-top: 0.5rem; line-height: 1.6;">
+          <!-- CARD 1: HOSPITALITY & BARISTA (WARM AMBER) -->
+          <div class="card-3d-elevated card-3d-amber" style="background: linear-gradient(180deg, #FFFFFF 0%, #FFFBEB 100%); border-top: 5px solid #F59E0B; padding: 2.25rem 2rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-card);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+              <div style="width: 52px; height: 52px; border-radius: 14px; background: rgba(245, 158, 11, 0.15); display: flex; align-items: center; justify-content: center; font-size: 1.75rem; border: 1px solid rgba(245, 158, 11, 0.3);">☕</div>
+              <span style="background: rgba(245, 158, 11, 0.15); color: #B45309; font-size: 0.75rem; font-weight: 700; padding: 0.3rem 0.75rem; border-radius: 999px; letter-spacing: 0.02em;">Award Wages + 25% Loading</span>
+            </div>
+            <h3 class="heading-3" style="color: #92400E; margin-bottom: 0.5rem; font-size: 1.25rem;">Hospitality &amp; Barista</h3>
+            <p style="color: #475569; margin-top: 0.5rem; line-height: 1.6; font-size: 0.95rem;">
               Specialty cafes, hotel dining, banquet catering, and licensed venues. Award wages with 25% casual loading and weekend penalty rates.
             </p>
+            <div style="margin-top: 1.25rem; font-size: 0.85rem; font-weight: 700; color: #D97706; display: flex; align-items: center; gap: 0.35rem;">
+              Explore Cafe &amp; Dining Shifts &rarr;
+            </div>
           </div>
 
-          <div style="background: var(--color-surface); border: 1px solid var(--color-slate-200); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-card);">
-            <div style="font-size: 2rem; margin-bottom: 0.75rem;">🛍️</div>
-            <h3 class="heading-3">Retail & Customer Experience</h3>
-            <p style="color: var(--color-slate-600); margin-top: 0.5rem; line-height: 1.6;">
+          <!-- CARD 2: RETAIL & CUSTOMER EXPERIENCE (VIVID SKY BLUE) -->
+          <div class="card-3d-elevated card-3d-blue" style="background: linear-gradient(180deg, #FFFFFF 0%, #F0F9FF 100%); border-top: 5px solid #0284C7; padding: 2.25rem 2rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-card);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+              <div style="width: 52px; height: 52px; border-radius: 14px; background: rgba(2, 132, 199, 0.15); display: flex; align-items: center; justify-content: center; font-size: 1.75rem; border: 1px solid rgba(2, 132, 199, 0.3);">🛍️</div>
+              <span style="background: rgba(2, 132, 199, 0.15); color: #0369A1; font-size: 0.75rem; font-weight: 700; padding: 0.3rem 0.75rem; border-radius: 999px; letter-spacing: 0.02em;">Flexible Shopping Centres</span>
+            </div>
+            <h3 class="heading-3" style="color: #0369A1; margin-bottom: 0.5rem; font-size: 1.25rem;">Retail &amp; Customer Experience</h3>
+            <p style="color: #475569; margin-top: 0.5rem; line-height: 1.6; font-size: 0.95rem;">
               Fashion boutiques, electronics stores, and supermarkets across Sydney, Melbourne, and Brisbane retail centres.
             </p>
+            <div style="margin-top: 1.25rem; font-size: 0.85rem; font-weight: 700; color: #0284C7; display: flex; align-items: center; gap: 0.35rem;">
+              Explore Store &amp; Sales Roles &rarr;
+            </div>
           </div>
 
-          <div style="background: var(--color-surface); border: 1px solid var(--color-slate-200); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-card);">
-            <div style="font-size: 2rem; margin-bottom: 0.75rem;">🎪</div>
-            <h3 class="heading-3">Event Operations & Venues</h3>
-            <p style="color: var(--color-slate-600); margin-top: 0.5rem; line-height: 1.6;">
+          <!-- CARD 3: EVENT OPERATIONS & VENUES (ROYAL PURPLE) -->
+          <div class="card-3d-elevated card-3d-purple" style="background: linear-gradient(180deg, #FFFFFF 0%, #FAF5FF 100%); border-top: 5px solid #8B5CF6; padding: 2.25rem 2rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-card);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+              <div style="width: 52px; height: 52px; border-radius: 14px; background: rgba(139, 92, 246, 0.15); display: flex; align-items: center; justify-content: center; font-size: 1.75rem; border: 1px solid rgba(139, 92, 246, 0.3);">🎪</div>
+              <span style="background: rgba(139, 92, 246, 0.15); color: #6D28D9; font-size: 0.75rem; font-weight: 700; padding: 0.3rem 0.75rem; border-radius: 999px; letter-spacing: 0.02em;">Stadiums &amp; Concerts</span>
+            </div>
+            <h3 class="heading-3" style="color: #6D28D9; margin-bottom: 0.5rem; font-size: 1.25rem;">Event Operations &amp; Venues</h3>
+            <p style="color: #475569; margin-top: 0.5rem; line-height: 1.6; font-size: 0.95rem;">
               Concerts, corporate conferences, sporting stadiums, and trade exhibitions. Highly flexible weekend shifts.
             </p>
+            <div style="margin-top: 1.25rem; font-size: 0.85rem; font-weight: 700; color: #8B5CF6; display: flex; align-items: center; gap: 0.35rem;">
+              Explore Weekend Shifts &rarr;
+            </div>
           </div>
 
-          <div style="background: var(--color-surface); border: 1px solid var(--color-slate-200); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-card);">
-            <div style="font-size: 2rem; margin-bottom: 0.75rem;">📦</div>
-            <h3 class="heading-3">Warehousing & Logistics</h3>
-            <p style="color: var(--color-slate-600); margin-top: 0.5rem; line-height: 1.6;">
+          <!-- CARD 4: WAREHOUSING & LOGISTICS (EMERALD GREEN) -->
+          <div class="card-3d-elevated card-3d-emerald" style="background: linear-gradient(180deg, #FFFFFF 0%, #F0FDF4 100%); border-top: 5px solid #10B981; padding: 2.25rem 2rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-card);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+              <div style="width: 52px; height: 52px; border-radius: 14px; background: rgba(16, 185, 129, 0.15); display: flex; align-items: center; justify-content: center; font-size: 1.75rem; border: 1px solid rgba(16, 185, 129, 0.3);">📦</div>
+              <span style="background: rgba(16, 185, 129, 0.15); color: #047857; font-size: 0.75rem; font-weight: 700; padding: 0.3rem 0.75rem; border-radius: 999px; letter-spacing: 0.02em;">High Hourly Rates</span>
+            </div>
+            <h3 class="heading-3" style="color: #065F46; margin-bottom: 0.5rem; font-size: 1.25rem;">Warehousing &amp; Logistics</h3>
+            <p style="color: #475569; margin-top: 0.5rem; line-height: 1.6; font-size: 0.95rem;">
               Inventory management, picking, packing, and dispatch operations in modern fulfillment centres.
             </p>
+            <div style="margin-top: 1.25rem; font-size: 0.85rem; font-weight: 700; color: #10B981; display: flex; align-items: center; gap: 0.35rem;">
+              Explore Logistics Shifts &rarr;
+            </div>
           </div>
         </div>
       </div>

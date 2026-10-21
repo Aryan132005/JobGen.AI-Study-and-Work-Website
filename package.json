@@ -1,0 +1,19 @@
+{
+  "name": "jobgen-ai-study-and-work-website",
+  "version": "1.0.0",
+  "description": "Study & Work Australia - Leading Student Internship, Graduate Placement & Staffing Platform",
+  "private": true,
+  "scripts": {
+    "build": "echo 'Static build complete'",
+    "start": "python server.py"
+  },
+  "keywords": [
+    "study-and-work",
+    "australia",
+    "internships",
+    "graduate-jobs",
+    "recruitment"
+  ],
+  "author": "Study & Work Australia",
+  "license": "UNLICENSED"
+}

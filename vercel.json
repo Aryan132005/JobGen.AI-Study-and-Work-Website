@@ -1,0 +1,27 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Accept-Ranges", "value": "bytes" }
+      ]
+    },
+    {
+      "source": "/(.*)\\.(mp4|webm)",
+      "headers": [
+        { "key": "Content-Type", "value": "video/mp4" },
+        { "key": "Accept-Ranges", "value": "bytes" }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/((?!.*\\.[\\w]+$).*)",
+      "destination": "/index.html"
+    }
+  ]
+}

@@ -1,6 +1,8 @@
 # Ignore files exceeding GitHub 100MB limit
 pj.mp4
 **/pj.mp4
+*.zip
+**/*.zip
 
 # Cache and Temp Files
 hts-cache/

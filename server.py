@@ -44,7 +44,21 @@ class RangeHTTPRequestHandler(SimpleHTTPRequestHandler):
                           self.log_date_time_string(),
                           format%args))
 
+    def do_GET(self):
+        if self.path in ('/healthz', '/ping', '/health'):
+            self.send_response(HTTPStatus.OK)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(b'{"status":"ok","uptime":"alive"}\n')
+            return
+        super().do_GET()
+
     def send_head(self):
+        if self.path in ('/healthz', '/ping', '/health'):
+            self.send_response(HTTPStatus.OK)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            return None
         path = self.translate_path(self.path)
         f = None
         if os.path.isdir(path):
@@ -129,10 +143,40 @@ class QuietHTTPServer(HTTPServer):
         # Ignore client disconnects when video seeks or buffers
         pass
 
+def start_keep_alive():
+    """Background thread that sends a periodic ping to keep the Render free-tier instance awake."""
+    import threading
+    import time
+    import urllib.request
+
+    external_url = os.environ.get('RENDER_EXTERNAL_URL') or os.environ.get('KEEP_ALIVE_URL')
+    if not external_url and os.environ.get('RENDER'):
+        external_url = 'https://study-and-work-australia.onrender.com'
+    if not external_url:
+        return
+
+    ping_url = f"{external_url.rstrip('/')}/healthz"
+
+    def ping_loop():
+        time.sleep(120)
+        while True:
+            try:
+                req = urllib.request.Request(ping_url, headers={'User-Agent': 'StudyAndWorkKeepAlive/1.0'})
+                with urllib.request.urlopen(req, timeout=15):
+                    pass
+            except Exception:
+                pass
+            time.sleep(540)
+
+    t = threading.Thread(target=ping_loop, daemon=True)
+    t.start()
+    print(f"Keep-alive monitor activated for: {ping_url}")
+
 def run():
     server_address = ('', PORT)
     httpd = QuietHTTPServer(server_address, RangeHTTPRequestHandler)
     print(f"Serving HTTP with Byte-Range seeking support on port {PORT} (http://localhost:{PORT}/)...")
+    start_keep_alive()
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:

@@ -2,29 +2,44 @@
 # Docs: https://render.com/docs/blueprint-spec
 
 services:
-  # Option 1: Python Web Service (Runs server.py with custom Byte-Range video streaming & SPA fallback)
+  # Primary: Render Static Site (Edge CDN hosting — NEVER sleeps, 0ms instant loading, no cold start)
   - type: web
     name: study-and-work-australia
-    runtime: python
+    runtime: static
     plan: free
-    region: oregon
-    buildCommand: pip install -r requirements.txt
-    startCommand: python server.py
-    envVars:
-      - key: PYTHON_VERSION
-        value: 3.11.8
-      - key: PORT
-        value: 10000
+    buildCommand: ""
+    staticPublishPath: .
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=0, must-revalidate
+      - path: /styles.css*
+        name: Cache-Control
+        value: public, max-age=0, must-revalidate
+      - path: /app.js*
+        name: Cache-Control
+        value: public, max-age=0, must-revalidate
+      - path: /*.mp4
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /www.studyandwork.com.au/*
+        name: Cache-Control
+        value: public, max-age=86400
 
-  # Option 2: Render Static Site (Alternative: If you want 100% free CDN hosting without spin-down sleep)
-  # To use this instead, uncomment below and comment out the Python web service above:
+  # Alternative: Python Web Service (Includes automated keep-alive loop in server.py)
   # - type: web
-  #   name: study-and-work-australia-static
-  #   runtime: static
+  #   name: study-and-work-australia-py
+  #   runtime: python
   #   plan: free
-  #   buildCommand: ""
-  #   staticPublishPath: .
-  #   routes:
-  #     - type: rewrite
-  #       source: /*
-  #       destination: /index.html
+  #   region: oregon
+  #   buildCommand: pip install -r requirements.txt
+  #   startCommand: python server.py
+  #   envVars:
+  #     - key: PYTHON_VERSION
+  #       value: 3.11.8
+  #     - key: PORT
+  #       value: 10000

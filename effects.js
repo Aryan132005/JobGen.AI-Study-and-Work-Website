@@ -102,13 +102,17 @@
     ];
 
     // Ensure .fx-topic-showcase exists on sticky side (image & pictures in topic name area)
+    var firstCardImg = cards[0] && cards[0].dataset.img ? cards[0].dataset.img : topicPresets[0].img;
+    if (firstCardImg && !firstCardImg.startsWith('/') && !firstCardImg.startsWith('http')) {
+      firstCardImg = '/' + firstCardImg;
+    }
     var showcase = stickySide ? stickySide.querySelector('.fx-topic-showcase') : null;
     if (stickySide && !showcase) {
       showcase = document.createElement('div');
       showcase.className = 'fx-topic-showcase';
       showcase.innerHTML = `
         <div class="fx-topic-preview-img-wrap">
-          <img class="fx-topic-img" src="${topicPresets[0].img}" alt="Active Topic" loading="lazy">
+          <img class="fx-topic-img" src="${firstCardImg}" alt="Active Topic" loading="lazy" data-active-src="${firstCardImg}">
           <div class="fx-topic-badge-overlay">
             <span class="fx-topic-num-pill">${topicPresets[0].num}</span>
             <span class="fx-topic-status-pill">${topicPresets[0].tag}</span>
@@ -167,12 +171,17 @@
 
         if (imgEl) {
           var targetImg = activeCard.dataset.img || preset.img;
-          if (imgEl.src !== targetImg && !imgEl.src.endsWith(targetImg)) {
-            imgEl.style.opacity = '0.3';
+          if (targetImg && !targetImg.startsWith('/') && !targetImg.startsWith('http')) {
+            targetImg = '/' + targetImg;
+          }
+          var currentActive = imgEl.getAttribute('data-active-src');
+          if (currentActive !== targetImg) {
+            imgEl.setAttribute('data-active-src', targetImg);
+            imgEl.style.opacity = '0.2';
+            imgEl.src = targetImg;
             setTimeout(function () {
-              imgEl.src = targetImg;
               imgEl.style.opacity = '1';
-            }, 120);
+            }, 90);
           }
         }
         if (numEl) numEl.textContent = (targetIdx + 1 < 10 ? '0' : '') + (targetIdx + 1);
