@@ -1,0 +1,392 @@
+/* ==========================================================================
+   FILE 1: solutions-tabs.css (Study & Work Australia - Complete Solutions Suite)
+   Full superset supporting both Employers and Candidates Tab Systems
+   ========================================================================== */
+
+.sw {
+  --sw-shape: polygon(0 0, calc(100% - 34px) 0, 100% 50%, calc(100% - 34px) 100%, 0 100%, 26px 50%);
+  --sw-g1: #D9C690;
+  --sw-g2: #B99C5F;
+  --sw-edge: #7B6838;
+  --sw-ink: #0B192C;
+  --sw-mute: #475569;
+  --sw-line: rgba(11, 25, 44, .12);
+  --sw-card: #fff;
+  display: grid;
+  grid-template-columns: minmax(340px, 440px) minmax(0, 1fr);
+  gap: 3.5vw;
+  padding: 10vh 5vw;
+  color: var(--sw-ink);
+  position: relative;
+  overflow: visible;
+  /* Bubble background per user directive: "Is page me background niche wale page ka bubble wala background dena hai vo de dena code wala mat dena" */
+  background: radial-gradient(circle at 85% 15%, rgba(2, 132, 199, 0.08) 0%, transparent 45%),
+              radial-gradient(circle at 15% 85%, rgba(139, 92, 246, 0.06) 0%, transparent 45%),
+              linear-gradient(180deg, #F8FAFC 0%, #EEF2F6 50%, #E2E8F0 100%);
+}
+
+.sw-tabs {
+  position: sticky;
+  top: 12vh;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  z-index: 10;
+}
+
+.sw-tab {
+  position: relative;
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  opacity: .72;
+  filter: saturate(.4);
+  transition: transform .35s cubic-bezier(.2, .7, .2, 1), opacity .3s, filter .3s;
+}
+
+.sw-tab::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--sw-edge);
+  clip-path: var(--sw-shape);
+  transform: translate(6px, 7px);
+}
+
+.sw-face {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 104px;
+  padding: 24px 70px 24px 56px;
+  background: linear-gradient(180deg, var(--sw-g1), var(--sw-g2));
+  color: #1B1507;
+  clip-path: var(--sw-shape);
+  font: 600 17px/1.25 "Space Grotesk", Inter, system-ui, sans-serif;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.sw-face b {
+  opacity: .55;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.sw-face i {
+  font-style: normal;
+  font-size: 24px;
+}
+
+.sw-face span {
+  flex: 1;
+}
+
+.sw-tab:hover {
+  transform: translateX(6px);
+  opacity: 1;
+}
+
+.sw-tab.sw-on {
+  transform: translateX(20px);
+  opacity: 1;
+  filter: none;
+}
+
+.sw-tab:focus-visible {
+  outline: 2px solid var(--sw-g2);
+  outline-offset: 6px;
+}
+
+.sw-panel {
+  animation: sw-in .55s cubic-bezier(.2, .7, .2, 1);
+}
+
+.sw-stage {
+  container-type: inline-size;
+  min-width: 0;
+}
+
+.sw-panel h2 {
+  font: 800 clamp(24px, 2.6vw, 36px)/1.1 Outfit, system-ui, sans-serif;
+  letter-spacing: -.02em;
+  max-width: 24em;
+  color: #0B192C;
+}
+
+.sw-lead {
+  color: var(--sw-mute);
+  font-size: 15.5px;
+  max-width: 46em;
+  margin-top: 10px;
+  line-height: 1.6;
+}
+
+.sw-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-top: 26px;
+}
+
+.sw-grid.sw-n4 {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 26px !important;
+}
+
+@media (max-width: 640px) {
+  .sw-grid.sw-n4 {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+}
+
+.sw-grid.sw-n3 {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 24px !important;
+}
+
+@media (max-width: 900px) {
+  .sw-grid.sw-n3 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.sw-grid.sw-n4 .sw-card {
+  padding: 34px 28px 30px !important;
+  min-height: 210px !important;
+  border-radius: 20px !important;
+  box-shadow: 0 14px 32px -12px rgba(11, 25, 44, 0.16) !important;
+}
+
+.sw-grid.sw-n4 .sw-card h3 {
+  font-size: 1.35rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 0.75rem !important;
+  line-height: 1.25 !important;
+}
+
+.sw-grid.sw-n4 .sw-card p {
+  font-size: 1.02rem !important;
+  line-height: 1.65 !important;
+}
+
+.sw-grid.sw-n4 .sw-ic {
+  font-size: 2.25rem !important;
+  margin-bottom: 0.85rem !important;
+}
+
+.sw-card {
+  --c: #0284C7;
+  position: relative;
+  overflow: hidden;
+  background: var(--sw-card);
+  border: 1px solid var(--sw-line);
+  border-radius: 16px;
+  padding: 22px 18px 20px;
+  box-shadow: 0 10px 24px -16px rgba(11, 25, 44, .28);
+  animation: sw-up .6s cubic-bezier(.2, .7, .2, 1) both;
+  animation-delay: calc(var(--i) * 90ms + 120ms);
+  transition: transform .3s, box-shadow .3s, border-color .3s;
+}
+
+.sw-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 4px;
+  background: var(--c);
+}
+
+.sw-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--c);
+  box-shadow: 0 22px 44px -18px var(--c);
+}
+
+.sw-ic {
+  font-size: 26px;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.sw-card small {
+  display: block;
+  color: var(--c);
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  font-size: 11px;
+  margin-bottom: 8px;
+}
+
+.sw-card h3 {
+  font: 600 18px/1.2 Outfit, system-ui, sans-serif;
+  margin-bottom: 8px;
+  color: #0B192C;
+}
+
+.sw-card p {
+  color: var(--sw-mute);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.sw-note {
+  margin-top: 14px;
+  padding: 11px 12px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--sw-mute);
+  background: color-mix(in srgb, var(--c) 12%, transparent);
+}
+
+.sw-note b {
+  color: var(--c);
+}
+
+/* Rich Cards additions from PDF Page 9 (Candidates & Extended features) */
+.sw-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.sw-top .sw-ic {
+  margin-bottom: 0;
+}
+
+.sw-badge {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.3;
+  padding: 6px 10px;
+  border-radius: 99px;
+  color: var(--c);
+  background: color-mix(in srgb, var(--c) 14%, transparent);
+}
+
+.sw-link {
+  display: inline-block;
+  margin-top: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c);
+  text-decoration: none;
+}
+
+.sw-link:hover {
+  text-decoration: underline;
+}
+
+.sw-list {
+  margin: 14px 0 0;
+  padding-left: 18px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--sw-mute);
+}
+
+.sw-list li {
+  margin-bottom: 8px;
+}
+
+.sw-list b {
+  color: var(--sw-ink);
+}
+
+.sw-grid.sw-n2 {
+  grid-template-columns: 1fr;
+}
+
+@container (min-width:640px) {
+  .sw-grid.sw-n2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.sw-n2 .sw-card {
+  padding: 26px 24px;
+}
+
+.sw-n2 .sw-card h3 {
+  font-size: 22px;
+}
+
+.sw-n2 .sw-card p {
+  font-size: 14px;
+}
+
+.sw-n2 .sw-note {
+  border-left: 3px solid var(--c);
+}
+
+@keyframes sw-in {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes sw-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width:900px) {
+  .sw {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 8vh 5vw;
+  }
+  .sw-tabs {
+    position: static;
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 4px 14px 14px 4px;
+    gap: 26px;
+  }
+  .sw-face {
+    min-height: 80px;
+    padding: 22px 54px 22px 42px;
+    font-size: 14px;
+  }
+  .sw-tab {
+    flex: 0 0 auto;
+  }
+  .sw-tab.sw-on,
+  .sw-tab:hover {
+    transform: scale(1.04);
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .sw-panel,
+  .sw-card {
+    animation: none;
+  }
+  .sw-tab {
+    transition: none;
+  }
+}

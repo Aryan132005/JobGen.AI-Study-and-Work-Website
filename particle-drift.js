@@ -163,16 +163,16 @@
     constructor(section, options = {}) {
       this.section = section;
       this.options = Object.assign({
-        background: "#000000",
+        background: "transparent",
         baseColor: "#FFFFFF",
-        accentColor: "#38BDF8", // Clean celestial cyan/blue accent matching brand
-        density: 288,
-        dotSize: 2.5,
-        speed: 56,
+        accentColor: "#D9C690", // Elegant champagne gold / silver stardust replacing intense blue
+        density: 220,
+        dotSize: 2.2,
+        speed: 48,
         direction: 0,
-        hover: 16,
+        hover: 14,
         linkDistance: 0,
-        linkThickness: 2
+        linkThickness: 1.5
       }, options);
 
       this.isVisible = false;

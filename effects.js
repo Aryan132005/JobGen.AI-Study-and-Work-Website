@@ -244,7 +244,7 @@
         if (hov) d = c === hov ? 0 : Math.max(d, 0.75);
         var e = d * d * (3 - 2 * d); /* smooth curve: centre = 0, far = 1 */
         c.style.transform = 'scale(' + (1.12 - 0.24 * e).toFixed(3) + ')';
-        c.style.opacity = (1 - 0.55 * e).toFixed(3);
+        c.style.opacity = (1 - 0.22 * e).toFixed(3);
         c.classList.toggle('fx-focus', d < 0.3);
       });
     }

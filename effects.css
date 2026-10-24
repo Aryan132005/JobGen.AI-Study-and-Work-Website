@@ -1,10 +1,10 @@
 /* ===== Study & Work: 3 scroll effects (effects.css) ===== */
 :root {
-  --fx-acc: #38BDF8;
-  --fx-ink: #F3F7FB;
-  --fx-mute: #a9bbcf;
-  --fx-line: rgba(255, 255, 255, .16);
-  --fx-card: #101a2b;
+  --fx-acc: #D9C690;
+  --fx-ink: #F8FAFC;
+  --fx-mute: #94A3B8;
+  --fx-line: rgba(255, 255, 255, .14);
+  --fx-card: #0D1424;
 }
 
 /* Ensure no parent containers clip sticky positioning */
@@ -47,9 +47,11 @@ main, #mainContent {
 /* ---------- EFFECT 1: Journey (headline left, cards right) ---------- */
 .fx-journey {
   display: grid !important;
-  grid-template-columns: 1fr 1.15fr !important;
-  gap: 5vw !important;
-  padding: 0 6vw !important;
+  max-width: 1440px !important;
+  margin: 0 auto !important;
+  grid-template-columns: minmax(0, 1fr) minmax(500px, 580px) !important;
+  gap: 2rem !important;
+  padding: 0 2rem !important;
   color: var(--fx-ink) !important;
   overflow: visible !important;
   position: relative !important;
@@ -74,20 +76,35 @@ main, #mainContent {
   flex-direction: column !important;
   justify-content: center !important;
   z-index: 10 !important;
-  padding-right: 2rem !important;
+  padding-left: clamp(2.5rem, 5vw, 5.5rem) !important;
+  padding-right: 1rem !important;
   box-sizing: border-box !important;
   pointer-events: auto !important;
 }
 
+.fx-j-left h2,
+.fx-journey h2[data-fx-heading] {
+  font-size: clamp(2.2rem, 3.2vw, 3rem) !important;
+  line-height: 1.15 !important;
+  margin-bottom: 1.15rem !important;
+}
+
+.fx-j-left p.lead-text,
+.fx-journey p.lead-text {
+  font-size: 1.15rem !important;
+  line-height: 1.65 !important;
+  max-width: 580px !important;
+}
+
 /* ---------- EFFECT 1B: Reverse Journey (cards left, headline right) ---------- */
 .fx-journey.fx-rev {
-  grid-template-columns: 1.15fr 1fr !important;
+  grid-template-columns: minmax(500px, 580px) minmax(0, 1fr) !important;
+  gap: 2rem !important;
 }
 
 .fx-j-right,
 .section-spider-light > .fx-j-right,
-.fx-journey.fx-rev > .fx-j-right,
-.fx-journey.fx-rev > .fx-j-left {
+.fx-journey.fx-rev > .fx-j-right {
   position: -webkit-sticky !important;
   position: sticky !important;
   top: 0 !important;
@@ -97,23 +114,30 @@ main, #mainContent {
   flex-direction: column !important;
   justify-content: center !important;
   z-index: 10 !important;
-  padding-left: 2.5rem !important;
-  padding-right: 0 !important;
+  padding-left: clamp(3.5rem, 6vw, 6.5rem) !important;
+  padding-right: 1.5rem !important;
   box-sizing: border-box !important;
   pointer-events: auto !important;
 }
 
-.fx-journey.fx-rev > .fx-j-list {
-  order: 1 !important;
+.fx-journey.fx-rev .fx-j-right h2[data-fx-heading] {
+  font-size: clamp(1.55rem, 2.1vw, 1.95rem) !important;
+  line-height: 1.25 !important;
+  max-width: 380px !important;
+  margin: 0.75rem 0 !important;
 }
 
-.fx-journey.fx-rev > .fx-j-right,
-.fx-journey.fx-rev > .fx-j-left {
+.fx-journey.fx-rev > .fx-j-list {
+  order: 1 !important;
+  padding-left: clamp(2.5rem, 5vw, 5.5rem) !important;
+}
+
+.fx-journey.fx-rev > .fx-j-right {
   order: 2 !important;
 }
 
 .fx-journey.fx-rev > .fx-j-list .fx-j-card {
-  transform: translateX(-60px) scale(.94);
+  transform: translateX(-40px) scale(.95);
 }
 
 .fx-journey.fx-rev > .fx-j-list .fx-j-card.fx-on {
@@ -172,15 +196,17 @@ main, #mainContent {
 }
 
 .fx-j-card {
-  margin-bottom: 24vh !important;
-  border: 1px solid var(--fx-line) !important;
+  width: 100% !important;
+  max-width: 580px !important;
+  margin-bottom: 22vh !important;
+  border: 1.5px solid var(--fx-line) !important;
   background: var(--fx-card) !important;
   border-radius: 22px !important;
-  padding: 32px !important;
+  padding: 32px 30px !important;
   opacity: .25;
-  transform: translateX(60px) scale(.94);
-  transition: transform .7s cubic-bezier(.2, .7, .2, 1), opacity .6s, border-color .4s, box-shadow .4s !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+  transform: translateX(40px) scale(.95);
+  transition: transform .6s cubic-bezier(.2, .7, .2, 1), opacity .5s, border-color .4s, box-shadow .4s !important;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.08) !important;
 }
 
 .fx-j-card:last-child {
@@ -191,17 +217,48 @@ main, #mainContent {
   opacity: 1 !important;
   transform: none !important;
   border-color: var(--c, var(--fx-acc)) !important;
-  box-shadow: 0 16px 50px -10px var(--c, var(--fx-acc)), 0 0 0 1px var(--c, var(--fx-acc)) !important;
+  box-shadow: 0 20px 50px -10px var(--c, var(--fx-acc)), 0 0 0 1.5px var(--c, var(--fx-acc)) !important;
 }
 
 .fx-j-card small {
   display: inline-block;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   color: var(--c, var(--fx-acc));
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
+.fx-j-card h3 {
+  font-size: 1.35rem !important;
+  line-height: 1.25 !important;
+  font-weight: 700 !important;
+  color: #0F172A !important;
+  margin: 0 0 0.65rem 0 !important;
+}
+
+.fx-j-card p {
+  font-size: 0.98rem !important;
+  line-height: 1.55 !important;
+  color: #475569 !important;
+  margin-bottom: 0.85rem !important;
+}
+
+.fx-j-card a {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  color: var(--c, var(--fx-acc)) !important;
+  text-decoration: none !important;
+  margin-top: 0.5rem !important;
+  transition: transform 0.25s ease, color 0.25s ease !important;
+}
+
+.fx-j-card a:hover {
+  transform: translateX(4px) !important;
 }
 
 .fx-j-card h3 {
@@ -252,59 +309,69 @@ main, #mainContent {
 
 /* scale + opacity of every card are set by effects.js on each frame (do not add transition on them) */
 .fx-rcard {
-  flex: 0 0 clamp(290px, 28vw, 380px);
-  border: 1px solid var(--fx-line);
-  background: var(--fx-card);
-  color: var(--fx-ink);
+  flex: 0 0 clamp(300px, 30vw, 410px);
+  border: 1.5px solid rgba(217, 198, 144, 0.45);
+  background: linear-gradient(155deg, rgba(24, 35, 58, 0.94) 0%, rgba(13, 19, 34, 0.98) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  color: #FFFFFF;
   border-radius: 20px;
-  padding: 24px;
+  padding: 26px 24px;
   cursor: pointer;
   transform: scale(.88);
-  opacity: .5;
-  transition: border-color .3s, box-shadow .3s;
+  opacity: .75;
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition: border-color .3s, box-shadow .3s, transform .3s;
 }
 
 .fx-rcard.fx-focus {
-  border-color: var(--fx-acc);
-  box-shadow: 0 0 55px -8px var(--fx-acc);
+  border: 2px solid #D9C690;
+  background: linear-gradient(155deg, rgba(32, 48, 78, 0.97) 0%, rgba(16, 25, 45, 0.98) 100%);
+  box-shadow: 0 25px 65px -8px rgba(0, 0, 0, 0.85), 0 0 35px -5px rgba(217, 198, 144, 0.55), 0 0 0 1px #D9C690;
 }
 
 .fx-rcard q {
   display: block;
-  font-size: 0.925rem;
+  font-size: 0.95rem;
   line-height: 1.6;
   font-style: italic;
-  color: var(--fx-ink);
+  color: #F8FAFC;
   margin-bottom: 1rem;
 }
 
 .fx-rcard hr {
   border: 0;
   height: 1px;
-  background: var(--fx-line);
+  background: rgba(217, 198, 144, 0.25);
   margin: 1rem 0;
 }
 
 .fx-rcard b {
   display: block;
-  font-size: 0.95rem;
-  color: var(--fx-ink);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #D9C690;
 }
 
 .fx-rcard span {
   display: block;
-  font-size: 0.8rem;
-  color: var(--fx-mute);
-  margin-top: 0.2rem;
+  font-size: 0.825rem;
+  color: #94A3B8;
+  margin-top: 0.25rem;
+  line-height: 1.4;
 }
 
 .fx-rcard em {
-  display: block;
-  font-size: 0.8rem;
+  display: inline-block;
+  font-size: 0.825rem;
   font-style: normal;
-  color: var(--fx-acc);
-  font-weight: 600;
-  margin-top: 0.4rem;
+  color: #38BDF8;
+  font-weight: 700;
+  margin-top: 0.55rem;
+  background: rgba(2, 132, 199, 0.2);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  padding: 3px 10px;
+  border-radius: 99px;
 }
 
 /* ---------- EFFECT 3: Pathway (headline left, winding line right) ---------- */
@@ -318,11 +385,27 @@ main, #mainContent {
   overflow: visible !important;
   position: relative !important;
   align-items: start !important;
-  background-color: #050F23 !important;
+  background-color: #070B14 !important;
+  background-image:
+    linear-gradient(180deg, rgba(7, 11, 20, 0.88) 0%, rgba(7, 11, 20, 0.80) 50%, rgba(7, 11, 20, 0.93) 100%),
+    url("noise.svg"),
+    url("career_pathway_bg.jpg") !important;
+  background-repeat: repeat, repeat, no-repeat !important;
+  background-size: auto, 180px 180px, cover !important;
+  background-position: center top, center center, center center !important;
+  background-attachment: scroll, scroll, fixed !important;
 }
 
 #alumni.section-particle-drift {
-  background-color: #050F23 !important;
+  background-color: #070B14 !important;
+  background-image:
+    linear-gradient(180deg, rgba(7, 11, 20, 0.90) 0%, rgba(7, 11, 20, 0.82) 50%, rgba(7, 11, 20, 0.94) 100%),
+    url("noise.svg"),
+    url("career_pathway_bg.jpg") !important;
+  background-repeat: repeat, repeat, no-repeat !important;
+  background-size: auto, 180px 180px, cover !important;
+  background-position: center top, center center, center center !important;
+  background-attachment: scroll, scroll, fixed !important;
   overflow: visible !important;
 }
 

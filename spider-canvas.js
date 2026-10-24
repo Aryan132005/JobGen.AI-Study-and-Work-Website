@@ -76,7 +76,7 @@
             twinklePhase: Math.random() * Math.PI * 2,
             vx: (Math.random() - 0.5) * 0.16,
             vy: -(Math.random() * 0.26 + 0.1), // gentle upward floating
-            color: i % 3 === 0 ? '224, 242, 254' : (i % 2 === 0 ? '186, 230, 253' : '241, 245, 249')
+            color: i % 3 === 0 ? '217, 198, 144' : (i % 2 === 0 ? '241, 245, 249' : '226, 232, 240')
           });
         }
       } else {

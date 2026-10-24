@@ -104,7 +104,7 @@
 - **Developer:** Aryan Saini
 - **GitHub:** [@Aryan132005](https://github.com/Aryan132005)
 - **Email:** [aryansaini132005@gmail.com](mailto:aryansaini132005@gmail.com)
-
+- **Company:** [JobGen.ai](https://jobgen.ai/)
 ---
 
 ## 📄 License
